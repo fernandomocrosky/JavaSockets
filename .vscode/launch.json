@@ -1,0 +1,33 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Cliente",
+      "request": "launch",
+      "mainClass": "projeto.Cliente",
+      "projectName": "teste"
+    },
+    {
+      "type": "java",
+      "name": "Servidor",
+      "request": "launch",
+      "mainClass": "projeto.Servidor",
+      "projectName": "teste"
+    },
+    {
+      "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "servidor.Main",
+      "projectName": "teste"
+    },
+    {
+      "type": "java",
+      "name": "Executar JavaFX (MainApp)",
+      "request": "launch",
+      "mainClass": "teste.com.MainApp",
+      "vmArgs": "--module-path \"${env:USERPROFILE}\\.m2\\repository\\org\\openjfx\\javafx-controls\\17.0.12;${env:USERPROFILE}\\.m2\\repository\\org\\openjfx\\javafx-fxml\\17.0.12\" --add-modules javafx.controls,javafx.fxml"
+    }
+  ]
+}
