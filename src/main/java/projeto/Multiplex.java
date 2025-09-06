@@ -23,7 +23,7 @@ public class Multiplex {
     static {
         operations.put("LOGIN", LoginController::login);
         operations.put("LOGOUT", LoginController::logout);
-        operations.put("CADASTRAR_USUARIO", UsuarioController::cadastrar);
+        operations.put("CRIAR_USUARIO", UsuarioController::cadastrar);
     }
 
     public static JsonElement handle(String request) {

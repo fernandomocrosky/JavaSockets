@@ -5,7 +5,8 @@
 
 <VBox xmlns:fx="http://javafx.com/fxml"
     fx:controller="projeto.viewControllers.HomeController"
-    alignment="CENTER" spacing="15" style="-fx-padding: 20;">
+    alignment="CENTER" spacing="15" style="-fx-padding: 20;"
+    stylesheets="@../views/styles/style.css">
 
     <Label fx:id="welcomeLabel" style="-fx-font-size: 20px;" text="Bem-vindo!" />
     <Label fx:id="infoLabel" text="Carregando dados do usuário..." />

@@ -4,14 +4,13 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns:fx="http://javafx.com/fxml"
-    fx:controller="projeto.viewControllers.LoginController"
+    fx:controller="projeto.viewControllers.CadastroController"
     alignment="CENTER" spacing="10" style="-fx-padding:20;"
     stylesheets="@../views/styles/style.css">
 
-    <TextField fx:id="userField" text="admin" promptText="Usuário" />
-    <PasswordField fx:id="passField" text="admin" promptText="Senha" />
-    <Button text="Login" onAction="#login" styleClass="button-primary" />
+    <TextField fx:id="userField" text="" promptText="Usuário" />
+    <PasswordField fx:id="passField" text="" promptText="Senha" />
     <Button text="Cadastrar" onAction="#cadastrar" styleClass="button-primary" />
-    <Label fx:id="status" text="Aguardando login..." />
+    <Label fx:id="status" text="Aguardando cadastro..." />
 
 </VBox>

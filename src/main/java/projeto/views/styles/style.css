@@ -1,0 +1,51 @@
+.root {
+    -fx-background-color: linear-gradient(to bottom, #3a3a3a, #2b2b2b);
+
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 25, 0, 0, 8);
+}
+
+.button-primary {
+    -fx-min-width: 100;
+    -fx-background-color: #13aa52;
+    -fx-border-color: #13aa52;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-text-fill: #fff;
+    -fx-cursor: hand;
+    -fx-font-family: "Montserrat", sans-serif;
+    -fx-font-size: 16px;
+    -fx-font-weight: 400;
+    -fx-padding: 10 25 10 25;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 2);
+}
+
+.button-primary:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 9, 0, 0, 3);
+    -fx-translate-y: -2;
+}
+
+.label {
+    -fx-text-fill: #fff;
+    -fx-font-family: "Montserrat", sans-serif;
+    -fx-font-size: 16px;
+    -fx-font-weight: 400;
+}
+
+.text-field, .password-field {
+    -fx-background-color: #fff;
+    -fx-background-insets: 0;       
+    -fx-background-radius: 0;       
+    
+    -fx-border-color: transparent transparent #c0c0c0 transparent;
+    
+    -fx-font-family: "Montserrat", sans-serif;
+    -fx-font-size: 16px;
+    -fx-font-weight: 400;
+    -fx-alignment: center-left;
+    -fx-max-width: 300;
+    -fx-padding: 5 10 5 10;
+    
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 2);
+}
+

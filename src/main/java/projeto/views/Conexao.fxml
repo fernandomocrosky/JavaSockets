@@ -5,11 +5,12 @@
 
 <VBox xmlns:fx="http://javafx.com/fxml"
     fx:controller="projeto.viewControllers.ConexaoController"
-    alignment="CENTER" spacing="10" style="-fx-padding:20;">
+    alignment="CENTER" spacing="10" style="-fx-padding:20;"
+    stylesheets="@../views/styles/style.css">
 
-    <TextField fx:id="ipField" promptText="Digite o IP do servidor" />
-    <TextField fx:id="portField" promptText="Digite a porta do servidor" />
-    <Button text="Conectar" onAction="#conectar" />
-    <Label fx:id="status" text="Desconectado" />
+    <TextField fx:id="ipField" text="192.168.1.10" promptText="Digite o IP do servidor" styleClass="text-input" />
+    <TextField fx:id="portField" text="21000" promptText="Digite a porta do servidor" />
+    <Button text="Conectar" onAction="#conectar" styleClass="button-primary" />
+    <Label fx:id="status" text="Desconectado" styleClass="label-text" />
 
 </VBox>

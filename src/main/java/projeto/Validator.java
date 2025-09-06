@@ -35,6 +35,25 @@ public class Validator {
         return null;
     }
 
+    public static List<String> validateRequest(JsonObject request, List<String> requiredFields) {
+        JsonObject response = new JsonObject();
+        List<String> errors = new ArrayList<>();
+        response.addProperty("status", StatusCode.BAD_REQUEST);
+        response.addProperty("message", StatusCode.getMessage(StatusCode.BAD_REQUEST));
+
+        for (String field : requiredFields) {
+            if (!request.has(field)) {
+                errors.add("O campo " + field + " é obrigatório.");
+            }
+        }
+
+        if (!errors.isEmpty()) {
+            return errors;
+        }
+
+        return null;
+    }
+
     public static List<String> validateFields(List<String> requiredFields, TextInputControl... inputs) {
         List<String> errors = new ArrayList<>();
 
