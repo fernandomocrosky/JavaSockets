@@ -10,6 +10,7 @@
     <TextField fx:id="userField" promptText="Usuário" />
     <PasswordField fx:id="passField" promptText="Senha" />
     <Button text="Login" onAction="#login" />
+    <Button text="Cadastrar" onAction="#cadastrar"/>
     <Label fx:id="status" text="Aguardando login..." />
 
 </VBox>

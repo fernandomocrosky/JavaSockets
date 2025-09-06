@@ -29,7 +29,7 @@ public class JwtHandle {
             return jwtBuilder.claim("funcao", "admin").claim("usuario", username)
                     .compact();
 
-        return jwtBuilder.claim("funcao", "user").claim("usuario", username)
+        return jwtBuilder.claim("funcao", "usuario").claim("usuario", username)
                 .compact();
     }
 

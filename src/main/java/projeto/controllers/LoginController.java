@@ -55,4 +55,10 @@ public class LoginController {
 
         return JsonHandler.jsonToString(response);
     }
+
+    public static String logout(String request) {
+        JsonObject json = new JsonObject();
+        json.addProperty("status", 200);
+        return JsonHandler.jsonToString(json);
+    }
 }
