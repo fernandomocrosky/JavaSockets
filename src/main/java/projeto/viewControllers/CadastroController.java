@@ -1,15 +1,19 @@
 package projeto.viewControllers;
 
+import java.util.List;
+
 import com.google.gson.JsonObject;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import projeto.Session;
+import projeto.Validator;
 import projeto.handlers.JsonHandler;
 import projeto.handlers.StatusCode;
 import projeto.models.User;
@@ -30,6 +34,13 @@ public class CadastroController {
     private void cadastrar() {
         if (!Session.getInstance().isConnected()) {
             status.setText("Nenhuma conexão ativa");
+            return;
+        }
+
+        List<String> errors = Validator.validateFields(List.of("usuario", "senha"), userField, passField);
+
+        if (!errors.isEmpty()) {
+            status.setText(String.join("\n", errors));
             return;
         }
 
@@ -67,6 +78,18 @@ public class CadastroController {
             }
         } else {
             status.setText(StatusCode.getMessage(responseJson.get("status").getAsString()));
+        }
+    }
+
+    @FXML
+    public void voltar() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/projeto/views/LOGIN.fxml"));
+            Scene loginScene = new Scene(loader.load(), 420, 420);
+            Stage stage = (Stage) userField.getScene().getWindow();
+            stage.setScene(loginScene);
+        } catch (Exception e) {
+            System.out.println("Erro ao trocar de tela: " + e.getMessage());
         }
     }
 }

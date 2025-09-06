@@ -27,6 +27,5 @@ public class HomeController {
             welcomeLabel.setText("Olá, visitante!");
             infoLabel.setText("Nenhum token encontrado.");
         }
-
     }
 }

@@ -1,5 +1,7 @@
 package projeto.viewControllers;
 
+import java.util.List;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -11,6 +13,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import projeto.Session;
+import projeto.Validator;
 import projeto.handlers.JsonHandler;
 import projeto.handlers.StatusCode;
 import projeto.models.User;
@@ -31,6 +34,13 @@ public class LoginController {
     private void login() {
         if (!Session.getInstance().isConnected()) {
             status.setText("Nenhuma conexão ativa");
+            return;
+        }
+
+        List<String> errors = Validator.validateFields(List.of("usuario", "senha"), userField, passField);
+
+        if (!errors.isEmpty()) {
+            status.setText(String.join("\n", errors));
             return;
         }
 

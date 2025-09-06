@@ -8,6 +8,8 @@
     alignment="CENTER" spacing="10" style="-fx-padding:20;"
     stylesheets="@../views/styles/style.css">
 
+    <Button text="Voltar" onAction="#voltar" styleClass="button-primary" />
+
     <TextField fx:id="userField" text="" promptText="Usuário" />
     <PasswordField fx:id="passField" text="" promptText="Senha" />
     <Button text="Cadastrar" onAction="#cadastrar" styleClass="button-primary" />
