@@ -9,7 +9,7 @@ import java.util.function.Function;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import projeto.controllers.LoginController;
+import projeto.controllers.AuthController;
 import projeto.controllers.UsuarioController;
 import projeto.handlers.JsonHandler;
 import projeto.handlers.JwtHandle;
@@ -21,8 +21,8 @@ public class Multiplex {
     private static final List<String> adminPermissions = List.of("LOGOUT");
 
     static {
-        operations.put("LOGIN", LoginController::login);
-        operations.put("LOGOUT", LoginController::logout);
+        operations.put("LOGIN", AuthController::login);
+        operations.put("LOGOUT", AuthController::logout);
         operations.put("CRIAR_USUARIO", UsuarioController::cadastrar);
     }
 

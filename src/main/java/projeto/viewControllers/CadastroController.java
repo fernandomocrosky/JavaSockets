@@ -70,7 +70,7 @@ public class CadastroController {
             System.out.println("\nServidor -> Cliente: " + JsonHandler.prettyFormatFromString(response));
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/projeto/views/LOGIN.fxml"));
-                Scene homeScene = new Scene(loader.load(), 420, 300);
+                Scene homeScene = new Scene(loader.load(), Session.SCENE_WIDTH, Session.SCENE_HEIGHT);
                 Stage stage = (Stage) userField.getScene().getWindow();
                 stage.setScene(homeScene);
             } catch (Exception e) {
@@ -85,7 +85,7 @@ public class CadastroController {
     public void voltar() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/projeto/views/LOGIN.fxml"));
-            Scene loginScene = new Scene(loader.load(), 420, 420);
+            Scene loginScene = new Scene(loader.load(), Session.SCENE_WIDTH, Session.SCENE_HEIGHT);
             Stage stage = (Stage) userField.getScene().getWindow();
             stage.setScene(loginScene);
         } catch (Exception e) {

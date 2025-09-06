@@ -58,7 +58,7 @@ public class ConexaoController {
 
             // se conectou → troca para tela de login
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/projeto/views/Login.fxml"));
-            Scene loginScene = new Scene(loader.load(), 420, 420);
+            Scene loginScene = new Scene(loader.load(), Session.SCENE_WIDTH, Session.SCENE_HEIGHT);
 
             Stage stage = (Stage) ipField.getScene().getWindow();
             stage.setScene(loginScene);

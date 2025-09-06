@@ -10,8 +10,10 @@ public class Cliente extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
+        Session.getInstance().setCurrentStage(stage);
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/projeto/views/Conexao.fxml"));
-        Scene scene = new Scene(loader.load(), 420, 420);
+        Scene scene = new Scene(loader.load(), Session.SCENE_WIDTH, Session.SCENE_HEIGHT);
 
         stage.setTitle("Cliente Servidor - JavaFX");
         stage.setScene(scene);

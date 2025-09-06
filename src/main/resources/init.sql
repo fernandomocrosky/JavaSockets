@@ -7,6 +7,13 @@ CREATE TABLE
         atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 
+CREATE TABLE
+    IF NOT EXISTS token_blacklist (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        token TEXT NOT NULL,
+        expiracao TIMESTAMP NOT NULL
+    );
+
 INSERT
 OR IGNORE INTO usuarios (usuario, senha)
 VALUES

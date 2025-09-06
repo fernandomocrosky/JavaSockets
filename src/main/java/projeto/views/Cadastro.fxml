@@ -1,18 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 
-<VBox xmlns:fx="http://javafx.com/fxml"
+<BorderPane xmlns:fx="http://javafx.com/fxml"
     fx:controller="projeto.viewControllers.CadastroController"
-    alignment="CENTER" spacing="10" style="-fx-padding:20;"
-    stylesheets="@../views/styles/style.css">
+    stylesheets="@../views/styles/style.css"
+    style="-fx-padding:20;">
 
-    <Button text="Voltar" onAction="#voltar" styleClass="button-primary" />
+    <!-- Topo da tela -->
+    <top>
+        <Button text="Voltar" onAction="#voltar" styleClass="button-primary"
+            BorderPane.alignment="TOP_LEFT" />
+    </top>
 
-    <TextField fx:id="userField" text="" promptText="Usuário" />
-    <PasswordField fx:id="passField" text="" promptText="Senha" />
-    <Button text="Cadastrar" onAction="#cadastrar" styleClass="button-primary" />
-    <Label fx:id="status" text="Aguardando cadastro..." />
+    <!-- Conteúdo central -->
+    <center>
+        <VBox alignment="CENTER" spacing="10">
+            <TextField fx:id="userField" promptText="Usuário" />
+            <PasswordField fx:id="passField" promptText="Senha" />
+            <Button text="Cadastrar" onAction="#cadastrar" styleClass="button-primary" />
+            <Label fx:id="status" text="Aguardando cadastro..." />
+        </VBox>
+    </center>
 
-</VBox>
+</BorderPane>

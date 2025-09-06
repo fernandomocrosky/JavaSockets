@@ -71,7 +71,7 @@ public class LoginController {
 
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/projeto/views/HOME.fxml"));
-                Scene homeScene = new Scene(loader.load(), 420, 300);
+                Scene homeScene = new Scene(loader.load(), Session.SCENE_WIDTH, Session.SCENE_HEIGHT);
                 Stage stage = (Stage) userField.getScene().getWindow();
                 stage.setScene(homeScene);
             } catch (Exception e) {
@@ -86,7 +86,7 @@ public class LoginController {
     private void cadastrar() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/projeto/views/CADASTRO.fxml"));
-            Scene cadastroScene = new Scene(loader.load(), 420, 420);
+            Scene cadastroScene = new Scene(loader.load(), Session.SCENE_WIDTH, Session.SCENE_HEIGHT);
             Stage stage = (Stage) userField.getScene().getWindow();
             stage.setScene(cadastroScene);
         } catch (Exception e) {

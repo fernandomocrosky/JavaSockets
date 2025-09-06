@@ -54,12 +54,21 @@ public class JwtHandle {
                 .getSubject(); // pega o "sub"
     }
 
-    public static String getClaim(String token, String claimName) {
+    public static Date getExpiration(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(SECRET_KEY)
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
-                .get(claimName, String.class);
+                .getExpiration();
+    }
+
+    public static <T> T getClaim(String token, String claimName, Class<T> type) {
+        return Jwts.parserBuilder()
+                .setSigningKey(SECRET_KEY)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get(claimName, type);
     }
 }
