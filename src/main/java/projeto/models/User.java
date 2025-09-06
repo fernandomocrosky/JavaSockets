@@ -3,9 +3,8 @@ package projeto.models;
 public class User {
     private String usuario;
     private String senha;
-    private String token;
 
-    public User(String usuario, String senha, String token) {
+    public User(String usuario, String senha) {
         this.usuario = usuario;
         this.senha = senha;
     }
