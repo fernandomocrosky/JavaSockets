@@ -2,7 +2,6 @@ package projeto.viewControllers;
 
 import java.util.List;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import javafx.fxml.FXML;
@@ -66,6 +65,7 @@ public class LoginController {
 
         status.setText("Login enviado!");
         System.out.println("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(msg));
+        System.out.println("Servidor -> Cliente: " + JsonHandler.prettyFormatFromString(response));
         if (response != null && !response.isEmpty() && responseJson.get("status").getAsString().equals(StatusCode.OK)) {
             System.out.println("\nServidor -> Cliente: " + JsonHandler.prettyFormatFromString(response));
             Session.getInstance().setToken(responseJson.get("token").getAsString());
@@ -90,6 +90,16 @@ public class LoginController {
             Scene cadastroScene = new Scene(loader.load(), SceneHandler.SCENE_WIDTH, SceneHandler.SCENE_HEIGHT);
             Stage stage = (Stage) userField.getScene().getWindow();
             stage.setScene(cadastroScene);
+        } catch (Exception e) {
+            System.out.println("Erro ao trocar de tela: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void voltar() {
+        try {
+            SceneHandler.changeScene("/projeto/views/CONEXAO.fxml");
+            Session.getInstance().clear();
         } catch (Exception e) {
             System.out.println("Erro ao trocar de tela: " + e.getMessage());
         }

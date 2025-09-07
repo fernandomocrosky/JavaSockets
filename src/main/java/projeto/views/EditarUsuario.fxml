@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+    fx:controller="projeto.viewControllers.EditarUsuarioController"
+    stylesheets="@../views/styles/style.css"
+    style="-fx-padding: 20;">
+
+    <!-- Topo: menu + botão logout -->
+    <top>
+        <!-- Importa o menu -->
+        <fx:include source="components/Menu.fxml" />
+    </top>
+
+    <!-- Conteúdo principal -->
+    <center>
+        <VBox
+            alignment="CENTER" spacing="10" style="-fx-padding: 20;">
+            <Label text="Editar Usuário" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+            <TextField id="usuario" fx:id="usuarioField" promptText="Usuário" />
+
+            <HBox alignment="CENTER" spacing="10">
+                <Button text="Salvar" onAction="#salvar" styleClass="button-primary" />
+                <Button text="Cancelar" onAction="#cancelar" styleClass="button-danger" />
+            </HBox>
+
+            <Label fx:id="status" text="" />
+        </VBox>
+    </center>
+
+</BorderPane>

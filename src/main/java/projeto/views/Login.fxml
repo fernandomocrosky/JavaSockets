@@ -1,20 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.*?>
 
-<VBox xmlns:fx="http://javafx.com/fxml"
+<BorderPane xmlns:fx="http://javafx.com/fxml"
     fx:controller="projeto.viewControllers.LoginController"
-    alignment="CENTER" spacing="10" style="-fx-padding:20;"
-    stylesheets="@../views/styles/style.css">
+    stylesheets="@../views/styles/style.css"
+    style="-fx-padding: 20;">
 
-    <TextField fx:id="userField" id="usuario" text="admin" promptText="Usuário" />
-    <PasswordField fx:id="passField" id="senha" text="admin" promptText="Senha" />
-    <HBox alignment="CENTER" spacing="10">
-        <Button text="Login" onAction="#login" styleClass="button-primary" />
-        <Button text="Cadastrar" onAction="#cadastrar" styleClass="button-primary" />
-    </HBox>
-    <Label fx:id="status" text="Aguardando login..." />
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="10"> <!-- Aqui estava 'Hbox' -->
+            <Button text="Voltar" onAction="#voltar" styleClass="button-primary" />
+            <Label text="Login"
+                style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #fff;" />
+        </HBox>
+    </top>
 
-</VBox>
+    <center>
+        <VBox alignment="CENTER" spacing="15" style="-fx-padding: 20;">
+            <TextField text="admin" fx:id="userField" id="usuario" promptText="Usuário" />
+            <PasswordField text="admin" fx:id="passField" id="senha" promptText="Senha" />
+
+            <HBox alignment="CENTER" spacing="15">
+                <Button text="Login" onAction="#login" styleClass="button-primary" />
+                <Button text="Cadastrar" onAction="#cadastrar" styleClass="button-secondary" />
+            </HBox>
+
+            <Label fx:id="status" text="Aguardando login..." style="-fx-text-fill: #bbb;" />
+        </VBox>
+    </center>
+</BorderPane>

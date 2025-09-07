@@ -58,7 +58,7 @@ public class UserDAO {
     }
 
     public static List<User> findAll() {
-        String sql = "SELECT usuario FROM usuarios";
+        String sql = "SELECT id, usuario FROM usuarios";
 
         List<User> usuarios = new ArrayList<>();
 
@@ -68,6 +68,7 @@ public class UserDAO {
                 ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 User user = new User();
+                user.setId(rs.getString("id"));
                 user.setUsuario(rs.getString("usuario"));
 
                 usuarios.add(user);
@@ -90,6 +91,38 @@ public class UserDAO {
             return true;
         } catch (Exception ex) {
             System.err.println("Erro ao inserir usuário: " + ex.getMessage());
+            return false;
+        }
+    }
+
+    public static boolean update(User user) {
+        String sql = "UPDATE usuarios SET usuario = ? WHERE id = ?";
+
+        try (
+                Connection conn = Database.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, user.getUsuario());
+            stmt.setInt(2, Integer.parseInt(user.getId()));
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (Exception ex) {
+            System.err.println("Erro ao atualizar usuário: " + ex.getMessage());
+            return false;
+        }
+    }
+
+    public static boolean delete(String id) {
+        String sql = "DELETE FROM usuarios WHERE id = ?";
+
+        try (
+                Connection conn = Database.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, Integer.parseInt(id));
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (Exception ex) {
+            System.err.println("Erro ao excluir usuário: " + ex.getMessage());
             return false;
         }
     }

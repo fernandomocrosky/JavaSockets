@@ -40,14 +40,46 @@ public class Validator {
         response.addProperty("status", StatusCode.BAD_REQUEST);
         response.addProperty("message", StatusCode.getMessage(StatusCode.BAD_REQUEST));
 
+        // Verifica campos obrigatórios (inclusive aninhados com ".")
         for (String field : requiredFields) {
-            if (!request.has(field)) {
-                errors.add("O campo " + field + " é obrigatório.");
+            String[] parts = field.split("\\.");
+            JsonObject current = request;
+            boolean exists = true;
+
+            for (int i = 0; i < parts.length; i++) {
+                String part = parts[i];
+                if (i == parts.length - 1) {
+                    if (!current.has(part)) {
+                        exists = false;
+                    }
+                } else {
+                    if (current.has(part) && current.get(part).isJsonObject()) {
+                        current = current.getAsJsonObject(part);
+                    } else {
+                        exists = false;
+                    }
+                }
+            }
+
+            if (!exists) {
+                errors.add("O campo '" + field + "' é obrigatório.");
             }
         }
 
         if (request.has("usuario")) {
-            String username = request.get("usuario").getAsString();
+            String username;
+
+            if (request.get("usuario").isJsonObject()) {
+                JsonObject usuarioObj = request.getAsJsonObject("usuario");
+                if (usuarioObj.has("nome") && !usuarioObj.get("nome").isJsonNull()) {
+                    username = usuarioObj.get("nome").getAsString();
+                } else {
+                    username = "";
+                }
+            } else {
+                username = request.get("usuario").getAsString();
+            }
+
             if (username.length() < 3) {
                 errors.add("O campo 'usuario' deve ter pelo menos 3 caracteres.");
             }
@@ -72,7 +104,7 @@ public class Validator {
             return errors;
         }
 
-        return null;
+        return errors;
     }
 
     public static List<String> validateFields(List<String> requiredFields, TextInputControl... inputs) {

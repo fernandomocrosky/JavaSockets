@@ -1,6 +1,7 @@
 package projeto;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -10,16 +11,24 @@ import com.google.gson.JsonObject;
 import projeto.controllers.AuthController;
 import projeto.controllers.UsuarioController;
 import projeto.handlers.JsonHandler;
+import projeto.handlers.JwtHandle;
 import projeto.handlers.StatusCode;
 
 public class Multiplex {
     private static final Map<String, Function<String, String>> operations = new HashMap<>();
+    private static final Map<String, List<String>> permissions = new HashMap<>();
 
     static {
         operations.put("LOGIN", AuthController::login);
         operations.put("LOGOUT", AuthController::logout);
         operations.put("CRIAR_USUARIO", UsuarioController::cadastrar);
         operations.put("LISTAR_USUARIOS", UsuarioController::listar);
+        operations.put("EDITAR_USUARIO", UsuarioController::editar);
+        operations.put("EXCLUIR_USUARIO", UsuarioController::deletar);
+
+        permissions.put("usuario", List.of("LOGOUT"));
+        permissions.put("admin", List.of("LISTAR_USUARIOS", "LOGOUT", "EDITAR_USUARIO", "EXCLUIR_USUARIO"));
+        permissions.put("public", List.of("LOGIN", "CRIAR_USUARIO"));
     }
 
     public static JsonElement handle(String request) {
@@ -42,6 +51,23 @@ public class Multiplex {
             responseObject.addProperty("status", StatusCode.INTERNAL_SERVER_ERROR);
             responseObject.addProperty("message", StatusCode.getMessage(StatusCode.INTERNAL_SERVER_ERROR));
             return responseObject;
+        }
+
+        if (!permissions.get("public").contains(operation)) {
+            if (!requestObject.has("token")) {
+                responseObject.addProperty("status", StatusCode.UNAUTHORIZED);
+                responseObject.addProperty("message", StatusCode.getMessage(StatusCode.UNAUTHORIZED));
+                return responseObject;
+            }
+
+            String token = requestObject.get("token").getAsString();
+            String role = JwtHandle.getClaim(token, "funcao", String.class);
+
+            if (!permissions.get(role).contains(operation)) {
+                responseObject.addProperty("status", StatusCode.FORBIDDEN);
+                responseObject.addProperty("message", StatusCode.getMessage(StatusCode.FORBIDDEN));
+                return responseObject;
+            }
         }
 
         String response = operations.get(operation).apply(request);

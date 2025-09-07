@@ -35,7 +35,8 @@ public class CadastroController {
     @FXML
     private void cadastrar() {
         if (!Session.getInstance().isConnected()) {
-            Session.getInstance().showAlert(AlertType.ERROR, "Erro", "Nenhuma conexão ativa");
+            Session.getInstance().showAlert(AlertType.ERROR, "Erro", "Nenhuma conexão ativa", () -> {
+            });
             return;
         }
 

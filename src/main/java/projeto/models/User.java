@@ -1,10 +1,11 @@
 package projeto.models;
 
 public class User {
+    private String id;
     private String usuario;
     private String senha;
     private String criadoEm;
-    
+
     public User(String usuario) {
         this.usuario = usuario;
     }
@@ -33,6 +34,10 @@ public class User {
         return usuario;
     }
 
+    public String getId() {
+        return this.id;
+    }
+
     // Setters
     public void setSenha(String senha) {
         this.senha = senha;
@@ -40,5 +45,9 @@ public class User {
 
     public void setUsuario(String usuario) {
         this.usuario = usuario;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

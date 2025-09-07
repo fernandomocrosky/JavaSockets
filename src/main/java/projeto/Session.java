@@ -3,12 +3,13 @@ package projeto;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Optional;
 
 import com.google.gson.JsonObject;
 
-import io.jsonwebtoken.Jwts;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import projeto.dao.UserDAO;
 import projeto.handlers.JsonHandler;
@@ -88,10 +89,21 @@ public class Session {
     }
 
     public void clear() {
-        this.socket = null;
-        this.out = null;
-        this.in = null;
-        this.token = null;
+
+        try {
+            this.socket.close();
+            this.in.close();
+            this.out.close();
+            this.token = null;
+
+            this.socket = null;
+            this.out = null;
+            this.in = null;
+            this.token = null;
+        } catch (Exception e) {
+            System.out.println("Erro ao desconectar: " + e.getMessage());
+        }
+
     }
 
     public static boolean validateToken(String token) {
@@ -104,11 +116,17 @@ public class Session {
         }
     }
 
-    public void showAlert(AlertType type, String title, String message) {
-        Alert alert = new Alert(type);
+    public void showAlert(AlertType type, String title, String message, Runnable onOk) {
+        Alert alert = new Alert(type, message, ButtonType.OK, ButtonType.CANCEL);
         alert.setTitle(title);
-        alert.setContentText(message);
-        alert.showAndWait();
+        alert.setHeaderText(null);
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            if (onOk != null)
+                onOk.run();
+        }
     }
 
     public JsonObject desconectar() {
