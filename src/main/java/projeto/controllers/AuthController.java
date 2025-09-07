@@ -1,19 +1,14 @@
 package projeto.controllers;
 
-import java.sql.Connection;
-import java.util.Date;
-
 import com.google.gson.JsonObject;
 
-import io.jsonwebtoken.Jwts;
-import projeto.Database;
 import projeto.dao.UserDAO;
 import projeto.handlers.JsonHandler;
 import projeto.handlers.JwtHandle;
 import projeto.handlers.StatusCode;
 import projeto.models.User;
 
-public class LoginController {
+public class AuthController {
     public static String login(String request) {
 
         JsonObject response = new JsonObject();
@@ -54,5 +49,26 @@ public class LoginController {
         }
 
         return JsonHandler.jsonToString(response);
+    }
+
+    public static String logout(String request) {
+        JsonObject json = new JsonObject();
+        JsonObject requestJsonObject = JsonHandler.stringToJsonObject(request);
+
+        String token = requestJsonObject.get("token").getAsString();
+
+        try {
+
+            Long expMilli = JwtHandle.getExpiration(token).getTime();
+            UserDAO.addTokenToBlacklist(token, expMilli);
+            json.addProperty("status", StatusCode.OK);
+            json.addProperty("message", "Logout realizado com sucesso.");
+        } catch (Exception ex) {
+            json.addProperty("status", StatusCode.UNAUTHORIZED);
+            json.addProperty("message", "Token inválido.");
+            System.out.println(ex.getMessage());
+        }
+
+        return JsonHandler.jsonToString(json);
     }
 }

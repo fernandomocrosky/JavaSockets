@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<VBox xmlns:fx="http://javafx.com/fxml"
+<BorderPane xmlns:fx="http://javafx.com/fxml"
     fx:controller="projeto.viewControllers.HomeController"
-    alignment="CENTER" spacing="15" style="-fx-padding: 20;">
+    stylesheets="@../views/styles/style.css"
+    style="-fx-padding: 20;">
 
-    <Label fx:id="welcomeLabel" style="-fx-font-size: 20px;" text="Bem-vindo!" />
-    <Label fx:id="infoLabel" text="Carregando dados do usuário..." />
+    <!-- Topo: menu + botão logout -->
+    <top>
+        <!-- Importa o menu -->
+        <fx:include source="components/Menu.fxml" />
+    </top>
 
-</VBox>
+    <!-- Conteúdo principal -->
+    <center>
+        <VBox alignment="CENTER" spacing="15">
+            <Label fx:id="welcomeLabel" style="-fx-font-size: 20px;" text="Bem-vindo!" />
+            <Button text="Deseja Criar um filme?" onAction="#goCreateFilme" styleClass="button-primary"/>
+        </VBox>
+    </center>
+
+</BorderPane>

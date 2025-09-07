@@ -27,7 +27,7 @@ public final class StatusCode {
     static {
         messages.put(OK, "Operacao realizada com sucesso");
         messages.put(CREATED, "Recurso criado com sucesso");
-        messages.put(BAD_REQUEST, "Requisicao inválida");
+        messages.put(BAD_REQUEST, "Requisicao invalida");
         messages.put(UNAUTHORIZED, "Nao autorizado");
         messages.put(FORBIDDEN, "Acesso proibido");
         messages.put(NOT_FOUND, "Recurso nao encontrado");

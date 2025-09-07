@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox xmlns:fx="http://javafx.com/fxml"
+    fx:controller="projeto.viewControllers.MenuController"
+    spacing="20" alignment="CENTER_LEFT"
+    styleClass="menu-bar">
+
+    <Label text="NetFilmes" styleClass="menu-title" />
+
+    <Button text="Home" onAction="#goHome" styleClass="menu-button" />
+    <Button text="Usuários" onAction="#goUsuarios" styleClass="menu-button" />
+    <Button text="Relatórios" onAction="#goRelatorios" styleClass="menu-button" />
+
+    <Pane HBox.hgrow="ALWAYS" /> <!-- empurra o logout para a direita -->
+
+    <Button text="Logout" onAction="#logout" styleClass="logout-button" />
+</HBox>

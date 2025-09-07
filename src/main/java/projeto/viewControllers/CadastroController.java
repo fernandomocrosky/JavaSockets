@@ -2,15 +2,16 @@ package projeto.viewControllers;
 
 import java.util.List;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import projeto.Session;
 import projeto.Validator;
@@ -18,9 +19,9 @@ import projeto.handlers.JsonHandler;
 import projeto.handlers.SceneHandler;
 import projeto.handlers.StatusCode;
 import projeto.models.User;
-import projeto.requests.LoginPayload;
+import projeto.requests.CadastroPayload;
 
-public class LoginController {
+public class CadastroController {
 
     @FXML
     private TextField userField;
@@ -32,9 +33,9 @@ public class LoginController {
     private Label status;
 
     @FXML
-    private void login() {
+    private void cadastrar() {
         if (!Session.getInstance().isConnected()) {
-            status.setText("Nenhuma conexão ativa");
+            Session.getInstance().showAlert(AlertType.ERROR, "Erro", "Nenhuma conexão ativa");
             return;
         }
 
@@ -47,7 +48,7 @@ public class LoginController {
 
         // cria objeto de usuário e request
         User user = new User(userField.getText(), passField.getText());
-        LoginPayload requestBody = new LoginPayload(user);
+        CadastroPayload requestBody = new CadastroPayload(user);
 
         // transforma em JSON
         String msg = JsonHandler.modelToString(requestBody);
@@ -66,30 +67,23 @@ public class LoginController {
 
         status.setText("Login enviado!");
         System.out.println("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(msg));
-        if (response != null && !response.isEmpty() && responseJson.get("status").getAsString().equals(StatusCode.OK)) {
+        if (response != null && !response.isEmpty()
+                && responseJson.get("status").getAsString().equals(StatusCode.CREATED)) {
             System.out.println("\nServidor -> Cliente: " + JsonHandler.prettyFormatFromString(response));
-            Session.getInstance().setToken(responseJson.get("token").getAsString());
-
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/projeto/views/HOME.fxml"));
-                Scene homeScene = new Scene(loader.load(), SceneHandler.SCENE_WIDTH, SceneHandler.SCENE_HEIGHT);
-                Stage stage = (Stage) userField.getScene().getWindow();
-                stage.setScene(homeScene);
+                SceneHandler.changeScene("/projeto/views/LOGIN.fxml");
             } catch (Exception e) {
                 System.out.println("Erro ao trocar de tela: " + e.getMessage());
             }
         } else {
-            status.setText(responseJson.get("message").getAsString());
+            status.setText(StatusCode.getMessage(responseJson.get("status").getAsString()));
         }
     }
 
     @FXML
-    private void cadastrar() {
+    public void voltar() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/projeto/views/CADASTRO.fxml"));
-            Scene cadastroScene = new Scene(loader.load(), SceneHandler.SCENE_WIDTH, SceneHandler.SCENE_HEIGHT);
-            Stage stage = (Stage) userField.getScene().getWindow();
-            stage.setScene(cadastroScene);
+            SceneHandler.changeScene("/projeto/views/LOGIN.fxml");
         } catch (Exception e) {
             System.out.println("Erro ao trocar de tela: " + e.getMessage());
         }

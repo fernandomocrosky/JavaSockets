@@ -4,6 +4,18 @@ import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import com.google.gson.JsonObject;
+
+import io.jsonwebtoken.Jwts;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.stage.Stage;
+import projeto.dao.UserDAO;
+import projeto.handlers.JsonHandler;
+import projeto.handlers.JwtHandle;
+import projeto.handlers.StatusCode;
+import projeto.requests.LogoutPayload;
+
 public class Session {
     private static final Session instance = new Session();
 
@@ -13,7 +25,20 @@ public class Session {
 
     private String token;
 
+    private Stage currentStage;
+    public static final double SCENE_WIDTH = 1024;
+    public static final double SCENE_HEIGHT = 768;
+
     private Session() {
+    }
+
+    // setter para Stage
+    public void setCurrentStage(Stage stage) {
+        this.currentStage = stage;
+    }
+
+    public Stage getCurrentStage() {
+        return currentStage;
     }
 
     public static Session getInstance() {
@@ -30,8 +55,20 @@ public class Session {
         this.token = token;
     }
 
+    public boolean hasToken() {
+        return token != null && !token.isEmpty();
+    }
+
     public String getToken() {
         return token;
+    }
+
+    public String getRole() {
+        return JwtHandle.getClaim(token, "funcao", String.class);
+    }
+
+    public Boolean isAdmin() {
+        return JwtHandle.getClaim(token, "funcao", String.class).equals("admin");
     }
 
     public Socket getSocket() {
@@ -54,9 +91,43 @@ public class Session {
         this.socket = null;
         this.out = null;
         this.in = null;
+        this.token = null;
     }
 
-    public void desconectar() {
+    public static boolean validateToken(String token) {
+        try {
+            JwtHandle.validateToken(token);
 
+            return !UserDAO.isTokenBlacklisted(token);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public void showAlert(AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    public JsonObject desconectar() {
+        JsonObject response = new JsonObject();
+        LogoutPayload logoutBody = new LogoutPayload(Session.getInstance().getToken());
+        String payload = JsonHandler.modelToString(logoutBody);
+        System.out.println("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(payload));
+
+        out.println(payload);
+
+        try {
+            response = JsonHandler.stringToJsonObject(in.readLine());
+            response.addProperty("message", StatusCode.getMessage(response.get("status").getAsString()));
+        } catch (Exception ex) {
+            System.err.println("Erro na comunicação com o servidor: " + ex.getMessage());
+            response.addProperty("status", StatusCode.INTERNAL_SERVER_ERROR);
+            response.addProperty("message", StatusCode.getMessage(StatusCode.INTERNAL_SERVER_ERROR));
+        }
+
+        return response;
     }
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+    fx:controller="projeto.viewControllers.CadastroController"
+    stylesheets="@../views/styles/style.css"
+    style="-fx-padding:20;">
+
+    <!-- Topo da tela -->
+    <top>
+        <Button text="Voltar" onAction="#voltar" styleClass="button-primary"
+            BorderPane.alignment="TOP_LEFT" />
+    </top>
+
+    <!-- Conteúdo central -->
+    <center>
+        <VBox alignment="CENTER" spacing="10">
+            <TextField fx:id="userField" id="usuario" promptText="usuario" />
+            <PasswordField fx:id="passField" id="senha" promptText="senha" />
+            <Button text="Cadastrar" onAction="#cadastrar" styleClass="button-primary" />
+            <Label fx:id="status" text="Aguardando cadastro..." />
+        </VBox>
+    </center>
+
+</BorderPane>

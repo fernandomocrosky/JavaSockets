@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import projeto.Session;
 import projeto.Validator;
+import projeto.handlers.SceneHandler;
 
 public class ConexaoController {
 
@@ -56,12 +57,15 @@ public class ConexaoController {
 
             status.setText("Conectado!");
 
-            // se conectou → troca para tela de login
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/projeto/views/Login.fxml"));
-            Scene loginScene = new Scene(loader.load(), 420, 420);
+            SceneHandler.changeScene("/projeto/views/Login.fxml");
 
-            Stage stage = (Stage) ipField.getScene().getWindow();
-            stage.setScene(loginScene);
+            // // se conectou → troca para tela de login
+            // FXMLLoader loader = new FXMLLoader(getClass().getResource());
+            // Scene loginScene = new Scene(loader.load(), SceneHandler.SCENE_WIDTH,
+            // SceneHandler.SCENE_HEIGHT);
+
+            // Stage stage = (Stage) ipField.getScene().getWindow();
+            // stage.setScene(loginScene);
 
         } catch (Exception e) {
             status.setText("Erro: " + e.getMessage());

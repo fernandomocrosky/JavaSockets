@@ -2,14 +2,19 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 
 <VBox xmlns:fx="http://javafx.com/fxml"
     fx:controller="projeto.viewControllers.LoginController"
-    alignment="CENTER" spacing="10" style="-fx-padding:20;">
+    alignment="CENTER" spacing="10" style="-fx-padding:20;"
+    stylesheets="@../views/styles/style.css">
 
-    <TextField fx:id="userField" promptText="Usuário" />
-    <PasswordField fx:id="passField" promptText="Senha" />
-    <Button text="Login" onAction="#login" />
+    <TextField fx:id="userField" id="usuario" text="admin" promptText="Usuário" />
+    <PasswordField fx:id="passField" id="senha" text="admin" promptText="Senha" />
+    <HBox alignment="CENTER" spacing="10">
+        <Button text="Login" onAction="#login" styleClass="button-primary" />
+        <Button text="Cadastrar" onAction="#cadastrar" styleClass="button-primary" />
+    </HBox>
     <Label fx:id="status" text="Aguardando login..." />
 
 </VBox>
