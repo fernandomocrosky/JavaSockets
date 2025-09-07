@@ -6,7 +6,6 @@ import java.net.Socket;
 
 import com.google.gson.JsonObject;
 
-import io.jsonwebtoken.Jwts;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;

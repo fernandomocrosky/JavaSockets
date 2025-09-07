@@ -60,12 +60,13 @@ public class UsuarioController {
         JsonArray usersJson = new JsonArray();
         for (User user : users) {
             JsonObject userJson = new JsonObject();
+            userJson.addProperty("id", user.getId());
             userJson.addProperty("usuario", user.getUsuario());
             usersJson.add(userJson);
         }
         response.addProperty("status", StatusCode.OK);
-        response.add("usuarios", usersJson);
         response.addProperty("message", StatusCode.getMessage(StatusCode.OK));
+        response.add("usuarios", usersJson);
 
         return JsonHandler.jsonToString(response);
     }

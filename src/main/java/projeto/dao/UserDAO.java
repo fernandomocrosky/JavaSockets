@@ -58,7 +58,7 @@ public class UserDAO {
     }
 
     public static List<User> findAll() {
-        String sql = "SELECT usuario FROM usuarios";
+        String sql = "SELECT id, usuario FROM usuarios";
 
         List<User> usuarios = new ArrayList<>();
 
@@ -68,6 +68,7 @@ public class UserDAO {
                 ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 User user = new User();
+                user.setId(rs.getString("id"));
                 user.setUsuario(rs.getString("usuario"));
 
                 usuarios.add(user);
