@@ -95,6 +95,38 @@ public class UserDAO {
         }
     }
 
+    public static boolean update(User user) {
+        String sql = "UPDATE usuarios SET usuario = ? WHERE id = ?";
+
+        try (
+                Connection conn = Database.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, user.getUsuario());
+            stmt.setInt(2, Integer.parseInt(user.getId()));
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (Exception ex) {
+            System.err.println("Erro ao atualizar usuário: " + ex.getMessage());
+            return false;
+        }
+    }
+
+    public static boolean delete(String id) {
+        String sql = "DELETE FROM usuarios WHERE id = ?";
+
+        try (
+                Connection conn = Database.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, Integer.parseInt(id));
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (Exception ex) {
+            System.err.println("Erro ao excluir usuário: " + ex.getMessage());
+            return false;
+        }
+    }
+
     public static void addTokenToBlacklist(String token, long expirationMillis) {
         String sql = "INSERT INTO token_blacklist (token, expiracao) VALUES (?, ?)";
 

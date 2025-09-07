@@ -89,10 +89,21 @@ public class Session {
     }
 
     public void clear() {
-        this.socket = null;
-        this.out = null;
-        this.in = null;
-        this.token = null;
+
+        try {
+            this.socket.close();
+            this.in.close();
+            this.out.close();
+            this.token = null;
+
+            this.socket = null;
+            this.out = null;
+            this.in = null;
+            this.token = null;
+        } catch (Exception e) {
+            System.out.println("Erro ao desconectar: " + e.getMessage());
+        }
+
     }
 
     public static boolean validateToken(String token) {

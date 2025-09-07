@@ -24,9 +24,10 @@ public class Multiplex {
         operations.put("CRIAR_USUARIO", UsuarioController::cadastrar);
         operations.put("LISTAR_USUARIOS", UsuarioController::listar);
         operations.put("EDITAR_USUARIO", UsuarioController::editar);
+        operations.put("EXCLUIR_USUARIO", UsuarioController::deletar);
 
         permissions.put("usuario", List.of("LOGOUT"));
-        permissions.put("admin", List.of("LISTAR_USUARIOS", "LOGOUT"));
+        permissions.put("admin", List.of("LISTAR_USUARIOS", "LOGOUT", "EDITAR_USUARIO", "EXCLUIR_USUARIO"));
         permissions.put("public", List.of("LOGIN", "CRIAR_USUARIO"));
     }
 

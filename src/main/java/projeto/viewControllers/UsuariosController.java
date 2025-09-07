@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import projeto.Session;
@@ -18,6 +19,7 @@ import projeto.handlers.JsonHandler;
 import projeto.handlers.SceneHandler;
 import projeto.handlers.StatusCode;
 import projeto.models.User;
+import projeto.requests.user.DeleteUserPayload;
 import projeto.requests.user.ListUserPayload;
 
 public class UsuariosController {
@@ -92,7 +94,25 @@ public class UsuariosController {
     }
 
     private void deletarUsuario(User user) {
-        System.out.println("Deletar -> " + user.getUsuario());
+        Session.getInstance().showAlert(AlertType.CONFIRMATION, "Excluir usuário",
+                "Tem certeza que deseja excluir o usuário " + user.getUsuario() + "?",
+                () -> {
+                    DeleteUserPayload payload = new DeleteUserPayload(user.getId());
+                    String msg = JsonHandler.modelToString(payload);
+                    System.out.println("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(msg));
+
+                    try {
+                        Session.getInstance().getOut().println(msg);
+                        JsonObject response = JsonHandler.stringToJsonObject(Session.getInstance().getIn().readLine());
+                        System.out.println(
+                                "Servidor -> Cliente: " + JsonHandler.prettyFormatFromString(response.toString()));
+                        if (response != null && response.get("status").getAsString().equals(StatusCode.OK)) {
+                            SceneHandler.changeScene("/projeto/views/Usuarios.fxml");
+                        }
+                    } catch (Exception ex) {
+                        System.err.println("Erro ao excluir usuario\n" + ex.getMessage());
+                    }
+                });
     }
 
     private void carregarUsuarios() {

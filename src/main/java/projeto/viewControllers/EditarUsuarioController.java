@@ -32,6 +32,7 @@ public class EditarUsuarioController {
 
     @FXML
     private void salvar() {
+
         List<String> errors = Validator.validateFields(List.of("usuario"), usuarioField);
 
         if (!errors.isEmpty()) {
@@ -39,8 +40,13 @@ public class EditarUsuarioController {
             return;
         }
 
-        EditUserPayload payload = new EditUserPayload(this.usuario);
+        User usuario = new User();
+        usuario.setUsuario(usuarioField.getText());
+        usuario.setId(this.usuario.getId());
+
+        EditUserPayload payload = new EditUserPayload(usuario);
         String msg = JsonHandler.modelToString(payload);
+        System.out.println("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(msg));
 
         Session.getInstance().getOut().println(msg);
         String response;
@@ -48,9 +54,8 @@ public class EditarUsuarioController {
         try {
             response = Session.getInstance().getIn().readLine();
             JsonObject responseJson = JsonHandler.stringToJsonObject(response);
-
+            System.out.println("Servidor -> Cliente: " + JsonHandler.prettyFormatFromString(responseJson.toString()));
             if (responseJson.get("status").getAsString().equals(StatusCode.OK)) {
-                SceneHandler.changeScene("/projeto/views/Usuarios.fxml");
                 Session.getInstance().showAlert(AlertType.CONFIRMATION, "Salvo com sucesso",
                         "Usuário salvo com sucesso!",
                         () -> SceneHandler.changeScene("/projeto/views/Usuarios.fxml"));

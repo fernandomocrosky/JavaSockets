@@ -32,8 +32,8 @@ public class ClientHandler implements Runnable {
             String clientData;
 
             while ((clientData = in.readLine()) != null) {
-                System.out.println("Mensagem do cliente: " + clientData);
-                
+                System.out.println("Mensagem do cliente: " + JsonHandler.prettyFormatFromString(clientData));
+
                 JsonElement response = Multiplex.handle(clientData);
 
                 out.println(JsonHandler.jsonToString(response));

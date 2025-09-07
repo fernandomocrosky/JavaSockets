@@ -16,7 +16,7 @@ public class MenuController {
 
     @FXML
     private void goHome() {
-        SceneHandler.changeScene("/projeto/views/Home.fxml");
+       SceneHandler.changeScene("/projeto/views/Home.fxml");
     }
 
     @FXML

@@ -8,7 +8,6 @@ import com.google.gson.JsonObject;
 import projeto.Validator;
 import projeto.dao.UserDAO;
 import projeto.handlers.JsonHandler;
-import projeto.handlers.JwtHandle;
 import projeto.handlers.StatusCode;
 import projeto.models.User;
 
@@ -66,12 +65,47 @@ public class UsuarioController {
         JsonObject response = new JsonObject();
         JsonObject requestJson = JsonHandler.stringToJsonObject(request);
 
-        List<String> errors = Validator.validateRequest(requestJson, List.of("id", "usuario"));
+        List<String> errors = Validator.validateRequest(requestJson, List.of("usuario", "usuario.nome", "usuario.id"));
 
         if (errors != null && !errors.isEmpty()) {
             response.addProperty("status", StatusCode.BAD_REQUEST);
             response.addProperty("message", String.join("\n", errors));
             return JsonHandler.jsonToString(response);
+        }
+
+        User user = new User();
+        user.setUsuario(requestJson.get("usuario").getAsJsonObject().get("nome").getAsString());
+        user.setId(requestJson.get("usuario").getAsJsonObject().get("id").getAsString());
+
+        if (UserDAO.update(user)) {
+            response.addProperty("status", StatusCode.OK);
+            response.addProperty("message", StatusCode.getMessage(StatusCode.OK));
+        } else {
+            response.addProperty("status", StatusCode.NOT_FOUND);
+            response.addProperty("message", StatusCode.getMessage(StatusCode.NOT_FOUND));
+        }
+
+        return JsonHandler.jsonToString(response);
+    }
+
+    public static String deletar(String request) {
+        JsonObject response = new JsonObject();
+        JsonObject requestJson = JsonHandler.stringToJsonObject(request);
+
+        List<String> errors = Validator.validateRequest(requestJson, List.of("id"));
+
+        if (errors != null && !errors.isEmpty()) {
+            response.addProperty("status", StatusCode.BAD_REQUEST);
+            response.addProperty("message", String.join("\n", errors));
+            return JsonHandler.jsonToString(response);
+        }
+
+        if (UserDAO.delete(requestJson.get("id").getAsString())) {
+            response.addProperty("status", StatusCode.OK);
+            response.addProperty("message", StatusCode.getMessage(StatusCode.OK));
+        } else {
+            response.addProperty("status", StatusCode.NOT_FOUND);
+            response.addProperty("message", StatusCode.getMessage(StatusCode.NOT_FOUND));
         }
 
         return JsonHandler.jsonToString(response);

@@ -12,6 +12,8 @@
     <top>
         <Button text="Voltar" onAction="#voltar" styleClass="button-primary"
             BorderPane.alignment="TOP_LEFT" />
+        <Label text="Cadastro"
+            style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #fff;" />
     </top>
 
     <!-- Conteúdo central -->
