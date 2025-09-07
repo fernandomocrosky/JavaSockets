@@ -72,7 +72,6 @@ public class UsuariosController {
                     User user = getTableView().getItems().get(getIndex());
                     deletarUsuario(user);
                 });
-
             }
 
             @Override

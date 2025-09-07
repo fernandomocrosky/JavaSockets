@@ -46,15 +46,6 @@ public class UsuarioController {
 
     public static String listar(String request) {
         JsonObject response = new JsonObject();
-        JsonObject requestJson = JsonHandler.stringToJsonObject(request);
-
-        String role = JwtHandle.getClaim(requestJson.get("token").getAsString(), "funcao", String.class);
-
-        if (!role.equals("admin")) {
-            response.addProperty("status", StatusCode.UNAUTHORIZED);
-            response.addProperty("message", StatusCode.getMessage(StatusCode.UNAUTHORIZED));
-            return JsonHandler.jsonToString(response);
-        }
 
         List<User> users = UserDAO.findAll();
         JsonArray usersJson = new JsonArray();
@@ -67,6 +58,21 @@ public class UsuarioController {
         response.addProperty("status", StatusCode.OK);
         response.addProperty("message", StatusCode.getMessage(StatusCode.OK));
         response.add("usuarios", usersJson);
+
+        return JsonHandler.jsonToString(response);
+    }
+
+    public static String editar(String request) {
+        JsonObject response = new JsonObject();
+        JsonObject requestJson = JsonHandler.stringToJsonObject(request);
+
+        List<String> errors = Validator.validateRequest(requestJson, List.of("id", "usuario"));
+
+        if (errors != null && !errors.isEmpty()) {
+            response.addProperty("status", StatusCode.BAD_REQUEST);
+            response.addProperty("message", String.join("\n", errors));
+            return JsonHandler.jsonToString(response);
+        }
 
         return JsonHandler.jsonToString(response);
     }
