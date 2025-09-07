@@ -17,26 +17,31 @@ import projeto.handlers.StatusCode;
 
 public class Multiplex {
     private static final Map<String, Function<String, String>> operations = new HashMap<>();
-    private static final List<String> userPermissions = List.of("LOGOUT");
-    private static final List<String> adminPermissions = List.of("LOGOUT");
 
     static {
         operations.put("LOGIN", AuthController::login);
         operations.put("LOGOUT", AuthController::logout);
         operations.put("CRIAR_USUARIO", UsuarioController::cadastrar);
+        operations.put("LISTAR_USUARIO", UsuarioController::listar);
     }
 
     public static JsonElement handle(String request) {
         JsonObject requestObject = JsonHandler.stringToJsonObject(request);
         String operation = JsonHandler.stringToJsonObject(request).get("operacao").getAsString();
+        JsonObject responseObject = new JsonObject();
+
+        if (requestObject.get("operation").getAsString().isEmpty()) {
+            responseObject.addProperty("status", StatusCode.BAD_REQUEST);
+            responseObject.addProperty("message", StatusCode.getMessage(StatusCode.BAD_REQUEST));
+            return responseObject;
+        }
 
         Function<String, String> handler = operations.get(operation);
 
         if (handler == null) {
-            JsonObject response = new JsonObject();
-            response.addProperty("status", StatusCode.BAD_REQUEST);
-            response.addProperty("message", StatusCode.getMessage(StatusCode.BAD_REQUEST));
-            return response;
+            responseObject.addProperty("status", StatusCode.INTERNAL_SERVER_ERROR);
+            responseObject.addProperty("message", StatusCode.getMessage(StatusCode.INTERNAL_SERVER_ERROR));
+            return responseObject;
         }
 
         String response = operations.get(operation).apply(request);

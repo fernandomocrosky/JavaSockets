@@ -41,4 +41,11 @@ public class UsuarioController {
 
         return JsonHandler.jsonToString(null);
     }
+
+    public static String listar(String request) {
+        JsonObject response = new JsonObject();
+
+
+        return JsonHandler.jsonToString(response);
+    }
 }

@@ -7,6 +7,8 @@ import java.net.Socket;
 import com.google.gson.JsonObject;
 
 import io.jsonwebtoken.Jwts;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import projeto.dao.UserDAO;
 import projeto.handlers.JsonHandler;
@@ -61,6 +63,14 @@ public class Session {
         return token;
     }
 
+    public String getRole() {
+        return JwtHandle.getClaim(token, "funcao", String.class);
+    }
+
+    public Boolean isAdmin() {
+        return JwtHandle.getClaim(token, "funcao", String.class).equals("admin");
+    }
+
     public Socket getSocket() {
         return socket;
     }
@@ -92,6 +102,13 @@ public class Session {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public void showAlert(AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     public JsonObject desconectar() {

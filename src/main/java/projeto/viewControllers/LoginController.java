@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import projeto.Session;
 import projeto.Validator;
 import projeto.handlers.JsonHandler;
+import projeto.handlers.SceneHandler;
 import projeto.handlers.StatusCode;
 import projeto.models.User;
 import projeto.requests.LoginPayload;
@@ -71,7 +72,7 @@ public class LoginController {
 
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/projeto/views/HOME.fxml"));
-                Scene homeScene = new Scene(loader.load(), Session.SCENE_WIDTH, Session.SCENE_HEIGHT);
+                Scene homeScene = new Scene(loader.load(), SceneHandler.SCENE_WIDTH, SceneHandler.SCENE_HEIGHT);
                 Stage stage = (Stage) userField.getScene().getWindow();
                 stage.setScene(homeScene);
             } catch (Exception e) {
@@ -86,7 +87,7 @@ public class LoginController {
     private void cadastrar() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/projeto/views/CADASTRO.fxml"));
-            Scene cadastroScene = new Scene(loader.load(), Session.SCENE_WIDTH, Session.SCENE_HEIGHT);
+            Scene cadastroScene = new Scene(loader.load(), SceneHandler.SCENE_WIDTH, SceneHandler.SCENE_HEIGHT);
             Stage stage = (Stage) userField.getScene().getWindow();
             stage.setScene(cadastroScene);
         } catch (Exception e) {

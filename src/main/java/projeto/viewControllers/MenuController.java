@@ -9,23 +9,24 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.fxml.FXMLLoader;
 import projeto.Session;
 import projeto.handlers.JsonHandler;
+import projeto.handlers.SceneHandler;
 import projeto.handlers.StatusCode;
 
 public class MenuController {
 
     @FXML
     private void goHome() {
-        changeScene("/projeto/views/Home.fxml");
+        SceneHandler.changeScene("/projeto/views/Home.fxml");
     }
 
     @FXML
     private void goUsuarios() {
-        changeScene("/projeto/views/Usuarios.fxml");
+        SceneHandler.changeScene("/projeto/views/Usuarios.fxml");
     }
 
     @FXML
     private void goRelatorios() {
-        changeScene("/projeto/views/Relatorios.fxml");
+        SceneHandler.changeScene("/projeto/views/Relatorios.fxml");
     }
 
     @FXML
@@ -38,7 +39,7 @@ public class MenuController {
             try {
                 Session.getInstance().clear();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/projeto/views/CONEXAO.fxml"));
-                Scene conexaoScene = new Scene(loader.load(), Session.SCENE_WIDTH, Session.SCENE_HEIGHT);
+                Scene conexaoScene = new Scene(loader.load(), SceneHandler.SCENE_WIDTH, SceneHandler.SCENE_HEIGHT);
                 Stage stage = Session.getInstance().getCurrentStage();
                 stage.setScene(conexaoScene);
             } catch (Exception e) {
@@ -46,17 +47,6 @@ public class MenuController {
             }
         } else {
             showError(logoutResponse.get("message").getAsString());
-        }
-    }
-
-    private void changeScene(String fxmlPath) {
-        try {
-            Stage stage = Session.getInstance().getCurrentStage();
-            Scene newScene = new Scene(FXMLLoader.load(getClass().getResource(fxmlPath)), Session.SCENE_WIDTH,
-                    Session.SCENE_HEIGHT);
-            stage.setScene(newScene);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

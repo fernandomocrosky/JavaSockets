@@ -17,8 +17,8 @@
     <!-- Conteúdo central -->
     <center>
         <VBox alignment="CENTER" spacing="10">
-            <TextField fx:id="userField" promptText="Usuário" />
-            <PasswordField fx:id="passField" promptText="Senha" />
+            <TextField fx:id="userField" id="usuario" promptText="usuario" />
+            <PasswordField fx:id="passField" id="senha" promptText="senha" />
             <Button text="Cadastrar" onAction="#cadastrar" styleClass="button-primary" />
             <Label fx:id="status" text="Aguardando cadastro..." />
         </VBox>

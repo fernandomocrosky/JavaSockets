@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import projeto.handlers.SceneHandler;
 
 public class Cliente extends Application {
 
@@ -13,7 +14,7 @@ public class Cliente extends Application {
         Session.getInstance().setCurrentStage(stage);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/projeto/views/Conexao.fxml"));
-        Scene scene = new Scene(loader.load(), Session.SCENE_WIDTH, Session.SCENE_HEIGHT);
+        Scene scene = new Scene(loader.load(), SceneHandler.SCENE_WIDTH, SceneHandler.SCENE_HEIGHT);
 
         stage.setTitle("Cliente Servidor - JavaFX");
         stage.setScene(scene);

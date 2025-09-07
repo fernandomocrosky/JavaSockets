@@ -4,23 +4,38 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 25, 0, 0, 8);
 }
 
-.button-primary {
-    -fx-min-width: 100;
-    -fx-background-color: #13aa52;
-    -fx-border-color: #13aa52;
+.button-primary,
+.button-secondary,
+.button-danger {
+    -fx-text-fill: #fff;
     -fx-border-radius: 4;
     -fx-background-radius: 4;
-    -fx-text-fill: #fff;
     -fx-cursor: hand;
     -fx-font-family: "Montserrat", sans-serif;
     -fx-font-size: 16px;
     -fx-font-weight: 400;
-    -fx-padding: 10 25 10 25;
+    -fx-padding: 5 10 5 10;
     -fx-alignment: center;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 2);
 }
 
-.button-primary:hover {
+.button-primary {
+    -fx-background-color: #13aa52;
+    -fx-border-color: #13aa52;
+}
+
+.button-secondary {
+    -fx-background-color: #5755c0;
+    -fx-border-color: #5755c0;
+}
+
+.button-danger {
+    -fx-background-color: #db0d15;
+    -fx-border-color: #db0d15;
+}
+
+.button-primary:hover,
+.button-danger:hover {
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 9, 0, 0, 3);
     -fx-translate-y: -2;
 }
@@ -97,6 +112,61 @@
 
 .logout-button:hover {
     -fx-background-color: #b50f12;
+}
+
+
+/* Tables */
+
+.table-view {
+    -fx-background-color: #c2c2c2;
+    -fx-border-color: #dcdcdc;
+    -fx-border-width: 1;
+    -fx-table-cell-border-color: transparent;
+    -fx-padding: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 0, 2);
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: linear-gradient(to bottom, #3a3a3a, #2b2b2b);
+    -fx-background-radius: 6 6 0 0;
+    -fx-padding: 8px;
+}
+
+.table-view .column-header,
+.table-view .filler {
+    -fx-size: 35px;
+    -fx-border-color: transparent transparent #555 transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-alignment: CENTER-LEFT;
+}
+
+.table-row-cell {
+    -fx-background-color: #ffffff;
+    -fx-border-color: transparent transparent #e0e0e0 transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-font-size: 13px;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #fafafa;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #13aa52;
+    -fx-text-fill: #ffffff;
+}
+
+.table-cell {
+    -fx-padding: 6px;
+    -fx-alignment: CENTER-LEFT;
 }
 
 

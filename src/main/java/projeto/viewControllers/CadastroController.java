@@ -11,10 +11,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import projeto.Session;
 import projeto.Validator;
 import projeto.handlers.JsonHandler;
+import projeto.handlers.SceneHandler;
 import projeto.handlers.StatusCode;
 import projeto.models.User;
 import projeto.requests.CadastroPayload;
@@ -33,7 +35,7 @@ public class CadastroController {
     @FXML
     private void cadastrar() {
         if (!Session.getInstance().isConnected()) {
-            status.setText("Nenhuma conexão ativa");
+            Session.getInstance().showAlert(AlertType.ERROR, "Erro", "Nenhuma conexão ativa");
             return;
         }
 
@@ -69,10 +71,7 @@ public class CadastroController {
                 && responseJson.get("status").getAsString().equals(StatusCode.CREATED)) {
             System.out.println("\nServidor -> Cliente: " + JsonHandler.prettyFormatFromString(response));
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/projeto/views/LOGIN.fxml"));
-                Scene homeScene = new Scene(loader.load(), Session.SCENE_WIDTH, Session.SCENE_HEIGHT);
-                Stage stage = (Stage) userField.getScene().getWindow();
-                stage.setScene(homeScene);
+                SceneHandler.changeScene("/projeto/views/LOGIN.fxml");
             } catch (Exception e) {
                 System.out.println("Erro ao trocar de tela: " + e.getMessage());
             }
@@ -84,10 +83,7 @@ public class CadastroController {
     @FXML
     public void voltar() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/projeto/views/LOGIN.fxml"));
-            Scene loginScene = new Scene(loader.load(), Session.SCENE_WIDTH, Session.SCENE_HEIGHT);
-            Stage stage = (Stage) userField.getScene().getWindow();
-            stage.setScene(loginScene);
+            SceneHandler.changeScene("/projeto/views/LOGIN.fxml");
         } catch (Exception e) {
             System.out.println("Erro ao trocar de tela: " + e.getMessage());
         }

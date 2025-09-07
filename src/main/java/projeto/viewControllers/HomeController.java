@@ -30,12 +30,15 @@ public class HomeController {
             String usuario = JwtHandle.getClaim(Session.getInstance().getToken(), "usuario", String.class);
 
             welcomeLabel.setText("Olá, " + usuario + "!");
-            infoLabel.setText(
-                    "Seu token JWT: " + (token != null ? token.substring(0, 15) + "..." : "não encontrado"));
         } else {
             welcomeLabel.setText("Olá, visitante!");
             infoLabel.setText("Nenhum token encontrado.");
         }
+    }
+
+    @FXML
+    private void goCreateFilme() {
+       return;
     }
 
     // @FXML

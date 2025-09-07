@@ -18,7 +18,7 @@
     <center>
         <VBox alignment="CENTER" spacing="15">
             <Label fx:id="welcomeLabel" style="-fx-font-size: 20px;" text="Bem-vindo!" />
-            <Label fx:id="infoLabel" text="Carregando dados do usuário..." />
+            <Button text="Deseja Criar um filme?" onAction="#goCreateFilme" styleClass="button-primary"/>
         </VBox>
     </center>
 

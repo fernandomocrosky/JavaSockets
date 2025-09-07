@@ -8,8 +8,8 @@
     alignment="CENTER" spacing="10" style="-fx-padding:20;"
     stylesheets="@../views/styles/style.css">
 
-    <TextField fx:id="ipField" text="192.168.1.10" promptText="Digite o IP do servidor" styleClass="text-input" />
-    <TextField fx:id="portField" text="21000" promptText="Digite a porta do servidor" />
+    <TextField fx:id="ipField" id="ip" text="192.168.1.10" promptText="Digite o IP do servidor" styleClass="text-input" />
+    <TextField fx:id="portField" id="porta" text="21000" promptText="Digite a porta do servidor" />
     <Button text="Conectar" onAction="#conectar" styleClass="button-primary" />
     <Label fx:id="status" text="Desconectado" styleClass="label-text" />
 

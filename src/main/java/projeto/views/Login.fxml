@@ -9,8 +9,8 @@
     alignment="CENTER" spacing="10" style="-fx-padding:20;"
     stylesheets="@../views/styles/style.css">
 
-    <TextField fx:id="userField" text="admin" promptText="Usuário" />
-    <PasswordField fx:id="passField" text="admin" promptText="Senha" />
+    <TextField fx:id="userField" id="usuario" text="admin" promptText="Usuário" />
+    <PasswordField fx:id="passField" id="senha" text="admin" promptText="Senha" />
     <HBox alignment="CENTER" spacing="10">
         <Button text="Login" onAction="#login" styleClass="button-primary" />
         <Button text="Cadastrar" onAction="#cadastrar" styleClass="button-primary" />
