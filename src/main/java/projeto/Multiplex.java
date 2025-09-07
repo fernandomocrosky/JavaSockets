@@ -1,8 +1,6 @@
 package projeto;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -12,7 +10,6 @@ import com.google.gson.JsonObject;
 import projeto.controllers.AuthController;
 import projeto.controllers.UsuarioController;
 import projeto.handlers.JsonHandler;
-import projeto.handlers.JwtHandle;
 import projeto.handlers.StatusCode;
 
 public class Multiplex {
@@ -22,7 +19,7 @@ public class Multiplex {
         operations.put("LOGIN", AuthController::login);
         operations.put("LOGOUT", AuthController::logout);
         operations.put("CRIAR_USUARIO", UsuarioController::cadastrar);
-        operations.put("LISTAR_USUARIO", UsuarioController::listar);
+        operations.put("LISTAR_USUARIOS", UsuarioController::listar);
     }
 
     public static JsonElement handle(String request) {
@@ -30,15 +27,18 @@ public class Multiplex {
         String operation = JsonHandler.stringToJsonObject(request).get("operacao").getAsString();
         JsonObject responseObject = new JsonObject();
 
-        if (requestObject.get("operation").getAsString().isEmpty()) {
-            responseObject.addProperty("status", StatusCode.BAD_REQUEST);
-            responseObject.addProperty("message", StatusCode.getMessage(StatusCode.BAD_REQUEST));
-            return responseObject;
-        }
-
         Function<String, String> handler = operations.get(operation);
 
         if (handler == null) {
+
+            if (!requestObject.has("operation") ||
+                    requestObject.get("operation").isJsonNull() ||
+                    requestObject.get("operation").getAsString().isBlank()) {
+                responseObject.addProperty("status", StatusCode.BAD_REQUEST);
+                responseObject.addProperty("message", StatusCode.getMessage(StatusCode.BAD_REQUEST));
+                return responseObject;
+            }
+
             responseObject.addProperty("status", StatusCode.INTERNAL_SERVER_ERROR);
             responseObject.addProperty("message", StatusCode.getMessage(StatusCode.INTERNAL_SERVER_ERROR));
             return responseObject;

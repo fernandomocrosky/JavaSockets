@@ -119,8 +119,6 @@ public class UsuariosController {
 
         } catch (Exception ex) {
             System.err.println("Erro ao listar usuarios\n" + ex.getMessage());
-            response.addProperty("status", StatusCode.INTERNAL_SERVER_ERROR);
-            response.addProperty("message", StatusCode.getMessage(StatusCode.INTERNAL_SERVER_ERROR));
         }
     }
 }

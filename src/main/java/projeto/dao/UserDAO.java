@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
 
@@ -53,6 +55,27 @@ public class UserDAO {
         }
 
         return null;
+    }
+
+    public static List<User> findAll() {
+        String sql = "SELECT usuario FROM usuarios";
+
+        List<User> usuarios = new ArrayList<>();
+
+        try (
+                Connection conn = Database.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                User user = new User();
+                user.setUsuario(rs.getString("usuario"));
+
+                usuarios.add(user);
+            }
+        } catch (Exception ex) {
+            System.err.println("Erro ao buscar usuários: " + ex.getMessage());
+        }
+        return usuarios;
     }
 
     public static boolean insert(User user) {
