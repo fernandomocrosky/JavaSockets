@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <?import javafx.scene.control.*?>
+        <?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+    fx:controller="projeto.viewControllers.CadastroFilmeController"
+    stylesheets="@../views/styles/style.css"
+    style="-fx-padding:20;">
+
+    <!-- Topo da tela -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Button text="Voltar" onAction="#voltar" styleClass="button-primary" />
+            <Label text="Cadastro"
+                style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #fff;" />
+        </HBox>
+    </top>
+
+    <!-- Conteúdo central -->
+    <center>
+        <VBox alignment="CENTER" spacing="10">
+            <TextField fx:id="tituloField" id="titulo" promptText="titulo" />
+            <TextField fx:id="diretorField" id="diretor" promptText="diretor" />
+            <TextField fx:id="anoField" id="ano" promptText="ano" />
+
+            <ListView fx:id="generosList" prefHeight="200" prefWidth="120" styleClass="list-view" />
+
+            <HBox alignment="CENTER" spacing="10">
+                <Button text="Cadastrar" onAction="#cadastrar" styleClass="button-primary" />
+                <Button text="Cancelar" onAction="#cancelar" styleClass="button-danger" />
+            </HBox>
+            <Label fx:id="status" text="Aguardando cadastro..." />
+        </VBox>
+    </center>
+
+</BorderPane>

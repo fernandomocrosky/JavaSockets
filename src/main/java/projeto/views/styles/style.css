@@ -164,5 +164,50 @@
     -fx-font-weight: bold;
 }
 
+/* Estilo geral do ListView */
+.list-view {
+    -fx-background-color: #2b2b2b;
+    -fx-control-inner-background: #2b2b2b;
+    -fx-border-color: #3a3a3a;
+    -fx-border-width: 1;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-padding: 5;
+    -fx-font-family: "Montserrat", sans-serif;
+    -fx-font-size: 14px;
+    -fx-text-fill: #e0e0e0;
+}
+
+/* Itens do ListView */
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #e0e0e0;
+    -fx-padding: 8 10;
+    -fx-font-weight: 500;
+}
+
+/* Itens alternados (zebrado) */
+.list-cell:odd {
+    -fx-background-color: #333333;
+}
+
+.list-cell:even {
+    -fx-background-color: #2f2f2f;
+}
+
+/* Hover no item */
+.list-cell:hover {
+    -fx-background-color: #444444;
+    -fx-cursor: hand;
+}
+
+/* Item selecionado */
+.list-cell:selected {
+    -fx-background-color: #13aa52;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4;
+}
+
 
 

@@ -5,14 +5,10 @@ import java.util.List;
 import com.google.gson.JsonObject;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
-import javafx.stage.Stage;
 import projeto.Session;
 import projeto.Validator;
 import projeto.handlers.JsonHandler;
@@ -73,8 +69,8 @@ public class CadastroController {
             System.out.println("\nServidor -> Cliente: " + JsonHandler.prettyFormatFromString(response));
             try {
                 SceneHandler.changeScene("/projeto/views/LOGIN.fxml");
-            } catch (Exception e) {
-                System.out.println("Erro ao trocar de tela: " + e.getMessage());
+            } catch (Exception ex) {
+                System.out.println("Erro ao trocar de tela: " + ex.getMessage());
             }
         } else {
             status.setText(StatusCode.getMessage(responseJson.get("status").getAsString()));

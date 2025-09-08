@@ -116,10 +116,8 @@ public class Validator {
             String fieldName = requiredFields.get(i);
             String value = inputs[i].getText();
 
-            if (requiredFields.contains(value)) {
-                if (value == null || value.isBlank()) {
-                    errors.add("O campo " + fieldName + " é obrigatório.");
-                }
+            if (value == null || value.isBlank()) {
+                errors.add("O campo " + fieldName + " é obrigatório.");
             }
         }
 

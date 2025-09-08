@@ -1,7 +1,10 @@
 package projeto.handlers;
 
+import java.util.List;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -28,7 +31,7 @@ public class JsonHandler {
         return JsonParser.parseString(jsonString).getAsJsonObject();
     }
 
-    public static JsonObject stringToJsonObject (String jsonString) {
+    public static JsonObject stringToJsonObject(String jsonString) {
         return JsonParser.parseString(jsonString).getAsJsonObject();
     }
 
@@ -42,6 +45,14 @@ public class JsonHandler {
 
     public static <T> T stringToModel(String jsonString, Class<T> model) {
         return gson.fromJson(jsonString, model);
+    }
+
+    public static <T> void addArray(JsonObject json, String key, List<T> array) {
+        JsonArray arrayJson = new JsonArray();
+        for (T item : array) {
+            arrayJson.add((String) item);
+        }
+        json.add(key, arrayJson);
     }
 
 }
