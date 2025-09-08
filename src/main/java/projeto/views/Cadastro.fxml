@@ -22,7 +22,7 @@
             <TextField fx:id="userField" id="usuario" promptText="usuario" />
             <PasswordField fx:id="passField" id="senha" promptText="senha" />
             <Button text="Cadastrar" onAction="#cadastrar" styleClass="button-primary" />
-            <Label fx:id="status" text="Aguardando cadastro..." />
+            <Label fx:id="status" text="" />
         </VBox>
     </center>
 

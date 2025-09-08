@@ -24,10 +24,10 @@ public class MenuController {
         SceneHandler.changeScene("/projeto/views/Usuarios.fxml");
     }
 
-    @FXML
-    private void goRelatorios() {
-        SceneHandler.changeScene("/projeto/views/Relatorios.fxml");
-    }
+    // @FXML
+    // private void goFilmes() {
+    //     SceneHandler.changeScene("/projeto/views/Filmes.fxml");
+    // }
 
     @FXML
     private void logout() {

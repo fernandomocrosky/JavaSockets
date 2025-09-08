@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import projeto.Session;
 import projeto.handlers.JsonHandler;
 import projeto.handlers.JwtHandle;
+import projeto.handlers.SceneHandler;
 import projeto.handlers.StatusCode;
 
 public class HomeController {
@@ -38,26 +39,32 @@ public class HomeController {
 
     @FXML
     private void goCreateFilme() {
-       return;
+        try {
+            SceneHandler.changeScene("/projeto/views/CadastroFilme.fxml");
+        } catch (Exception e) {
+            System.out.println("Erro ao trocar de tela: " + e.getMessage());
+        }
     }
 
     // @FXML
     // private void logout() {
-    //     JsonObject logoutResponse = Session.getInstance().desconectar();
-    //     System.out
-    //             .println("\nServidor -> Cliente: " + JsonHandler.prettyFormatFromString(logoutResponse.toString()));
+    // JsonObject logoutResponse = Session.getInstance().desconectar();
+    // System.out
+    // .println("\nServidor -> Cliente: " +
+    // JsonHandler.prettyFormatFromString(logoutResponse.toString()));
 
-    //     if (logoutResponse.get("status").getAsString().equals(StatusCode.OK)) {
-    //         try {
-    //             FXMLLoader loader = new FXMLLoader(getClass().getResource("/projeto/views/CONEXAO.fxml"));
-    //             Scene conexaoScene = new Scene(loader.load(), 420, 420);
-    //             Stage stage = (Stage) welcomeLabel.getScene().getWindow();
-    //             stage.setScene(conexaoScene);
-    //         } catch (Exception e) {
-    //             System.out.println("Erro ao trocar de tela: " + e.getMessage());
-    //         }
-    //     } else {
-    //         showError(logoutResponse.get("message").getAsString());
-    //     }
+    // if (logoutResponse.get("status").getAsString().equals(StatusCode.OK)) {
+    // try {
+    // FXMLLoader loader = new
+    // FXMLLoader(getClass().getResource("/projeto/views/CONEXAO.fxml"));
+    // Scene conexaoScene = new Scene(loader.load(), 420, 420);
+    // Stage stage = (Stage) welcomeLabel.getScene().getWindow();
+    // stage.setScene(conexaoScene);
+    // } catch (Exception e) {
+    // System.out.println("Erro ao trocar de tela: " + e.getMessage());
+    // }
+    // } else {
+    // showError(logoutResponse.get("message").getAsString());
+    // }
     // }
 }

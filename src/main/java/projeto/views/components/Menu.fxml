@@ -12,7 +12,7 @@
 
     <Button text="Home" onAction="#goHome" styleClass="menu-button" />
     <Button text="Usuários" onAction="#goUsuarios" styleClass="menu-button" />
-    <Button text="Relatórios" onAction="#goRelatorios" styleClass="menu-button" />
+    <!-- <Button text="Filmes" onAction="#goFilmes" styleClass="menu-button" /> -->
 
     <Pane HBox.hgrow="ALWAYS" /> <!-- empurra o logout para a direita -->
 
