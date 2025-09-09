@@ -2,7 +2,6 @@ package projeto.viewControllers;
 
 import java.util.List;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import javafx.fxml.FXML;
@@ -23,7 +22,7 @@ public class CadastroFilmeController {
     private ListView<String> generosList;
 
     @FXML
-    private TextField tituloField, diretorField, anoField;
+    private TextField tituloField, diretorField, anoField, sinopseField;
 
     @FXML
     private Label status;
@@ -45,9 +44,10 @@ public class CadastroFilmeController {
     private void cadastrar() {
         List<String> generosSelecionados = generosList.getSelectionModel().getSelectedItems();
 
-        List<String> errors = Validator.validateFields(List.of("titulo", "diretor", "ano"), tituloField,
+        List<String> errors = Validator.validateFields(List.of("titulo", "diretor", "ano", "sinopse"), tituloField,
                 diretorField,
-                anoField);
+                anoField,
+                sinopseField);
 
         if (generosSelecionados == null || generosSelecionados.isEmpty()) {
             errors.add("Selecione pelo menos um genero");
@@ -65,6 +65,7 @@ public class CadastroFilmeController {
         filme.addProperty("titulo", tituloField.getText());
         filme.addProperty("diretor", diretorField.getText());
         filme.addProperty("ano", anoField.getText());
+        filme.addProperty("sinopse", sinopseField.getText());
         JsonHandler.addArray(filme, "generos", generosSelecionados);
 
         CadastroFilmePayload payload = new CadastroFilmePayload(filme);

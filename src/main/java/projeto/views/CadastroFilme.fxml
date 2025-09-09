@@ -22,6 +22,7 @@
             <TextField fx:id="tituloField" id="titulo" promptText="titulo" />
             <TextField fx:id="diretorField" id="diretor" promptText="diretor" />
             <TextField fx:id="anoField" id="ano" promptText="ano" />
+            <TextField fx:id="sinopseField" id="sinopse" promptText="sinopse" />
 
             <ListView fx:id="generosList" prefHeight="200" prefWidth="120" styleClass="list-view" />
 
