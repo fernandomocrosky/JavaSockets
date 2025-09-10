@@ -10,6 +10,7 @@ import com.google.gson.JsonObject;
 
 import projeto.controllers.AuthController;
 import projeto.controllers.FilmeController;
+import projeto.controllers.ReviewController;
 import projeto.controllers.UsuarioController;
 import projeto.handlers.JsonHandler;
 import projeto.handlers.JwtHandle;
@@ -30,12 +31,15 @@ public class Multiplex {
         operations.put("LISTAR_FILMES", FilmeController::listar);
         operations.put("EDITAR_FILME", FilmeController::update);
         operations.put("EXCLUIR_FILME", FilmeController::delete);
+        operations.put("CRIAR_REVIEW", ReviewController::cadastrar);
 
-        permissions.put("usuario", List.of("LOGOUT"));
+        permissions.put("public", List.of("LOGIN", "CRIAR_USUARIO", "LISTAR_FILMES"));
+
         permissions.put("admin",
                 List.of("LISTAR_USUARIOS", "LOGOUT", "EDITAR_USUARIO", "EXCLUIR_USUARIO", "CRIAR_FILME",
                         "EDITAR_FILME", "EXCLUIR_FILME"));
-        permissions.put("public", List.of("LOGIN", "CRIAR_USUARIO", "LISTAR_FILMES"));
+                        
+        permissions.put("usuario", List.of("LOGOUT", "CRIAR_REVIEW"));
     }
 
     public static JsonElement handle(String request) {

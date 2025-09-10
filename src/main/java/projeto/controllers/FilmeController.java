@@ -49,8 +49,8 @@ public class FilmeController {
                     generosList);
 
             if (FilmeDAO.insert(filme)) {
-                response.addProperty("status", StatusCode.OK);
-                response.addProperty("message", StatusCode.getMessage(StatusCode.OK));
+                response.addProperty("status", StatusCode.CREATED);
+                response.addProperty("message", StatusCode.getMessage(StatusCode.CREATED));
             } else {
                 response.addProperty("status", StatusCode.INTERNAL_SERVER_ERROR);
                 response.addProperty("message", StatusCode.getMessage(StatusCode.INTERNAL_SERVER_ERROR));

@@ -171,7 +171,8 @@ public class FilmesController {
 
                         if (responseJson != null && responseJson.get("status").getAsString().equals(StatusCode.OK)) {
                             Session.getInstance().showAlert(AlertType.CONFIRMATION, "Excluido com sucesso",
-                                    "Filme excluido com sucesso", () -> carregarFilmes());
+                                    "Filme excluido com sucesso",
+                                    () -> SceneHandler.changeScene("/projeto/views/Filmes.fxml"));
                         }
                     } catch (Exception ex) {
                         System.err.println("Erro ao excluir filme\n" + ex.getMessage());
@@ -180,7 +181,8 @@ public class FilmesController {
     }
 
     private void avaliarFilme(Filme filme) {
-
+        SceneHandler.changeSceneWithData("/projeto/views/CadastroReview.fxml",
+                (CadastroReviewController controller) -> controller.setFilme(filme));
     }
 
     private void carregarFilmes() {

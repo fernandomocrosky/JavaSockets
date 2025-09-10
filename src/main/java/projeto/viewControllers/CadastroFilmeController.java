@@ -85,7 +85,7 @@ public class CadastroFilmeController {
         System.out.println("Servidor -> Cliente: "
                 + JsonHandler.prettyFormatFromString(JsonHandler.prettyFormatFromJson(responseJson)));
         if (response != null && !response.isEmpty()
-                && responseJson.get("status").getAsString().equals(StatusCode.OK)) {
+                && responseJson.get("status").getAsString().equals(StatusCode.CREATED)) {
             Session.getInstance().showAlert(AlertType.CONFIRMATION, "Salvo com sucesso", "Filme salvo com sucesso!",
                     () -> {
                         try {
