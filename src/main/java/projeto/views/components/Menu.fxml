@@ -10,11 +10,12 @@
 
     <Label text="NetFilmes" styleClass="menu-title" />
 
-    <Button text="Home" onAction="#goHome" styleClass="menu-button" />
-    <Button text="Usuários" onAction="#goUsuarios" styleClass="menu-button" />
-    <!-- <Button text="Filmes" onAction="#goFilmes" styleClass="menu-button" /> -->
+    <Button fx:id="btnHome" text="Home" onAction="#goHome" styleClass="menu-button" />
+    <Button fx:id="btnUsuarios" text="Usuários" onAction="#goUsuarios" styleClass="menu-button" />
+    <Button fx:id="btnFilmes" text="Filmes" onAction="#goFilmes" styleClass="menu-button" />
+     <Button fx:id="btnReviews" text="Meus Reviews" onAction="#goReviews" styleClass="menu-button" />
 
-    <Pane HBox.hgrow="ALWAYS" /> <!-- empurra o logout para a direita -->
+    <Pane HBox.hgrow="ALWAYS" />
 
     <Button text="Logout" onAction="#logout" styleClass="logout-button" />
 </HBox>

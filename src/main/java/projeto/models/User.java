@@ -5,6 +5,7 @@ public class User {
     private String usuario;
     private String senha;
     private String criadoEm;
+    private String role;
 
     public User(String usuario) {
         this.usuario = usuario;
@@ -38,6 +39,10 @@ public class User {
         return this.id;
     }
 
+    public String getRole() {
+        return this.role;
+    }
+
     // Setters
     public void setSenha(String senha) {
         this.senha = senha;
@@ -49,5 +54,9 @@ public class User {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

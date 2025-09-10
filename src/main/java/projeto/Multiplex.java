@@ -9,6 +9,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import projeto.controllers.AuthController;
+import projeto.controllers.FilmeController;
 import projeto.controllers.UsuarioController;
 import projeto.handlers.JsonHandler;
 import projeto.handlers.JwtHandle;
@@ -25,10 +26,16 @@ public class Multiplex {
         operations.put("LISTAR_USUARIOS", UsuarioController::listar);
         operations.put("EDITAR_USUARIO", UsuarioController::editar);
         operations.put("EXCLUIR_USUARIO", UsuarioController::deletar);
+        operations.put("CRIAR_FILME", FilmeController::cadastrar);
+        operations.put("LISTAR_FILMES", FilmeController::listar);
+        operations.put("EDITAR_FILME", FilmeController::update);
+        operations.put("EXCLUIR_FILME", FilmeController::delete);
 
         permissions.put("usuario", List.of("LOGOUT"));
-        permissions.put("admin", List.of("LISTAR_USUARIOS", "LOGOUT", "EDITAR_USUARIO", "EXCLUIR_USUARIO"));
-        permissions.put("public", List.of("LOGIN", "CRIAR_USUARIO"));
+        permissions.put("admin",
+                List.of("LISTAR_USUARIOS", "LOGOUT", "EDITAR_USUARIO", "EXCLUIR_USUARIO", "CRIAR_FILME",
+                        "EDITAR_FILME", "EXCLUIR_FILME"));
+        permissions.put("public", List.of("LOGIN", "CRIAR_USUARIO", "LISTAR_FILMES"));
     }
 
     public static JsonElement handle(String request) {
@@ -40,9 +47,9 @@ public class Multiplex {
 
         if (handler == null) {
 
-            if (!requestObject.has("operation") ||
-                    requestObject.get("operation").isJsonNull() ||
-                    requestObject.get("operation").getAsString().isBlank()) {
+            if (!requestObject.has("operacao") ||
+                    requestObject.get("operacao").isJsonNull() ||
+                    requestObject.get("operacao").getAsString().isBlank()) {
                 responseObject.addProperty("status", StatusCode.BAD_REQUEST);
                 responseObject.addProperty("message", StatusCode.getMessage(StatusCode.BAD_REQUEST));
                 return responseObject;

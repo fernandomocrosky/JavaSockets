@@ -69,6 +69,8 @@ public class LoginController {
         if (response != null && !response.isEmpty() && responseJson.get("status").getAsString().equals(StatusCode.OK)) {
             System.out.println("\nServidor -> Cliente: " + JsonHandler.prettyFormatFromString(response));
             Session.getInstance().setToken(responseJson.get("token").getAsString());
+            user.setRole(user.getUsuario().equals("admin") ? "admin" : "user");
+            Session.getInstance().setUser(user);
 
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/projeto/views/HOME.fxml"));

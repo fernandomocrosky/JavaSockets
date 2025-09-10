@@ -15,6 +15,7 @@ import projeto.dao.UserDAO;
 import projeto.handlers.JsonHandler;
 import projeto.handlers.JwtHandle;
 import projeto.handlers.StatusCode;
+import projeto.models.User;
 import projeto.requests.LogoutPayload;
 
 public class Session {
@@ -23,6 +24,7 @@ public class Session {
     private Socket socket;
     private PrintWriter out;
     private BufferedReader in;
+    private User user;
 
     private String token;
 
@@ -36,6 +38,14 @@ public class Session {
     // setter para Stage
     public void setCurrentStage(Stage stage) {
         this.currentStage = stage;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Stage getCurrentStage() {
@@ -65,11 +75,11 @@ public class Session {
     }
 
     public String getRole() {
-        return JwtHandle.getClaim(token, "funcao", String.class);
+        return this.getUser().getRole();
     }
 
     public Boolean isAdmin() {
-        return JwtHandle.getClaim(token, "funcao", String.class).equals("admin");
+        return this.user.getRole().equals("admin");
     }
 
     public Socket getSocket() {

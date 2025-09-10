@@ -39,6 +39,14 @@ public class JsonHandler {
         return gson.toJson(jsonElement);
     }
 
+    public static <T> T jsonToModel(JsonElement jsonElement, Class<T> model) {
+        return gson.fromJson(jsonElement, model);
+    }
+
+    public static JsonArray modelToJsonArray(Object model) {
+        return gson.toJsonTree(model).getAsJsonArray();
+    }
+
     public static <T> String modelToString(T model) {
         return gson.toJson(model);
     }
@@ -54,5 +62,5 @@ public class JsonHandler {
         }
         json.add(key, arrayJson);
     }
-
+    
 }

@@ -5,19 +5,21 @@ import java.util.List;
 import com.google.gson.JsonObject;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import projeto.Session;
 import projeto.Validator;
 import projeto.handlers.JsonHandler;
 import projeto.handlers.SceneHandler;
 import projeto.handlers.StatusCode;
-import projeto.requests.filmes.CadastroFilmePayload;
+import projeto.models.Filme;
+import projeto.requests.filmes.EditarFilmePayload;
 
-public class CadastroFilmeController {
+public class EditarFilmeController {
+
     @FXML
     private ListView<String> generosList;
 
@@ -26,6 +28,12 @@ public class CadastroFilmeController {
 
     @FXML
     private Label status;
+
+    private Filme filme;
+
+    public void setFilme(Filme filme) {
+        this.filme = filme;
+    }
 
     @FXML
     public void initialize() {
@@ -41,7 +49,7 @@ public class CadastroFilmeController {
     }
 
     @FXML
-    private void cadastrar() {
+    private void salvar() {
         List<String> generosSelecionados = generosList.getSelectionModel().getSelectedItems();
 
         List<String> errors = Validator.validateFields(List.of("titulo", "diretor", "ano", "sinopse"), tituloField,
@@ -58,17 +66,15 @@ public class CadastroFilmeController {
             return;
         }
 
-        System.out.println(generosSelecionados);
+        JsonObject filmeToSend = new JsonObject();
+        filmeToSend.addProperty("id", filme.getId());
+        filmeToSend.addProperty("titulo", tituloField.getText());
+        filmeToSend.addProperty("diretor", diretorField.getText());
+        filmeToSend.addProperty("ano", anoField.getText());
+        filmeToSend.addProperty("sinopse", sinopseField.getText());
+        JsonHandler.addArray(filmeToSend, "generos", generosSelecionados);
 
-        JsonObject filme = new JsonObject();
-
-        filme.addProperty("titulo", tituloField.getText());
-        filme.addProperty("diretor", diretorField.getText());
-        filme.addProperty("ano", anoField.getText());
-        filme.addProperty("sinopse", sinopseField.getText());
-        JsonHandler.addArray(filme, "generos", generosSelecionados);
-
-        CadastroFilmePayload payload = new CadastroFilmePayload(filme);
+        EditarFilmePayload payload = new EditarFilmePayload(filmeToSend);
         String msg = JsonHandler.modelToString(payload);
         Session.getInstance().getOut().println(msg);
         System.out.println("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(msg));
@@ -76,7 +82,6 @@ public class CadastroFilmeController {
 
         try {
             response = Session.getInstance().getIn().readLine();
-            System.out.println("Servidor -> Cliente: " + response);
         } catch (Exception ex) {
             System.err.println("Erro na comunicação com o servidor: " + ex.getMessage());
         }
@@ -89,7 +94,7 @@ public class CadastroFilmeController {
             Session.getInstance().showAlert(AlertType.CONFIRMATION, "Salvo com sucesso", "Filme salvo com sucesso!",
                     () -> {
                         try {
-                            SceneHandler.changeScene("/projeto/views/Home.fxml");
+                            SceneHandler.changeScene("/projeto/views/Filmes.fxml");
 
                         } catch (Exception e) {
                             System.out.println("Erro ao trocar de tela: " + e.getMessage());
