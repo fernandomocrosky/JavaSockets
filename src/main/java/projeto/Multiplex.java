@@ -38,7 +38,7 @@ public class Multiplex {
         permissions.put("admin",
                 List.of("LISTAR_USUARIOS", "LOGOUT", "EDITAR_USUARIO", "EXCLUIR_USUARIO", "CRIAR_FILME",
                         "EDITAR_FILME", "EXCLUIR_FILME"));
-                        
+
         permissions.put("usuario", List.of("LOGOUT", "CRIAR_REVIEW"));
     }
 
@@ -83,6 +83,11 @@ public class Multiplex {
 
         String response = operations.get(operation).apply(request);
         JsonElement jsonResponse = JsonHandler.stringToJson(response);
+
+        if (response == null || response.isEmpty()) {
+            responseObject.addProperty("status", StatusCode.INTERNAL_SERVER_ERROR);
+            responseObject.addProperty("message", StatusCode.getMessage(StatusCode.INTERNAL_SERVER_ERROR));
+        }
 
         return jsonResponse;
     }
