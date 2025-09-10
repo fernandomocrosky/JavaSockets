@@ -1,24 +1,20 @@
 package projeto.viewControllers;
 
-import com.google.gson.JsonObject;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.stage.Stage;
 import projeto.Session;
-import projeto.handlers.JsonHandler;
 import projeto.handlers.JwtHandle;
 import projeto.handlers.SceneHandler;
-import projeto.handlers.StatusCode;
 
 public class HomeController {
 
     @FXML
     private Label welcomeLabel;
+
+    @FXML
+    private Button createFilme;
 
     @FXML
     private Label infoLabel;
@@ -28,12 +24,13 @@ public class HomeController {
         // pega o usuário atual da Session
         String token = Session.getInstance().getToken();
         if (token != null) {
-            String usuario = JwtHandle.getClaim(Session.getInstance().getToken(), "usuario", String.class);
+            String usuario = Session.getInstance().getUser().getUsuario();
 
             welcomeLabel.setText("Olá, " + usuario + "!");
-        } else {
-            welcomeLabel.setText("Olá, visitante!");
-            infoLabel.setText("Nenhum token encontrado.");
+        }
+
+        if(!Session.getInstance().isAdmin()) {
+            createFilme.setVisible(false);
         }
     }
 

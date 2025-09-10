@@ -43,6 +43,10 @@ public class JsonHandler {
         return gson.fromJson(jsonElement, model);
     }
 
+    public static JsonArray modelToJsonArray(Object model) {
+        return gson.toJsonTree(model).getAsJsonArray();
+    }
+
     public static <T> String modelToString(T model) {
         return gson.toJson(model);
     }

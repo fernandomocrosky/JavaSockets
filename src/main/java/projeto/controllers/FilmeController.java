@@ -30,8 +30,6 @@ public class FilmeController {
         Filme filmeDb = FilmeDAO.findFilme(filmeJson.get("titulo").getAsString(),
                 filmeJson.get("diretor").getAsString());
 
-        System.out.println(filmeDb);
-
         if (filmeDb.id != null) {
             response.addProperty("status", StatusCode.ALREADY_EXISTS);
             response.addProperty("message", StatusCode.getMessage(StatusCode.ALREADY_EXISTS));
@@ -57,6 +55,68 @@ public class FilmeController {
                 response.addProperty("status", StatusCode.INTERNAL_SERVER_ERROR);
                 response.addProperty("message", StatusCode.getMessage(StatusCode.INTERNAL_SERVER_ERROR));
             }
+        }
+
+        return JsonHandler.jsonToString(response);
+    }
+
+    public static String listar(String request) {
+        JsonObject response = new JsonObject();
+
+        List<Filme> filmes = FilmeDAO.findAll();
+
+        response.addProperty("status", StatusCode.OK);
+        response.addProperty("message", StatusCode.getMessage(StatusCode.OK));
+        response.add("filmes", JsonHandler.modelToJsonArray(filmes));
+
+        return JsonHandler.jsonToString(response);
+    }
+
+    public static String update(String request) {
+        JsonObject response = new JsonObject();
+        JsonObject requestJson = JsonHandler.stringToJsonObject(request);
+        JsonObject filmeJson = requestJson.get("filme").getAsJsonObject();
+
+        List<String> errors = Validator.validateRequest(filmeJson,
+                List.of("titulo", "diretor", "ano", "sinopse", "generos"));
+
+        if (errors != null && !errors.isEmpty()) {
+            response.addProperty("status", StatusCode.BAD_REQUEST);
+            response.addProperty("message", String.join("\n", errors));
+            return JsonHandler.jsonToString(response);
+        }
+
+        Filme updateFilme = JsonHandler.jsonToModel(filmeJson, Filme.class);
+
+        Filme filmeDb = FilmeDAO.findFilmeById(updateFilme);
+
+        if (filmeDb.id != null) {
+            if (FilmeDAO.update(updateFilme)) {
+                response.addProperty("status", StatusCode.OK);
+                response.addProperty("message", StatusCode.getMessage(StatusCode.OK));
+            } else {
+                response.addProperty("status", StatusCode.INTERNAL_SERVER_ERROR);
+                response.addProperty("message", StatusCode.getMessage(StatusCode.INTERNAL_SERVER_ERROR));
+            }
+        } else {
+            response.addProperty("status", StatusCode.NOT_FOUND);
+            response.addProperty("message", StatusCode.getMessage(StatusCode.NOT_FOUND));
+            return JsonHandler.jsonToString(response);
+        }
+
+        return JsonHandler.jsonToString(response);
+    }
+
+    public static String delete(String request) {
+        JsonObject response = new JsonObject();
+        JsonObject requestJson = JsonHandler.stringToJsonObject(request);
+        String id = requestJson.get("id").getAsString();
+        if (FilmeDAO.delete(id)) {
+            response.addProperty("status", StatusCode.OK);
+            response.addProperty("message", StatusCode.getMessage(StatusCode.OK));
+        } else {
+            response.addProperty("status", StatusCode.NOT_FOUND);
+            response.addProperty("message", StatusCode.getMessage(StatusCode.NOT_FOUND));
         }
 
         return JsonHandler.jsonToString(response);

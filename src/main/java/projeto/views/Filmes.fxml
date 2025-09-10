@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+    fx:controller="projeto.viewControllers.FilmesController"
+    stylesheets="@../views/styles/style.css"
+    style="-fx-padding: 20;">
+
+    <!-- Menu no topo -->
+    <top>
+        <fx:include source="components/Menu.fxml" />
+    </top>
+
+    <!-- Conteúdo principal -->
+    <center>
+        <VBox spacing="10">
+            <Label text="Lista de Usuários" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+            <TableView fx:id="filmesTable" prefHeight="400">
+                <columns>
+                    <TableColumn fx:id="colId" text="Id" />
+                    <TableColumn fx:id="colTitulo" text="Titulo"
+                        prefWidth="200" />
+                    <TableColumn prefWidth="200" fx:id="colSinopse" text="Sinopse" />
+                    <TableColumn prefWidth="200" fx:id="colDiretor" text="Diretor" />
+                    <TableColumn fx:id="colAno" text="Ano" />
+                    <TableColumn fx:id="colGeneros" text="Genêros" prefWidth="200" />
+                    <TableColumn fx:id="colNota" text="Nota" />
+                    <TableColumn fx:id="colAvaliacoes" text="Qtd Aval." />
+                    <TableColumn fx:id="colAcoes" text="Ações" prefWidth="200" />
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+</BorderPane>

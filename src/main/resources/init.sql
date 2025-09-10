@@ -13,6 +13,7 @@ CREATE TABLE
         titulo VARCHAR(255) NOT NULL,
         diretor VARCHAR(6) NOT NULL,
         ano VARCHAR(255) NOT NULL,
+        nota VARCHAR(255) NOT NULL DEFAULT 0.0,
         sinopse TEXT NOT NULL,
         criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -27,7 +28,7 @@ CREATE TABLE
     );
 
 CREATE TABLE
-    IF NOT EXISTS reviews (
+    IF NOT EXISTS filmes_reviews (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         filme_id INTEGER NOT NULL,
         titulo VARCHAR(255) NOT NULL,
@@ -39,7 +40,7 @@ CREATE TABLE
     );
 
 
-CREATE INDEX IF NOT EXISTS ix_reviews_filmes ON reviews (filme_id);
+CREATE INDEX IF NOT EXISTS ix_reviews_filmes ON filmes_reviews (filme_id);
 
 CREATE INDEX IF NOT EXISTS ix_generos_filmes ON filmes_generos (filme_id);
 CREATE UNIQUE INDEX IF NOT EXISTS ux_generos_filme_genero ON filmes_generos(filme_id, genero);
