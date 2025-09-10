@@ -9,6 +9,7 @@ import java.net.Socket;
 import com.google.gson.JsonElement;
 
 import projeto.Multiplex;
+import projeto.Servidor;
 
 public class ClientHandler implements Runnable {
     private final Socket clientSocket;
@@ -30,13 +31,21 @@ public class ClientHandler implements Runnable {
                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));) {
 
             String clientData;
+            Servidor.log(String.format("Nova conexão com o cliente %s:%d",
+                    clientSocket.getInetAddress().getHostAddress(), clientSocket.getPort()));
 
             while ((clientData = in.readLine()) != null) {
-                System.out.println("Mensagem do cliente: " + JsonHandler.prettyFormatFromString(clientData));
-
+                System.out.println("Mensagem do cliente:\n " + JsonHandler.prettyFormatFromString(clientData));
+                Servidor.log(
+                        String.format("Cliente %s:%d -> Servidor:\n %s ",
+                                clientSocket.getInetAddress().getHostAddress(),
+                                clientSocket.getPort(), JsonHandler.prettyFormatFromString(clientData)));
                 JsonElement response = Multiplex.handle(clientData);
 
                 out.println(JsonHandler.jsonToString(response));
+                Servidor.log(String.format("Servidor -> Cliente %s:%d\n: %s",
+                        clientSocket.getInetAddress().getHostAddress(), clientSocket.getPort(),
+                        JsonHandler.prettyFormatFromJson(response)));
 
                 if (clientData.equalsIgnoreCase("exit")) {
                     break;
@@ -46,6 +55,10 @@ public class ClientHandler implements Runnable {
             System.err.println(
                     "Erro na comunicação com cliente " + clientSocket.getInetAddress() + ": " + ex.getMessage());
         } finally {
+            Servidor.log(String.format("Fechando a conexão com o cliente %s:%d",
+                    clientSocket.getInetAddress().getHostAddress(), clientSocket.getPort()));
+            Servidor.removerCliente(
+                    String.format("%s:%d", clientSocket.getInetAddress().getHostAddress(), clientSocket.getPort()));
             System.out.println("Cliente desconectado: " +
                     clientSocket.getInetAddress().getHostAddress() + ":" + clientSocket.getPort());
         }
