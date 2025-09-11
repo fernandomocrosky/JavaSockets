@@ -7,8 +7,10 @@ import com.google.gson.JsonObject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import projeto.LogUI;
 import projeto.Session;
 import projeto.Validator;
 import projeto.handlers.JsonHandler;
@@ -18,6 +20,9 @@ import projeto.models.User;
 import projeto.requests.CadastroPayload;
 
 public class CadastroController {
+
+    @FXML
+    private TextArea logArea;
 
     @FXML
     private TextField userField;
@@ -84,5 +89,10 @@ public class CadastroController {
         } catch (Exception e) {
             System.out.println("Erro ao trocar de tela: " + e.getMessage());
         }
+    }
+
+    @FXML
+    public void initialize() {
+        LogUI.init(logArea);
     }
 }

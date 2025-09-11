@@ -8,6 +8,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.fxml.FXMLLoader;
+import projeto.LogUI;
 import projeto.Session;
 import projeto.handlers.JsonHandler;
 import projeto.handlers.SceneHandler;
@@ -51,7 +52,7 @@ public class MenuController {
         JsonObject logoutResponse = Session.getInstance().desconectar();
         System.out
                 .println("\nServidor -> Cliente: " + JsonHandler.prettyFormatFromString(logoutResponse.toString()));
-
+        LogUI.log("\nServidor -> Cliente: " + JsonHandler.prettyFormatFromString(logoutResponse.toString()));
         if (logoutResponse.get("status").getAsString().equals(StatusCode.OK)) {
             try {
                 Session.getInstance().clear();

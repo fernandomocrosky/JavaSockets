@@ -8,8 +8,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import projeto.LogUI;
 import projeto.Session;
 import projeto.Validator;
 import projeto.handlers.JsonHandler;
@@ -18,6 +20,10 @@ import projeto.handlers.StatusCode;
 import projeto.requests.filmes.CadastroFilmePayload;
 
 public class CadastroFilmeController {
+
+    @FXML
+    private TextArea logArea;
+
     @FXML
     private ListView<String> generosList;
 
@@ -29,12 +35,20 @@ public class CadastroFilmeController {
 
     @FXML
     public void initialize() {
+        LogUI.init(logArea);
+
         generosList.getItems().addAll(
                 "Ação",
+                "Aventura",
                 "Comédia",
                 "Drama",
+                "Fantasia",
                 "Ficção Científica",
-                "Romance");
+                "Terror",
+                "Romance",
+                "Documentário",
+                "Musical",
+                "Animação");
 
         // permite selecionar vários de uma vez
         generosList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -72,6 +86,7 @@ public class CadastroFilmeController {
         String msg = JsonHandler.modelToString(payload);
         Session.getInstance().getOut().println(msg);
         System.out.println("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(msg));
+        LogUI.log("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(msg));
         String response = null;
 
         try {
@@ -83,6 +98,8 @@ public class CadastroFilmeController {
 
         JsonObject responseJson = JsonHandler.stringToJsonObject(response);
         System.out.println("Servidor -> Cliente: "
+                + JsonHandler.prettyFormatFromString(JsonHandler.prettyFormatFromJson(responseJson)));
+        LogUI.log("Servidor -> Cliente: "
                 + JsonHandler.prettyFormatFromString(JsonHandler.prettyFormatFromJson(responseJson)));
         if (response != null && !response.isEmpty()
                 && responseJson.get("status").getAsString().equals(StatusCode.CREATED)) {

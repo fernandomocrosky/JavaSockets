@@ -4,11 +4,16 @@ package projeto.viewControllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import projeto.LogUI;
 import projeto.Session;
 import projeto.handlers.JwtHandle;
 import projeto.handlers.SceneHandler;
 
 public class HomeController {
+
+    @FXML
+    private TextArea logArea;
 
     @FXML
     private Label welcomeLabel;
@@ -21,6 +26,8 @@ public class HomeController {
 
     @FXML
     public void initialize() {
+        LogUI.init(logArea);
+
         // pega o usuário atual da Session
         String token = Session.getInstance().getToken();
         if (token != null) {

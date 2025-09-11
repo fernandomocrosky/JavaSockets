@@ -21,7 +21,7 @@ public class AuthController {
             User user = UserDAO.findByUsernameAndPassword(usuario, senha);
 
             if (user != null) {
-                String token = JwtHandle.generateToken(user.getUsuario());
+                String token = JwtHandle.generateToken(user);
                 response.addProperty("status", StatusCode.OK);
                 response.addProperty("message", StatusCode.getMessage(StatusCode.OK));
                 response.addProperty("token", token);

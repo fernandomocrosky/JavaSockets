@@ -10,10 +10,12 @@
 
     <!-- Topo da tela -->
     <top>
-        <Button text="Voltar" onAction="#voltar" styleClass="button-primary"
-            BorderPane.alignment="TOP_LEFT" />
-        <Label text="Cadastro"
-            style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #fff;" />
+        <HBox alignment="TOP_LEFT" spacing="10">
+            <Button text="Voltar" onAction="#voltar" styleClass="button-primary"
+                BorderPane.alignment="TOP_LEFT" />
+            <Label text="Cadastro"
+                style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #fff;" />
+        </HBox>
     </top>
 
     <!-- Conteúdo central -->
@@ -25,5 +27,7 @@
             <Label fx:id="status" text="" />
         </VBox>
     </center>
-
+    <bottom>
+        <TextArea fx:id="logArea" prefRowCount="15" />
+    </bottom>
 </BorderPane>

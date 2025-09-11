@@ -7,8 +7,10 @@ import com.google.gson.JsonObject;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import projeto.LogUI;
 import projeto.Session;
 import projeto.Validator;
 import projeto.handlers.JsonHandler;
@@ -24,10 +26,13 @@ public class CadastroReviewController {
     }
 
     @FXML
-    TextField tituloField, descricaoField, notaField;
+    private TextArea logArea;
 
     @FXML
-    Label status;
+    private TextField tituloField, descricaoField, notaField;
+
+    @FXML
+    private Label status;
 
     @FXML
     private void avaliar() {
@@ -49,6 +54,7 @@ public class CadastroReviewController {
         try {
             Session.getInstance().getOut().println(msg);
             System.out.println("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(msg));
+            LogUI.log("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(msg));
         } catch (Exception ex) {
             System.out.println("Erro ao enviar review\n" + ex.getMessage());
         }
@@ -59,6 +65,7 @@ public class CadastroReviewController {
             response = Session.getInstance().getIn().readLine();
             JsonObject responseJson = JsonHandler.stringToJsonObject(response);
             System.out.println("Servidor -> Cliente: " + JsonHandler.prettyFormatFromString(responseJson.toString()));
+            LogUI.log("Servidor -> Cliente: " + JsonHandler.prettyFormatFromString(responseJson.toString()));
             if (response != null && responseJson.get("status").getAsString().equals(StatusCode.CREATED)) {
                 Session.getInstance().showAlert(AlertType.CONFIRMATION, "Review enviada com sucesso",
                         "Review enviada com sucesso", () -> {
@@ -82,6 +89,10 @@ public class CadastroReviewController {
     @FXML
     private void voltar() {
         cancelar();
+    }
+
+    public void initialize() {
+        LogUI.init(logArea);
     }
 
 }

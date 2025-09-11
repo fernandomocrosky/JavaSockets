@@ -144,7 +144,7 @@ public class Session {
         LogoutPayload logoutBody = new LogoutPayload(Session.getInstance().getToken());
         String payload = JsonHandler.modelToString(logoutBody);
         System.out.println("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(payload));
-
+        LogUI.log("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(payload));
         out.println(payload);
 
         try {

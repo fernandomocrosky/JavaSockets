@@ -30,5 +30,8 @@
             <Label fx:id="status" text="" />
         </VBox>
     </center>
+    <bottom>
+        <TextArea fx:id="logArea" prefRowCount="15" />
+    </bottom>
 
 </BorderPane>

@@ -29,4 +29,7 @@
             <Label fx:id="status" text="Aguardando login..." style="-fx-text-fill: #bbb;" />
         </VBox>
     </center>
+    <bottom>
+        <TextArea fx:id="logArea" prefRowCount="15" />
+    </bottom>
 </BorderPane>

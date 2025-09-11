@@ -9,7 +9,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import projeto.LogUI;
 import projeto.Session;
 import projeto.Validator;
 import projeto.handlers.JsonHandler;
@@ -19,6 +21,9 @@ import projeto.models.Filme;
 import projeto.requests.filmes.EditarFilmePayload;
 
 public class EditarFilmeController {
+
+    @FXML
+    private TextArea logArea;
 
     @FXML
     private ListView<String> generosList;
@@ -37,6 +42,8 @@ public class EditarFilmeController {
 
     @FXML
     public void initialize() {
+        LogUI.init(logArea);
+
         generosList.getItems().addAll(
                 "Ação",
                 "Comédia",
@@ -78,6 +85,7 @@ public class EditarFilmeController {
         String msg = JsonHandler.modelToString(payload);
         Session.getInstance().getOut().println(msg);
         System.out.println("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(msg));
+        LogUI.log("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(msg));
         String response = null;
 
         try {
@@ -88,6 +96,8 @@ public class EditarFilmeController {
 
         JsonObject responseJson = JsonHandler.stringToJsonObject(response);
         System.out.println("Servidor -> Cliente: "
+                + JsonHandler.prettyFormatFromString(JsonHandler.prettyFormatFromJson(responseJson)));
+        LogUI.log("Servidor -> Cliente: "
                 + JsonHandler.prettyFormatFromString(JsonHandler.prettyFormatFromJson(responseJson)));
         if (response != null && !response.isEmpty()
                 && responseJson.get("status").getAsString().equals(StatusCode.OK)) {

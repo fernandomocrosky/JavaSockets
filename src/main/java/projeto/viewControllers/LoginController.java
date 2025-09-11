@@ -9,8 +9,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import projeto.LogUI;
 import projeto.Session;
 import projeto.Validator;
 import projeto.handlers.JsonHandler;
@@ -20,6 +22,9 @@ import projeto.models.User;
 import projeto.requests.LoginPayload;
 
 public class LoginController {
+
+    @FXML
+    private TextArea logArea;
 
     @FXML
     private TextField userField;
@@ -66,6 +71,10 @@ public class LoginController {
         status.setText("Login enviado!");
         System.out.println("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(msg));
         System.out.println("Servidor -> Cliente: " + JsonHandler.prettyFormatFromString(response));
+
+        LogUI.log("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(msg));
+        LogUI.log("Servidor -> Cliente: " + JsonHandler.prettyFormatFromString(response));
+        
         if (response != null && !response.isEmpty() && responseJson.get("status").getAsString().equals(StatusCode.OK)) {
             System.out.println("\nServidor -> Cliente: " + JsonHandler.prettyFormatFromString(response));
             Session.getInstance().setToken(responseJson.get("token").getAsString());
@@ -106,4 +115,10 @@ public class LoginController {
             System.out.println("Erro ao trocar de tela: " + e.getMessage());
         }
     }
+
+    @FXML
+    public void initialize() {
+        LogUI.init(logArea);
+    }
+
 }

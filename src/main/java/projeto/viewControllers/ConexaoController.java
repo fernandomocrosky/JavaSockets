@@ -8,12 +8,17 @@ import java.util.List;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import projeto.LogUI;
 import projeto.Session;
 import projeto.Validator;
 import projeto.handlers.SceneHandler;
 
 public class ConexaoController {
+
+    @FXML
+    private TextArea logArea;
 
     @FXML
     private TextField ipField;
@@ -45,7 +50,7 @@ public class ConexaoController {
             status.setText("Erro: ip deve ser um endereço IP e porta deve ser um número inteiro.");
             return;
         }
-
+        LogUI.log("Tentando se conectar ao servidor em " + ip + ":" + porta);
         try {
             socket = new Socket(ip, porta);
             out = new PrintWriter(socket.getOutputStream(), true);
@@ -53,10 +58,16 @@ public class ConexaoController {
             Session.getInstance().setConnection(socket, out, in);
 
             status.setText("Conectado!");
+            LogUI.log("Conectado!");
             SceneHandler.changeScene("/projeto/views/Login.fxml");
 
         } catch (Exception e) {
             status.setText("Erro: " + e.getMessage());
         }
+    }
+
+    @FXML
+    public void initialize() {
+        LogUI.init(logArea);
     }
 }

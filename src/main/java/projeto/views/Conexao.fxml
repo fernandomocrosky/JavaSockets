@@ -12,5 +12,5 @@
     <TextField fx:id="portField" id="porta" text="21000" promptText="Digite a porta do servidor" />
     <Button text="Conectar" onAction="#conectar" styleClass="button-primary" />
     <Label fx:id="status" text="Desconectado" styleClass="label-text" />
-
+    <TextArea fx:id="logArea" prefRowCount="15" />
 </VBox>

@@ -11,9 +11,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import projeto.LogUI;
 import projeto.Session;
 import projeto.handlers.JsonHandler;
 import projeto.handlers.SceneHandler;
@@ -23,6 +25,9 @@ import projeto.requests.user.DeleteUserPayload;
 import projeto.requests.user.ListUserPayload;
 
 public class UsuariosController {
+
+    @FXML
+    private TextArea logArea;
 
     @FXML
     private TableView<User> usuariosTable;
@@ -40,6 +45,8 @@ public class UsuariosController {
 
     @FXML
     private void initialize() {
+        LogUI.init(logArea);
+
         // Configura coluna
         colUsuario.setCellValueFactory(new PropertyValueFactory<>("usuario"));
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -100,12 +107,13 @@ public class UsuariosController {
                     DeleteUserPayload payload = new DeleteUserPayload(user.getId());
                     String msg = JsonHandler.modelToString(payload);
                     System.out.println("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(msg));
-
+                    LogUI.log("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(msg));
                     try {
                         Session.getInstance().getOut().println(msg);
                         JsonObject response = JsonHandler.stringToJsonObject(Session.getInstance().getIn().readLine());
                         System.out.println(
                                 "Servidor -> Cliente: " + JsonHandler.prettyFormatFromString(response.toString()));
+                        LogUI.log("Servidor -> Cliente: " + JsonHandler.prettyFormatFromString(response.toString()));
                         if (response != null && response.get("status").getAsString().equals(StatusCode.OK)) {
                             SceneHandler.changeScene("/projeto/views/Usuarios.fxml");
                         }
@@ -120,11 +128,13 @@ public class UsuariosController {
         String msg = JsonHandler.modelToString(payload);
         JsonObject response = new JsonObject();
         System.out.println("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(msg));
+        LogUI.log("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(msg));
 
         try {
             Session.getInstance().getOut().println(msg);
             response = JsonHandler.stringToJsonObject(Session.getInstance().getIn().readLine());
             System.out.println("Servidor -> Cliente: " + JsonHandler.prettyFormatFromString(response.toString()));
+            LogUI.log("Servidor -> Cliente: " + JsonHandler.prettyFormatFromString(response.toString()));
             if (response != null && response.get("status").getAsString().equals(StatusCode.OK)) {
                 var users = response.getAsJsonArray("usuarios");
 

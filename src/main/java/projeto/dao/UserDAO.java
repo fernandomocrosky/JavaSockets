@@ -14,7 +14,7 @@ import java.util.List;
 public class UserDAO {
 
     public static User findByUsernameAndPassword(String username, String password) {
-        String sql = "SELECT usuario, senha FROM usuarios WHERE usuario = ? AND senha = ?";
+        String sql = "SELECT id ,usuario, senha FROM usuarios WHERE usuario = ? AND senha = ?";
 
         try (Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -24,9 +24,12 @@ public class UserDAO {
 
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return new User(
-                        rs.getString("usuario"),
-                        rs.getString("senha"));
+                User user = new User();
+                user.setId(rs.getString("id"));
+                user.setUsuario(rs.getString("usuario"));
+                user.setRole(rs.getString("usuario").equals("admin") ? "admin" : "user");
+                
+                return user;
             }
 
         } catch (Exception e) {

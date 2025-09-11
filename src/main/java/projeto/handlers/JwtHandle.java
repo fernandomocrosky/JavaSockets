@@ -5,6 +5,7 @@ import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import projeto.models.User;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -17,19 +18,16 @@ public class JwtHandle {
 
     private static final Key SECRET_KEY = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
 
-    public static String generateToken(String username) {
+    public static String generateToken(User user) {
 
-        JwtBuilder jwtBuilder = Jwts.builder()
-                .setSubject(username)
+        return Jwts.builder()
+                .setSubject(user.getUsuario())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
-                .signWith(SECRET_KEY, SignatureAlgorithm.HS256);
-
-        if (username.equals("admin"))
-            return jwtBuilder.claim("funcao", "admin").claim("usuario", username)
-                    .compact();
-
-        return jwtBuilder.claim("funcao", "usuario").claim("usuario", username)
+                .claim("id", user.getId())
+                .claim("usuario", user.getUsuario())
+                .claim("funcao", user.getRole())
+                .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
                 .compact();
     }
 
