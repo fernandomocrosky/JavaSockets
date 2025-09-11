@@ -11,8 +11,6 @@ public class LogUI {
     public static void init(TextArea log) {
         log.setEditable(false);
         logArea = log;
-
-        Platform.runLater(() -> logArea.setText(historico.toString()));
     }
 
     // Adiciona mensagens no log

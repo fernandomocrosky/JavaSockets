@@ -115,7 +115,9 @@ public class UsuariosController {
                                 "Servidor -> Cliente: " + JsonHandler.prettyFormatFromString(response.toString()));
                         LogUI.log("Servidor -> Cliente: " + JsonHandler.prettyFormatFromString(response.toString()));
                         if (response != null && response.get("status").getAsString().equals(StatusCode.OK)) {
-                            SceneHandler.changeScene("/projeto/views/Usuarios.fxml");
+                            Session.getInstance().showAlert(AlertType.CONFIRMATION, "Excluido com sucesso",
+                                    "Usuário excluido com sucesso",
+                                    () -> SceneHandler.changeScene("/projeto/views/Usuarios.fxml"));
                         }
                     } catch (Exception ex) {
                         System.err.println("Erro ao excluir usuario\n" + ex.getMessage());
