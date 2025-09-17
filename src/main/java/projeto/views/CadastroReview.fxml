@@ -27,7 +27,7 @@
                 <Button text="Avaliar" onAction="#avaliar" styleClass="button-primary" />
                 <Button text="Cancelar" onAction="#cancelar" styleClass="button-danger" />
             </HBox>
-            <Label fx:id="status" text="Aguardando review..." />
+            <Label fx:id="status" text="Aguardando cadastro review..." />
         </VBox>
     </center>
 

@@ -6,7 +6,6 @@ import com.google.gson.JsonObject;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
@@ -47,7 +46,8 @@ public class EditarUsuarioController {
 
         User usuario = new User();
         usuario.setUsuario(usuarioField.getText());
-        usuario.setId(this.usuario.getId());
+        if (this.usuario.getId() != null)
+            usuario.setId(this.usuario.getId());
 
         EditUserPayload payload = new EditUserPayload(usuario);
         String msg = JsonHandler.modelToString(payload);
@@ -62,9 +62,16 @@ public class EditarUsuarioController {
             System.out.println("Servidor -> Cliente: " + JsonHandler.prettyFormatFromString(responseJson.toString()));
             LogUI.log("Servidor -> Cliente: " + JsonHandler.prettyFormatFromString(responseJson.toString()));
             if (responseJson.get("status").getAsString().equals(StatusCode.OK)) {
-                Session.getInstance().showAlert(AlertType.CONFIRMATION, "Salvo com sucesso",
-                        "Usuário salvo com sucesso!",
-                        () -> SceneHandler.changeScene("/projeto/views/Usuarios.fxml"));
+                if (this.usuario.getId() == null) {
+                    Session.getInstance().getUser().setUsuario(usuario.getUsuario());
+                    Session.getInstance().showAlert(AlertType.CONFIRMATION, "Salvo com sucesso",
+                            "Usuário salvo com sucesso!",
+                            () -> SceneHandler.changeScene("/projeto/views/Home.fxml"));
+                } else {
+                    Session.getInstance().showAlert(AlertType.CONFIRMATION, "Salvo com sucesso",
+                            "Usuário salvo com sucesso!",
+                            () -> SceneHandler.changeScene("/projeto/views/Usuarios.fxml"));
+                }
             }
         } catch (Exception ex) {
             Session.getInstance().showAlert(AlertType.ERROR, "Erro", "Erro ao salvar usuário", () -> {

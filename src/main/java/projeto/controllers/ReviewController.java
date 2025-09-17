@@ -9,7 +9,7 @@ public class ReviewController {
         JsonObject requestJson = JsonHandler.stringToJsonObject(request);
         JsonObject responseObject = new JsonObject();
 
-        // TODO cadastro review abre conexão etc
+        // TODO cadastro review abre conexão banco de dados etc
         
         return JsonHandler.jsonToString(responseObject);
     }

@@ -28,7 +28,7 @@ public class UserDAO {
                 user.setId(rs.getString("id"));
                 user.setUsuario(rs.getString("usuario"));
                 user.setRole(rs.getString("usuario").equals("admin") ? "admin" : "user");
-                
+
                 return user;
             }
 

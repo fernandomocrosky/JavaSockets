@@ -21,6 +21,11 @@ public class AuthController {
             User user = UserDAO.findByUsernameAndPassword(usuario, senha);
 
             if (user != null) {
+                if (user.getUsuario().equals("admin")) {
+                    user.setRole("admin");
+                } else {
+                    user.setRole("user");
+                }
                 String token = JwtHandle.generateToken(user);
                 response.addProperty("status", StatusCode.OK);
                 response.addProperty("message", StatusCode.getMessage(StatusCode.OK));

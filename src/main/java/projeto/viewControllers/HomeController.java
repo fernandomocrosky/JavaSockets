@@ -1,6 +1,5 @@
 package projeto.viewControllers;
 
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -22,6 +21,9 @@ public class HomeController {
     private Button createFilme;
 
     @FXML
+    private Button editUser;
+
+    @FXML
     private Label infoLabel;
 
     @FXML
@@ -36,7 +38,7 @@ public class HomeController {
             welcomeLabel.setText("Olá, " + usuario + "!");
         }
 
-        if(!Session.getInstance().isAdmin()) {
+        if (!Session.getInstance().isAdmin()) {
             createFilme.setVisible(false);
         }
     }
@@ -45,6 +47,16 @@ public class HomeController {
     private void goCreateFilme() {
         try {
             SceneHandler.changeScene("/projeto/views/CadastroFilme.fxml");
+        } catch (Exception e) {
+            System.out.println("Erro ao trocar de tela: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void goEditUser() {
+        try {
+            SceneHandler.changeSceneWithData("/projeto/views/EditarUsuario.fxml",
+                    (EditarUsuarioController controller) -> controller.setUsuario(Session.getInstance().getUser()));
         } catch (Exception e) {
             System.out.println("Erro ao trocar de tela: " + e.getMessage());
         }

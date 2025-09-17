@@ -19,13 +19,12 @@ public class JwtHandle {
     private static final Key SECRET_KEY = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
 
     public static String generateToken(User user) {
-
         return Jwts.builder()
                 .setSubject(user.getUsuario())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
                 .claim("id", user.getId())
-                .claim("usuario", user.getUsuario())
+                .claim("user", user.getUsuario())
                 .claim("funcao", user.getRole())
                 .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
                 .compact();

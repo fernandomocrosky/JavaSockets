@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import projeto.Validator;
 import projeto.dao.UserDAO;
 import projeto.handlers.JsonHandler;
+import projeto.handlers.JwtHandle;
 import projeto.handlers.StatusCode;
 import projeto.models.User;
 
@@ -64,8 +65,13 @@ public class UsuarioController {
     public static String editar(String request) {
         JsonObject response = new JsonObject();
         JsonObject requestJson = JsonHandler.stringToJsonObject(request);
-
-        List<String> errors = Validator.validateRequest(requestJson, List.of("usuario", "usuario.nome", "usuario.id"));
+        String token = requestJson.get("token").getAsString();
+        String role = JwtHandle.getClaim(token, "funcao", String.class);
+        List<String> errors = null;
+        if (role.equals("admin"))
+            errors = Validator.validateRequest(requestJson, List.of("usuario", "usuario.nome", "usuario.id"));
+        else
+            errors = Validator.validateRequest(requestJson, List.of("usuario", "usuario.nome"));
 
         if (errors != null && !errors.isEmpty()) {
             response.addProperty("status", StatusCode.BAD_REQUEST);
@@ -75,7 +81,10 @@ public class UsuarioController {
 
         User user = new User();
         user.setUsuario(requestJson.get("usuario").getAsJsonObject().get("nome").getAsString());
-        user.setId(requestJson.get("usuario").getAsJsonObject().get("id").getAsString());
+        if (requestJson.get("usuario").getAsJsonObject().get("id") != null)
+            user.setId(requestJson.get("usuario").getAsJsonObject().get("id").getAsString());
+        else
+            user.setId(JwtHandle.getClaim(token, "id", String.class));
 
         if (UserDAO.update(user)) {
             response.addProperty("status", StatusCode.OK);

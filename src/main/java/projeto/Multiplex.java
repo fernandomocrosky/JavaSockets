@@ -39,13 +39,29 @@ public class Multiplex {
                 List.of("LISTAR_USUARIOS", "LOGOUT", "EDITAR_USUARIO", "EXCLUIR_USUARIO", "CRIAR_FILME",
                         "EDITAR_FILME", "EXCLUIR_FILME"));
 
-        permissions.put("usuario", List.of("LOGOUT", "CRIAR_REVIEW"));
+        permissions.put("user", List.of("LOGOUT", "CRIAR_REVIEW", "EDITAR_USUARIO"));
     }
 
     public static JsonElement handle(String request) {
+        if(request == null || request.isBlank()  ) {
+            JsonObject response = new JsonObject();
+            response.addProperty("status", StatusCode.BAD_REQUEST);
+            response.addProperty("message", String.format("Erro : %s possivel causa %s",StatusCode.getMessage(StatusCode.BAD_REQUEST), "Mensagem vazia"));
+            return response;
+        }
+        
         JsonObject requestObject = JsonHandler.stringToJsonObject(request);
-        String operation = JsonHandler.stringToJsonObject(request).get("operacao").getAsString();
         JsonObject responseObject = new JsonObject();
+
+        if (!requestObject.has("operacao") ||
+                requestObject.get("operacao").isJsonNull() ||
+                requestObject.get("operacao").getAsString().isBlank()) {
+            responseObject.addProperty("status", StatusCode.BAD_REQUEST);
+            responseObject.addProperty("message", String.format("Erro : %s possivel causa %s",StatusCode.getMessage(StatusCode.BAD_REQUEST), "Falta a chave operacao na mensagem"));
+            return responseObject;
+        }
+
+        String operation = JsonHandler.stringToJsonObject(request).get("operacao").getAsString();
 
         Function<String, String> handler = operations.get(operation);
 
@@ -55,7 +71,7 @@ public class Multiplex {
                     requestObject.get("operacao").isJsonNull() ||
                     requestObject.get("operacao").getAsString().isBlank()) {
                 responseObject.addProperty("status", StatusCode.BAD_REQUEST);
-                responseObject.addProperty("message", StatusCode.getMessage(StatusCode.BAD_REQUEST));
+                responseObject.addProperty("message", String.format("Erro : %s possivel causa %s",StatusCode.getMessage(StatusCode.BAD_REQUEST), "Falta a chave operacao na mensagem"));
                 return responseObject;
             }
 
@@ -65,14 +81,21 @@ public class Multiplex {
         }
 
         if (!permissions.get("public").contains(operation)) {
+
+            String token = requestObject.get("token").getAsString();
+            String role = JwtHandle.getClaim(token, "funcao", String.class);
+            
             if (!requestObject.has("token")) {
                 responseObject.addProperty("status", StatusCode.UNAUTHORIZED);
                 responseObject.addProperty("message", StatusCode.getMessage(StatusCode.UNAUTHORIZED));
                 return responseObject;
             }
 
-            String token = requestObject.get("token").getAsString();
-            String role = JwtHandle.getClaim(token, "funcao", String.class);
+            if (role == null || token == null) {
+                responseObject.addProperty("status", StatusCode.UNAUTHORIZED);
+                responseObject.addProperty("message", "Falta token ou funcao no token");
+                return responseObject;
+            }
 
             if (!permissions.get(role).contains(operation)) {
                 responseObject.addProperty("status", StatusCode.FORBIDDEN);
