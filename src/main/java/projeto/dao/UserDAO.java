@@ -99,12 +99,12 @@ public class UserDAO {
     }
 
     public static boolean update(User user) {
-        String sql = "UPDATE usuarios SET usuario = ? WHERE id = ?";
+        String sql = "UPDATE usuarios SET senha = ? WHERE id = ?";
 
         try (
                 Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, user.getUsuario());
+            stmt.setString(1, user.getSenha());
             stmt.setInt(2, Integer.parseInt(user.getId()));
             int rowsAffected = stmt.executeUpdate();
             return rowsAffected > 0;

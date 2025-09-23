@@ -20,8 +20,10 @@
             <Label fx:id="welcomeLabel" style="-fx-font-size: 20px;" text="Bem-vindo!" />
             <Button fx:id="createFilme" text="Deseja Criar um filme?" onAction="#goCreateFilme"
                 styleClass="button-primary" />
-                <Button fx:id="editUser" text="Deseja Editar seu usuario?" onAction="#goEditUser"
+            <Button fx:id="editUser" text="Deseja Editar seu Usuario?" onAction="#goEditUser"
                 styleClass="button-primary" />
+            <Button fx:id="deleteUser" text="Deseja Deletar seu Usuario?" onAction="#goDeleteUser"
+                styleClass="button-danger" />
         </VBox>
     </center>
 

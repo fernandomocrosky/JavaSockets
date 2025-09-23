@@ -63,7 +63,6 @@ public class AuthController {
         String token = requestJsonObject.get("token").getAsString();
 
         try {
-
             Long expMilli = JwtHandle.getExpiration(token).getTime();
             UserDAO.addTokenToBlacklist(token, expMilli);
             json.addProperty("status", StatusCode.OK);

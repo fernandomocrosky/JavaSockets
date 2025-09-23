@@ -21,6 +21,7 @@ import projeto.handlers.JsonHandler;
 import projeto.handlers.SceneHandler;
 import projeto.handlers.StatusCode;
 import projeto.models.User;
+import projeto.requests.user.AdminDeleteUserPayload;
 import projeto.requests.user.DeleteUserPayload;
 import projeto.requests.user.ListUserPayload;
 
@@ -104,7 +105,7 @@ public class UsuariosController {
         Session.getInstance().showAlert(AlertType.CONFIRMATION, "Excluir usuário",
                 "Tem certeza que deseja excluir o usuário " + user.getUsuario() + "?",
                 () -> {
-                    DeleteUserPayload payload = new DeleteUserPayload(user.getId());
+                    AdminDeleteUserPayload payload = new AdminDeleteUserPayload(user.getId());
                     String msg = JsonHandler.modelToString(payload);
                     System.out.println("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(msg));
                     LogUI.log("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(msg));

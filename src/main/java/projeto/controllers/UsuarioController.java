@@ -18,15 +18,16 @@ public class UsuarioController {
         JsonObject response = new JsonObject();
         JsonObject requestJson = JsonHandler.stringToJsonObject(request);
 
-        List<String> errors = Validator.validateRequest(requestJson, List.of("usuario", "senha"));
+        List<String> errors = Validator.validateRequest(requestJson, List.of("usuario.nome", "usuario.senha"));
 
         if (errors != null && !errors.isEmpty()) {
             response.addProperty("status", StatusCode.BAD_REQUEST);
             response.addProperty("message", String.join("\n", errors));
             return JsonHandler.jsonToString(response);
         }
+        JsonObject userObject = requestJson.get("usuario").getAsJsonObject();
 
-        User user = new User(requestJson.get("usuario").getAsString(), requestJson.get("senha").getAsString());
+        User user = new User(userObject.get("nome").getAsString(), userObject.get("senha").getAsString());
         User userDb = UserDAO.findByUsername(user.getUsuario());
 
         if (userDb != null) {
@@ -62,16 +63,12 @@ public class UsuarioController {
         return JsonHandler.jsonToString(response);
     }
 
-    public static String editar(String request) {
+    public static String editarAdmin(String request) {
         JsonObject response = new JsonObject();
         JsonObject requestJson = JsonHandler.stringToJsonObject(request);
-        String token = requestJson.get("token").getAsString();
-        String role = JwtHandle.getClaim(token, "funcao", String.class);
         List<String> errors = null;
-        if (role.equals("admin"))
-            errors = Validator.validateRequest(requestJson, List.of("usuario", "usuario.nome", "usuario.id"));
-        else
-            errors = Validator.validateRequest(requestJson, List.of("usuario", "usuario.nome"));
+
+        errors = Validator.validateRequest(requestJson, List.of("id", "usuario.senha"));
 
         if (errors != null && !errors.isEmpty()) {
             response.addProperty("status", StatusCode.BAD_REQUEST);
@@ -80,11 +77,37 @@ public class UsuarioController {
         }
 
         User user = new User();
-        user.setUsuario(requestJson.get("usuario").getAsJsonObject().get("nome").getAsString());
-        if (requestJson.get("usuario").getAsJsonObject().get("id") != null)
-            user.setId(requestJson.get("usuario").getAsJsonObject().get("id").getAsString());
-        else
-            user.setId(JwtHandle.getClaim(token, "id", String.class));
+        user.setSenha(requestJson.get("usuario").getAsJsonObject().get("senha").getAsString());
+        user.setId(requestJson.get("id").getAsString());
+
+        if (UserDAO.update(user)) {
+            response.addProperty("status", StatusCode.OK);
+            response.addProperty("message", StatusCode.getMessage(StatusCode.OK));
+        } else {
+            response.addProperty("status", StatusCode.NOT_FOUND);
+            response.addProperty("message", StatusCode.getMessage(StatusCode.NOT_FOUND));
+        }
+
+        return JsonHandler.jsonToString(response);
+    }
+
+    public static String editar(String request) {
+        JsonObject response = new JsonObject();
+        JsonObject requestJson = JsonHandler.stringToJsonObject(request);
+        String token = requestJson.get("token").getAsString();
+        List<String> errors = null;
+
+        errors = Validator.validateRequest(requestJson, List.of("usuario.senha"));
+
+        if (errors != null && !errors.isEmpty()) {
+            response.addProperty("status", StatusCode.BAD_REQUEST);
+            response.addProperty("message", String.join("\n", errors));
+            return JsonHandler.jsonToString(response);
+        }
+
+        User user = new User();
+        user.setSenha(requestJson.get("usuario").getAsJsonObject().get("senha").getAsString());
+        user.setId(JwtHandle.getClaim(token, "id", String.class));
 
         if (UserDAO.update(user)) {
             response.addProperty("status", StatusCode.OK);
@@ -98,6 +121,23 @@ public class UsuarioController {
     }
 
     public static String deletar(String request) {
+        JsonObject response = new JsonObject();
+        JsonObject requestJson = JsonHandler.stringToJsonObject(request);
+        String token = requestJson.get("token").getAsString();
+        String id = JwtHandle.getClaim(token, "id", String.class);
+
+        if (UserDAO.delete(id)) {
+            response.addProperty("status", StatusCode.OK);
+            response.addProperty("message", StatusCode.getMessage(StatusCode.OK));
+        } else {
+            response.addProperty("status", StatusCode.NOT_FOUND);
+            response.addProperty("message", StatusCode.getMessage(StatusCode.NOT_FOUND));
+        }
+
+        return JsonHandler.jsonToString(response);
+    }
+
+    public static String deletarAdmin(String request) {
         JsonObject response = new JsonObject();
         JsonObject requestJson = JsonHandler.stringToJsonObject(request);
 

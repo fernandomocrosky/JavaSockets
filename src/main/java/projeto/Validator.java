@@ -35,10 +35,7 @@ public class Validator {
     }
 
     public static List<String> validateRequest(JsonObject request, List<String> requiredFields) {
-        JsonObject response = new JsonObject();
         List<String> errors = new ArrayList<>();
-        response.addProperty("status", StatusCode.BAD_REQUEST);
-        response.addProperty("message", StatusCode.getMessage(StatusCode.BAD_REQUEST));
 
         // Verifica campos obrigatórios (inclusive aninhados com ".")
         for (String field : requiredFields) {
@@ -49,8 +46,17 @@ public class Validator {
             for (int i = 0; i < parts.length; i++) {
                 String part = parts[i];
                 if (i == parts.length - 1) {
-                    if (!current.has(part)) {
+                    if (!current.has(part) || current.get(part).isJsonNull()) {
                         exists = false;
+                    } else {
+                        // Validação extra por campo
+                        String value = current.get(part).getAsString();
+                        if (value.length() < 3) {
+                            errors.add("O campo '" + field + "' deve ter pelo menos 3 caracteres.");
+                        }
+                        if (!value.matches("[a-zA-Z0-9]+")) {
+                            errors.add("O campo '" + field + "' deve conter apenas letras e números.");
+                        }
                     }
                 } else {
                     if (current.has(part) && current.get(part).isJsonObject()) {
@@ -64,44 +70,6 @@ public class Validator {
             if (!exists) {
                 errors.add("O campo '" + field + "' é obrigatório.");
             }
-        }
-
-        if (request.has("usuario")) {
-            String username;
-
-            if (request.get("usuario").isJsonObject()) {
-                JsonObject usuarioObj = request.getAsJsonObject("usuario");
-                if (usuarioObj.has("nome") && !usuarioObj.get("nome").isJsonNull()) {
-                    username = usuarioObj.get("nome").getAsString();
-                } else {
-                    username = "";
-                }
-            } else {
-                username = request.get("usuario").getAsString();
-            }
-
-            if (username.length() < 3) {
-                errors.add("O campo 'usuario' deve ter pelo menos 3 caracteres.");
-            }
-
-            if (!username.matches("[a-zA-Z0-9]+")) {
-                errors.add("O campo 'usuario' deve conter apenas letras e numeros.");
-            }
-        }
-
-        if (request.has("senha")) {
-            String password = request.get("senha").getAsString();
-            if (password.length() < 3) {
-                errors.add("O campo 'senha' deve ter pelo menos 3 caracteres.");
-            }
-
-            if (!password.matches("[a-zA-Z0-9]+")) {
-                errors.add("O campo 'senha' deve conter apenas letras e numeros.");
-            }
-        }
-
-        if (!errors.isEmpty()) {
-            return errors;
         }
 
         return errors;

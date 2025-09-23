@@ -17,8 +17,9 @@ import projeto.handlers.SceneHandler;
 import projeto.handlers.StatusCode;
 import projeto.models.User;
 import projeto.requests.user.AdminEditUserPayload;
+import projeto.requests.user.EditUserPayload;
 
-public class EditarUsuarioController {
+public class EditarMeuUsuarioController {
 
     @FXML
     private TextArea logArea;
@@ -46,9 +47,8 @@ public class EditarUsuarioController {
 
         User usuario = new User();
         usuario.setSenha(senhaField.getText());
-        usuario.setId(this.usuario.getId());
 
-        AdminEditUserPayload payload = new AdminEditUserPayload(usuario);
+        EditUserPayload payload = new EditUserPayload(usuario);
         String msg = JsonHandler.modelToString(payload);
         System.out.println("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(msg));
         LogUI.log("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(msg));
@@ -61,16 +61,9 @@ public class EditarUsuarioController {
             System.out.println("Servidor -> Cliente: " + JsonHandler.prettyFormatFromString(responseJson.toString()));
             LogUI.log("Servidor -> Cliente: " + JsonHandler.prettyFormatFromString(responseJson.toString()));
             if (responseJson.get("status").getAsString().equals(StatusCode.OK)) {
-                if (this.usuario.getId() == null) {
-                    Session.getInstance().getUser().setUsuario(usuario.getUsuario());
-                    Session.getInstance().showAlert(AlertType.CONFIRMATION, "Salvo com sucesso",
-                            "Usuário salvo com sucesso!",
-                            () -> SceneHandler.changeScene("/projeto/views/Home.fxml"));
-                } else {
-                    Session.getInstance().showAlert(AlertType.CONFIRMATION, "Salvo com sucesso",
-                            "Usuário salvo com sucesso!",
-                            () -> SceneHandler.changeScene("/projeto/views/Usuarios.fxml"));
-                }
+                Session.getInstance().showAlert(AlertType.CONFIRMATION, "Salvo com sucesso",
+                        "Usuário salvo com sucesso!",
+                        () -> SceneHandler.changeScene("/projeto/views/Home.fxml"));
             }
         } catch (Exception ex) {
             Session.getInstance().showAlert(AlertType.ERROR, "Erro", "Erro ao salvar usuário", () -> {
@@ -82,7 +75,7 @@ public class EditarUsuarioController {
 
     @FXML
     private void cancelar() {
-        SceneHandler.changeScene("/projeto/views/Usuarios.fxml");
+        SceneHandler.changeScene("/projeto/views/Home.fxml");
     }
 
     @FXML

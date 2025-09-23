@@ -1,13 +1,18 @@
 package projeto.viewControllers;
 
+import com.google.gson.JsonObject;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Alert.AlertType;
 import projeto.LogUI;
 import projeto.Session;
-import projeto.handlers.JwtHandle;
+import projeto.handlers.JsonHandler;
 import projeto.handlers.SceneHandler;
+import projeto.handlers.StatusCode;
+import projeto.requests.user.DeleteUserPayload;
 
 public class HomeController {
 
@@ -22,6 +27,9 @@ public class HomeController {
 
     @FXML
     private Button editUser;
+
+    @FXML
+    private Button deleteUser;
 
     @FXML
     private Label infoLabel;
@@ -55,10 +63,44 @@ public class HomeController {
     @FXML
     private void goEditUser() {
         try {
-            SceneHandler.changeSceneWithData("/projeto/views/EditarUsuario.fxml",
-                    (EditarUsuarioController controller) -> controller.setUsuario(Session.getInstance().getUser()));
+            SceneHandler.changeSceneWithData("/projeto/views/EditarMeuUsuario.fxml",
+                    (EditarMeuUsuarioController controller) -> controller.setUsuario(Session.getInstance().getUser()));
         } catch (Exception e) {
             System.out.println("Erro ao trocar de tela: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void goDeleteUser() {
+        try {
+            Session.getInstance().showAlert(AlertType.CONFIRMATION, "Excluir usuário",
+                    "Tem certeza que deseja excluir o seu usuário?", () -> {
+                        DeleteUserPayload payload = new DeleteUserPayload();
+                        String msg = JsonHandler.modelToString(payload);
+                        Session.getInstance().getOut().println(msg);
+                        System.out.println("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(msg));
+                        LogUI.log("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(msg));
+                        try {
+                            JsonObject response = JsonHandler
+                                    .stringToJsonObject(Session.getInstance().getIn().readLine());
+                            System.out.println(
+                                    "Servidor -> Cliente: " + JsonHandler.prettyFormatFromString(response.toString()));
+                            LogUI.log(
+                                    "Servidor -> Cliente: " + JsonHandler.prettyFormatFromString(response.toString()));
+                            if (response != null && response.get("status").getAsString().equals(StatusCode.OK)) {
+                                Session.getInstance().showAlert(AlertType.CONFIRMATION, "Excluido com sucesso",
+                                        "Usuário excluido com sucesso",
+                                        () -> {
+                                            Session.getInstance().desconectar();
+                                            SceneHandler.changeScene("/projeto/views/CONEXAO.fxml");
+                                        });
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Erro ao excluir seu usuário: " + e.getMessage());
+                        }
+                    });
+        } catch (Exception e) {
+            System.out.println("Erro ao excluir seu usuário: " + e.getMessage());
         }
     }
 

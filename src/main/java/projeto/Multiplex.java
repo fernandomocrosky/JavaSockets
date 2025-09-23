@@ -25,8 +25,10 @@ public class Multiplex {
         operations.put("LOGOUT", AuthController::logout);
         operations.put("CRIAR_USUARIO", UsuarioController::cadastrar);
         operations.put("LISTAR_USUARIOS", UsuarioController::listar);
-        operations.put("EDITAR_USUARIO", UsuarioController::editar);
-        operations.put("EXCLUIR_USUARIO", UsuarioController::deletar);
+        operations.put("ADMIN_EDITAR_USUARIO", UsuarioController::editarAdmin);
+        operations.put("EDITAR_PROPRIO_USUARIO", UsuarioController::editar);
+        operations.put("EXCLUIR_PROPRIO_USUARIO", UsuarioController::deletar);
+        operations.put("ADMIN_EXCLUIR_USUARIO", UsuarioController::deletarAdmin);
         operations.put("CRIAR_FILME", FilmeController::cadastrar);
         operations.put("LISTAR_FILMES", FilmeController::listar);
         operations.put("EDITAR_FILME", FilmeController::update);
@@ -36,20 +38,22 @@ public class Multiplex {
         permissions.put("public", List.of("LOGIN", "CRIAR_USUARIO", "LISTAR_FILMES"));
 
         permissions.put("admin",
-                List.of("LISTAR_USUARIOS", "LOGOUT", "EDITAR_USUARIO", "EXCLUIR_USUARIO", "CRIAR_FILME",
+                List.of("LISTAR_USUARIOS", "LOGOUT", "ADMIN_EDITAR_USUARIO", "EDITAR_PROPRIO_USUARIO",
+                        "ADMIN_EXCLUIR_USUARIO", "EXCLUIR_PROPRIO_USUARIO", "CRIAR_FILME",
                         "EDITAR_FILME", "EXCLUIR_FILME"));
 
-        permissions.put("user", List.of("LOGOUT", "CRIAR_REVIEW", "EDITAR_USUARIO"));
+        permissions.put("user", List.of("LOGOUT", "CRIAR_REVIEW", "EDITAR_PROPRIO_USUARIO", "EXCLUIR_PROPRIO_USUARIO"));
     }
 
     public static JsonElement handle(String request) {
-        if(request == null || request.isBlank()  ) {
+        if (request == null || request.isBlank()) {
             JsonObject response = new JsonObject();
             response.addProperty("status", StatusCode.BAD_REQUEST);
-            response.addProperty("message", String.format("Erro : %s possivel causa %s",StatusCode.getMessage(StatusCode.BAD_REQUEST), "Mensagem vazia"));
+            response.addProperty("message", String.format("Erro : %s possivel causa %s",
+                    StatusCode.getMessage(StatusCode.BAD_REQUEST), "Mensagem vazia"));
             return response;
         }
-        
+
         JsonObject requestObject = JsonHandler.stringToJsonObject(request);
         JsonObject responseObject = new JsonObject();
 
@@ -57,7 +61,8 @@ public class Multiplex {
                 requestObject.get("operacao").isJsonNull() ||
                 requestObject.get("operacao").getAsString().isBlank()) {
             responseObject.addProperty("status", StatusCode.BAD_REQUEST);
-            responseObject.addProperty("message", String.format("Erro : %s possivel causa %s",StatusCode.getMessage(StatusCode.BAD_REQUEST), "Falta a chave operacao na mensagem"));
+            responseObject.addProperty("message", String.format("Erro : %s possivel causa %s",
+                    StatusCode.getMessage(StatusCode.BAD_REQUEST), "Falta a chave operacao na mensagem"));
             return responseObject;
         }
 
@@ -71,12 +76,13 @@ public class Multiplex {
                     requestObject.get("operacao").isJsonNull() ||
                     requestObject.get("operacao").getAsString().isBlank()) {
                 responseObject.addProperty("status", StatusCode.BAD_REQUEST);
-                responseObject.addProperty("message", String.format("Erro : %s possivel causa %s",StatusCode.getMessage(StatusCode.BAD_REQUEST), "Falta a chave operacao na mensagem"));
+                responseObject.addProperty("message", String.format("Erro : %s possivel causa %s",
+                        StatusCode.getMessage(StatusCode.BAD_REQUEST), "Falta a chave operacao na mensagem"));
                 return responseObject;
             }
 
             responseObject.addProperty("status", StatusCode.INTERNAL_SERVER_ERROR);
-            responseObject.addProperty("message", StatusCode.getMessage(StatusCode.INTERNAL_SERVER_ERROR));
+            responseObject.addProperty("message", "Operacao nao encontrada no servidor.");
             return responseObject;
         }
 
@@ -84,7 +90,7 @@ public class Multiplex {
 
             String token = requestObject.get("token").getAsString();
             String role = JwtHandle.getClaim(token, "funcao", String.class);
-            
+
             if (!requestObject.has("token")) {
                 responseObject.addProperty("status", StatusCode.UNAUTHORIZED);
                 responseObject.addProperty("message", StatusCode.getMessage(StatusCode.UNAUTHORIZED));

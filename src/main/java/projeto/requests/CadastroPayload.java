@@ -1,14 +1,14 @@
 package projeto.requests;
 
+import com.google.gson.JsonObject;
+
 import projeto.models.User;
 
 public class CadastroPayload {
-    public String usuario;
-    public String senha;
+    public final JsonObject usuario;
     public final String operacao = "criar_usuario".toUpperCase();
 
-    public CadastroPayload(User user) {
-        this.usuario = user.getUsuario();
-        this.senha = user.getSenha();
+    public CadastroPayload(JsonObject usuario) {
+        this.usuario = usuario;
     }
 }
