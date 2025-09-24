@@ -261,8 +261,6 @@ public class FilmeDAO {
         String deleteCategorias = "DELETE FROM filmes_generos WHERE filme_id = ?";
         String insertCategorias = "INSERT INTO filmes_generos (filme_id, genero) VALUES (?, ?)";
 
-        System.out.println(filme.toString());
-
         try (
                 Connection conn = Database.getConnection();) {
             conn.setAutoCommit(false);

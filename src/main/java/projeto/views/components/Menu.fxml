@@ -8,7 +8,7 @@
     spacing="20" alignment="CENTER_LEFT"
     styleClass="menu-bar">
 
-    <Label text="NetFilmes" styleClass="menu-title" />
+    <Label text="VoteFlix" styleClass="menu-title" />
 
     <Button fx:id="btnHome" text="Home" onAction="#goHome" styleClass="menu-button" />
     <Button fx:id="btnUsuarios" text="Usuários" onAction="#goUsuarios" styleClass="menu-button" />

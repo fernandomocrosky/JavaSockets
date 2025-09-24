@@ -2,12 +2,14 @@ package projeto.viewControllers;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import javafx.application.Platform;
@@ -74,8 +76,8 @@ public class ConexaoController {
                     // Timeout de leitura (evita travar em reads)
                     s.setSoTimeout(5000);
 
-                    pw = new PrintWriter(s.getOutputStream(), true);
-                    br = new BufferedReader(new InputStreamReader(s.getInputStream()));
+                    pw = new PrintWriter(new OutputStreamWriter(s.getOutputStream(), StandardCharsets.UTF_8), true);
+                    br = new BufferedReader(new InputStreamReader(s.getInputStream(), StandardCharsets.UTF_8));
 
                     // Salva na sessão e troca de cena na UI thread
                     Socket finalS = s;
