@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import projeto.handlers.StatusCode;
@@ -37,7 +38,6 @@ public class Validator {
     public static List<String> validateRequest(JsonObject request, List<String> requiredFields) {
         List<String> errors = new ArrayList<>();
 
-        // Verifica campos obrigatórios (inclusive aninhados com ".")
         for (String field : requiredFields) {
             String[] parts = field.split("\\.");
             JsonObject current = request;
@@ -49,13 +49,37 @@ public class Validator {
                     if (!current.has(part) || current.get(part).isJsonNull()) {
                         exists = false;
                     } else {
-                        // Validação extra por campo
-                        String value = current.get(part).getAsString();
-                        if (value.length() < 3) {
-                            errors.add("O campo '" + field + "' deve ter pelo menos 3 caracteres.");
-                        }
-                        if (!value.matches("[a-zA-Z0-9]+")) {
-                            errors.add("O campo '" + field + "' deve conter apenas letras e números.");
+                        // Verifica se é array
+                        if (current.get(part).isJsonArray()) {
+                            JsonArray arr = current.getAsJsonArray(part);
+                            if (arr.size() == 0) {
+                                errors.add("O campo '" + field + "' não pode ser vazio.");
+                            } else {
+                                for (JsonElement el : arr) {
+                                    if (!el.isJsonPrimitive()) {
+                                        errors.add("O campo '" + field + "' deve conter apenas valores simples.");
+                                    } else {
+                                        String value = el.getAsString();
+                                        if (value.length() < 3) {
+                                            errors.add(
+                                                    "Cada item em '" + field + "' deve ter pelo menos 3 caracteres.");
+                                        }
+                                        if (!value.matches("[a-zA-Z0-9À-ÿ ]+")) {
+                                            errors.add("Cada item em '" + field
+                                                    + "' deve conter apenas letras, números e espaços.");
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            // Validação simples para string
+                            String value = current.get(part).getAsString();
+                            if (value.length() < 3) {
+                                errors.add("O campo '" + field + "' deve ter pelo menos 3 caracteres.");
+                            }
+                            if (!value.matches("[a-zA-Z0-9À-ÿ ]+")) {
+                                errors.add("O campo '" + field + "' deve conter apenas letras, números e espaços.");
+                            }
                         }
                     }
                 } else {

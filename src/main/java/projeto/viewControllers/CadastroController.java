@@ -16,7 +16,6 @@ import projeto.Validator;
 import projeto.handlers.JsonHandler;
 import projeto.handlers.SceneHandler;
 import projeto.handlers.StatusCode;
-import projeto.models.User;
 import projeto.requests.CadastroPayload;
 
 public class CadastroController {

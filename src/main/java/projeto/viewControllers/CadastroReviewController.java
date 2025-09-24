@@ -5,7 +5,6 @@ import java.util.List;
 import com.google.gson.JsonObject;
 
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -17,6 +16,7 @@ import projeto.handlers.JsonHandler;
 import projeto.handlers.SceneHandler;
 import projeto.handlers.StatusCode;
 import projeto.models.Filme;
+import projeto.requests.reviews.CadastroReviewPayload;
 
 public class CadastroReviewController {
     private Filme filme;
@@ -44,13 +44,15 @@ public class CadastroReviewController {
             return;
         }
 
-        JsonObject request = new JsonObject();
-        request.addProperty("id_filme", filme.getId());
-        request.addProperty("titulo", tituloField.getText());
-        request.addProperty("descricao", descricaoField.getText());
-        request.addProperty("nota", notaField.getText());
+        JsonObject review = new JsonObject();
+        review.addProperty("id_filme", filme.getId());
+        review.addProperty("titulo", tituloField.getText());
+        review.addProperty("descricao", descricaoField.getText());
+        review.addProperty("nota", notaField.getText());
 
-        String msg = JsonHandler.modelToString(request);
+        CadastroReviewPayload payload = new CadastroReviewPayload(review);
+
+        String msg = JsonHandler.modelToString(payload);
         try {
             Session.getInstance().getOut().println(msg);
             System.out.println("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(msg));
