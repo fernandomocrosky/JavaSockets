@@ -79,7 +79,7 @@ public class EditarFilmeController {
         filmeToSend.addProperty("diretor", diretorField.getText());
         filmeToSend.addProperty("ano", anoField.getText());
         filmeToSend.addProperty("sinopse", sinopseField.getText());
-        JsonHandler.addArray(filmeToSend, "generos", generosSelecionados);
+        JsonHandler.addArray(filmeToSend, "genero", generosSelecionados);
 
         EditarFilmePayload payload = new EditarFilmePayload(filmeToSend);
         String msg = JsonHandler.modelToString(payload);

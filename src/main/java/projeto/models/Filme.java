@@ -5,14 +5,14 @@ import java.util.List;
 
 public class Filme {
     public String id, titulo, diretor, ano, sinopse, nota, qtd_avaliacoes;
-    public List<String> generos = new ArrayList<>();
+    public List<String> genero = new ArrayList<>();
 
     public Filme(String titulo, String diretor, String ano, String sinopse, List<String> generos) {
         this.titulo = titulo;
         this.diretor = diretor;
         this.ano = ano;
         this.sinopse = sinopse;
-        this.generos = generos;
+        this.genero = generos;
     }
 
     public String getId() {
@@ -35,8 +35,8 @@ public class Filme {
         return sinopse;
     }
 
-    public List<String> getGeneros() {
-        return generos;
+    public List<String> getGenero() {
+        return genero;
     }
 
     public String getNota() {
@@ -57,7 +57,7 @@ public class Filme {
                 ", diretor='" + diretor + '\'' +
                 ", ano=" + ano +
                 ", sinopse='" + sinopse + '\'' +
-                ", generos=" + generos + '\'' +
+                ", generos=" + genero + '\'' +
                 ", nota=" + nota +
                 '}';
     }

@@ -43,7 +43,9 @@ public class ClientHandler implements Runnable {
                                 clientSocket.getInetAddress().getHostAddress(),
                                 clientSocket.getPort(), JsonHandler.prettyFormatFromString(clientData)));
                 JsonElement response = Multiplex.handle(clientData);
-                
+                if(response == null)
+                        System.out.println("Servidor -> Cliente: Nenhuma resposta encontrada\n Resposta nula");
+        
                 System.out.println("Servidor -> Cliente:\n " + JsonHandler.prettyFormatFromJson(response));
 
                 out.println(JsonHandler.jsonToString(response));

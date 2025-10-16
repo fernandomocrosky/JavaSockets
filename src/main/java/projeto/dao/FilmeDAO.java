@@ -18,7 +18,7 @@ public class FilmeDAO {
 
     public static boolean insert(Filme filme) {
         String filmeSql = "INSERT INTO filmes (titulo, diretor, ano, sinopse) VALUES (?, ?, ?, ?)";
-        String generoSql = "INSERT INTO filmes_generos (filme_id, genero) VALUES (?, ?)";
+        String generoSql = "INSERT INTO filmes_generos (id_filme, genero) VALUES (?, ?)";
 
         try (
                 Connection conn = Database.getConnection();) {
@@ -50,10 +50,10 @@ public class FilmeDAO {
                 return false;
             }
 
-            if (filme.generos.size() > 0 && filmeId > 0) {
+            if (filme.genero.size() > 0 && filmeId > 0) {
                 try (
                         PreparedStatement stmt = conn.prepareStatement(generoSql);) {
-                    for (String genero : filme.generos) {
+                    for (String genero : filme.genero) {
                         stmt.setInt(1, filmeId);
                         stmt.setString(2, genero);
                         if (stmt.executeUpdate() == 0) {
@@ -79,8 +79,8 @@ public class FilmeDAO {
 
     public static boolean editFilme(Filme filme) {
         String filmeSql = "UPDATE filmes SET titulo = ?, diretor = ?, ano = ?, sinopse = ? WHERE id = ?";
-        String generoSql = "DELETE FROM filmes_generos WHERE filme_id = ?";
-        String insertGeneroSql = "INSERT INTO filmes_generos (filme_id, genero) VALUES (?, ?)";
+        String generoSql = "DELETE FROM filmes_generos WHERE id_filme = ?";
+        String insertGeneroSql = "INSERT INTO filmes_generos (id_filme, genero) VALUES (?, ?)";
 
         try (
                 Connection conn = Database.getConnection();
@@ -107,7 +107,7 @@ public class FilmeDAO {
                 }
                 ;
 
-                for (String genero : filme.generos) {
+                for (String genero : filme.genero) {
                     stmt3.setInt(1, Integer.parseInt(filme.id));
                     stmt3.setString(2, genero);
                     if (stmt3.executeUpdate() == 0) {
@@ -166,7 +166,7 @@ public class FilmeDAO {
                 filme.ano = rs.getString("ano");
                 filme.sinopse = rs.getString("sinopse");
                 filme.nota = rs.getString("nota");
-                filme.generos = Arrays.asList(rs.getString("generos").split("\\|"));
+                filme.genero = Arrays.asList(rs.getString("generos").split("\\|"));
                 filme.qtd_avaliacoes = rs.getString("qtdAvaliacoes");
                 filmes.add(filme);
             }
@@ -182,7 +182,7 @@ public class FilmeDAO {
         String sql = """
                 SELECT f.id, f.titulo, f.diretor, f.ano, f.sinopse, GROUP_CONCAT(fg.genero, '|') as generos
                 FROM filmes f
-                LEFT JOIN filmes_generos fg ON fg.filme_id = f.id
+                LEFT JOIN filmes_generos fg ON fg.id_filme = f.id
                 WHERE f.titulo = ? AND f.diretor = ?
                 """;
 
@@ -226,7 +226,7 @@ public class FilmeDAO {
         String sql = """
                 SELECT f.id, f.titulo, f.diretor, f.ano, f.sinopse, GROUP_CONCAT(fg.genero, '|') as generos
                 FROM filmes f
-                LEFT JOIN filmes_generos fg ON fg.filme_id = f.id
+                LEFT JOIN filmes_generos fg ON fg.id_filme = f.id
                 WHERE f.id = ?
                 """;
 
@@ -266,8 +266,8 @@ public class FilmeDAO {
 
     public static boolean update(Filme filme) {
         String sql = "UPDATE filmes SET titulo = ?, diretor = ?, ano = ?, sinopse = ? WHERE id = ?";
-        String deleteCategorias = "DELETE FROM filmes_generos WHERE filme_id = ?";
-        String insertCategorias = "INSERT INTO filmes_generos (filme_id, genero) VALUES (?, ?)";
+        String deleteCategorias = "DELETE FROM filmes_generos WHERE id_filme = ?";
+        String insertCategorias = "INSERT INTO filmes_generos (id_filme, genero) VALUES (?, ?)";
 
         try (
                 Connection conn = Database.getConnection();) {
@@ -295,7 +295,7 @@ public class FilmeDAO {
                     return false;
                 }
 
-                for (String genero : filme.generos) {
+                for (String genero : filme.genero) {
                     insertStatement.setInt(1, Integer.parseInt(filme.id));
                     insertStatement.setString(2, genero);
                     insertStatement.addBatch();

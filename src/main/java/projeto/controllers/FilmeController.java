@@ -19,7 +19,7 @@ public class FilmeController {
         JsonObject filmeJson = requestJson.get("filme").getAsJsonObject();
 
         List<String> errors = Validator.validateRequest(filmeJson,
-                List.of("titulo", "diretor", "ano", "sinopse", "generos"));
+                List.of("titulo", "diretor", "ano", "sinopse", "genero"));
 
         if (errors != null && !errors.isEmpty()) {
             response.addProperty("status", StatusCode.BAD_REQUEST);
@@ -35,7 +35,7 @@ public class FilmeController {
             response.addProperty("message", StatusCode.getMessage(StatusCode.ALREADY_EXISTS));
             return JsonHandler.jsonToString(response);
         } else {
-            JsonArray generos = filmeJson.get("generos").getAsJsonArray();
+            JsonArray generos = filmeJson.get("genero").getAsJsonArray();
             List<String> generosList = new ArrayList<>();
 
             for (int i = 0; i < generos.size(); i++) {
@@ -78,7 +78,7 @@ public class FilmeController {
         JsonObject filmeJson = requestJson.get("filme").getAsJsonObject();
 
         List<String> errors = Validator.validateRequest(filmeJson,
-                List.of("titulo", "diretor", "ano", "sinopse", "generos"));
+                List.of("titulo", "diretor", "ano", "sinopse", "genero"));
 
         if (errors != null && !errors.isEmpty()) {
             response.addProperty("status", StatusCode.BAD_REQUEST);

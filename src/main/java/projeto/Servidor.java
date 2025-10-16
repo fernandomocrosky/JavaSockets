@@ -82,7 +82,7 @@ public class Servidor {
                 startButton.setEnabled(false);
                 new Thread(() -> listen(porta, frame)).start();
                 statusLabel.setText(
-                        "Servdiro escutando em " + InetAddress.getLocalHost().getHostAddress() + ":" + porta + "...");
+                        "Servidor escutando em " + InetAddress.getLocalHost().getHostAddress() + ":" + porta + "...");
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(frame, "Porta deve ser um número inteiro!", "Erro",
                         JOptionPane.ERROR_MESSAGE);

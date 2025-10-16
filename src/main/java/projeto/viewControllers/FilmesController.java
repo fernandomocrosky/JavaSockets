@@ -71,7 +71,7 @@ public class FilmesController {
         colSinopse.setCellValueFactory(new PropertyValueFactory<>("sinopse"));
         colDiretor.setCellValueFactory(new PropertyValueFactory<>("diretor"));
         colAno.setCellValueFactory(new PropertyValueFactory<>("ano"));
-        colGeneros.setCellValueFactory(new PropertyValueFactory<>("generos"));
+        colGeneros.setCellValueFactory(new PropertyValueFactory<>("genero"));
 
         // colGeneros.setCellValueFactory(
         // cellData -> new SimpleStringProperty(String.join(", ",
