@@ -23,27 +23,30 @@ CREATE TABLE
     IF NOT EXISTS filmes_generos (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         genero VARCHAR(255) NOT NULL,
-        filme_id INTEGER NOT NULL,
-        CONSTRAINT fk_generos_filme FOREIGN KEY (filme_id) REFERENCES filmes (id) ON DELETE CASCADE
+        id_filme INTEGER NOT NULL,
+        CONSTRAINT fk_generos_filme FOREIGN KEY (id_filme) REFERENCES filmes (id) ON DELETE CASCADE
     );
 
 CREATE TABLE
     IF NOT EXISTS filmes_reviews (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        filme_id INTEGER NOT NULL,
+        id_filme INTEGER NOT NULL,
+        id_usuario INTEGER NOT NULL,
         titulo VARCHAR(255) NOT NULL,
         nota DECIMAL(1, 1) NOT NULL,
         descricao TEXT NOT NULL,
         "data" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        CONSTRAINT fk_reviews_filme FOREIGN KEY (filme_id) REFERENCES filmes (id) ON DELETE CASCADE
+        CONSTRAINT fk_reviews_filme FOREIGN KEY (id_filme) REFERENCES filmes (id) ON DELETE CASCADE
+        CONSTRAINT fk_reviews_usuarios FOREIGN KEY (id_usuario) REFERENCES usuarios (id) ON DELETE CASCADE
     );
 
 
-CREATE INDEX IF NOT EXISTS ix_reviews_filmes ON filmes_reviews (filme_id);
+CREATE INDEX IF NOT EXISTS ix_reviews_filmes ON filmes_reviews (id_filme);
+CREATE INDEX IF NOT EXISTS ix_reviews_usuarios ON filmes_reviews (id_usuario);
 
 CREATE INDEX IF NOT EXISTS ix_generos_filmes ON filmes_generos (filme_id);
-CREATE UNIQUE INDEX IF NOT EXISTS ux_generos_filme_genero ON filmes_generos(filme_id, genero);
+CREATE UNIQUE INDEX IF NOT EXISTS ux_generos_filme_genero ON filmes_generos(id_filme, genero);
 
 CREATE TABLE
     IF NOT EXISTS token_blacklist (

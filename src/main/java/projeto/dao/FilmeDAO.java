@@ -131,19 +131,27 @@ public class FilmeDAO {
         List<Filme> filmes = new ArrayList<>();
 
         String sql = """
-                SELECT
-                    f.id,
-                    f.titulo,
-                    f.diretor,
-                    f.ano,
-                    f.nota,
-                    GROUP_CONCAT(fg.genero, '|') as generos,
-                    f.sinopse,
-                    COUNT(fr.filme_id) as qtdAvaliacoes
-                FROM filmes f
-                LEFT JOIN filmes_generos fg ON fg.filme_id = f.id
-                LEFT JOIN filmes_reviews fr ON fr.filme_id = f.id
-                GROUP BY f.id, f.titulo, f.diretor, f.ano, f.nota, f.sinopse
+                        SELECT
+                        f.id,
+                        f.titulo,
+                        f.diretor,
+                        f.ano,
+                        f.nota,
+                        (
+                            SELECT GROUP_CONCAT(g.genero, '|')
+                            FROM (
+                                SELECT DISTINCT genero
+                                FROM filmes_generos
+                                WHERE id_filme = f.id
+                            ) g
+                        ) AS generos,
+                        f.sinopse,
+                        (
+                            SELECT COUNT(*)
+                            FROM filmes_reviews r
+                            WHERE r.id_filme = f.id
+                        ) AS qtdAvaliacoes
+                    FROM filmes f;
                 """;
 
         try (
