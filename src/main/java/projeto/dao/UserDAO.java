@@ -60,6 +60,27 @@ public class UserDAO {
         return null;
     }
 
+    public static User findById(String id) {
+        String sql = "SELECT usuario, senha FROM usuarios WHERE id = ?";
+
+        try (Connection conn = Database.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, Integer.parseInt(id));
+
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new User(
+                        rs.getString("usuario"),
+                        null);
+            }
+        } catch (Exception ex) {
+            System.err.println("Erro ao buscar usuário: " + ex.getMessage());
+        }
+
+        return null;
+    }
+
     public static List<User> findAll() {
         String sql = "SELECT id, usuario FROM usuarios";
 

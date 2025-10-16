@@ -24,6 +24,7 @@ public class Multiplex {
         operations.put("LOGIN", AuthController::login);
         operations.put("LOGOUT", AuthController::logout);
         operations.put("CRIAR_USUARIO", UsuarioController::cadastrar);
+        operations.put("LISTAR_PROPRIO_USUARIO", UsuarioController::listarMeuUsuario);
         operations.put("LISTAR_USUARIOS", UsuarioController::listar);
         operations.put("ADMIN_EDITAR_USUARIO", UsuarioController::editarAdmin);
         operations.put("EDITAR_PROPRIO_USUARIO", UsuarioController::editar);
@@ -38,11 +39,11 @@ public class Multiplex {
         permissions.put("public", List.of("LOGIN", "CRIAR_USUARIO", "LISTAR_FILMES"));
 
         permissions.put("admin",
-                List.of("LISTAR_USUARIOS", "LOGOUT", "ADMIN_EDITAR_USUARIO", "EDITAR_PROPRIO_USUARIO",
+                List.of("LISTAR_USUARIOS", "LOGOUT", "ADMIN_EDITAR_USUARIO", "LISTAR_PROPRIO_USUARIO", "EDITAR_PROPRIO_USUARIO",
                         "ADMIN_EXCLUIR_USUARIO", "EXCLUIR_PROPRIO_USUARIO", "CRIAR_FILME",
                         "EDITAR_FILME", "EXCLUIR_FILME"));
 
-        permissions.put("user", List.of("LOGOUT", "CRIAR_REVIEW", "EDITAR_PROPRIO_USUARIO", "EXCLUIR_PROPRIO_USUARIO"));
+        permissions.put("user", List.of("LOGOUT", "CRIAR_REVIEW", "EDITAR_PROPRIO_USUARIO", "LISTAR_PROPRIO_USUARIO", "EXCLUIR_PROPRIO_USUARIO"));
     }
 
     public static JsonElement handle(String request) {

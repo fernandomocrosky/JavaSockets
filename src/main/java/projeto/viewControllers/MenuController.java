@@ -26,6 +26,8 @@ public class MenuController {
     private Button btnReviews;
     @FXML
     private Button btnLogout;
+    @FXML
+    private Button meuUsuario;
 
     @FXML
     private void goHome() {
@@ -40,6 +42,11 @@ public class MenuController {
     @FXML
     private void goFilmes() {
         SceneHandler.changeScene("/projeto/views/Filmes.fxml");
+    }
+
+    @FXML
+    private void meuUsuario() {
+        SceneHandler.changeScene("/projeto/views/MeuUsuario.fxml");
     }
 
     @FXML

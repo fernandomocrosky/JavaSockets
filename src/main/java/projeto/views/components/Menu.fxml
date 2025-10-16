@@ -13,9 +13,10 @@
     <Button fx:id="btnHome" text="Home" onAction="#goHome" styleClass="menu-button" />
     <Button fx:id="btnUsuarios" text="Usuários" onAction="#goUsuarios" styleClass="menu-button" />
     <Button fx:id="btnFilmes" text="Filmes" onAction="#goFilmes" styleClass="menu-button" />
-     <Button fx:id="btnReviews" text="Meus Reviews" onAction="#goReviews" styleClass="menu-button" />
+    <Button fx:id="btnReviews" text="Meus Reviews" onAction="#goReviews" styleClass="menu-button" />
 
     <Pane HBox.hgrow="ALWAYS" />
 
+    <Button text="Meu Usuário" onAction="#meuUsuario" styleClass="meu-usuario-button" />
     <Button text="Logout" onAction="#logout" styleClass="logout-button" />
 </HBox>

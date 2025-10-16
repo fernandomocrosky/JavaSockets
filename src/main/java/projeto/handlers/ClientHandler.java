@@ -37,16 +37,21 @@ public class ClientHandler implements Runnable {
                     clientSocket.getInetAddress().getHostAddress(), clientSocket.getPort()));
 
             while ((clientData = in.readLine()) != null) {
-                System.out.println("Mensagem do cliente:\n " + JsonHandler.prettyFormatFromString(clientData));
+                System.out.println("Cliente -> Servidor:\n " + JsonHandler.prettyFormatFromString(clientData));
                 Servidor.log(
                         String.format("Cliente %s:%d -> Servidor:\n %s ",
                                 clientSocket.getInetAddress().getHostAddress(),
                                 clientSocket.getPort(), JsonHandler.prettyFormatFromString(clientData)));
                 JsonElement response = Multiplex.handle(clientData);
+                
+                System.out.println("Servidor -> Cliente:\n " + JsonHandler.prettyFormatFromJson(response));
 
                 out.println(JsonHandler.jsonToString(response));
+
                 Servidor.log(String.format("Servidor -> Cliente %s:%d:\n %s",
+
                         clientSocket.getInetAddress().getHostAddress(), clientSocket.getPort(),
+
                         JsonHandler.prettyFormatFromJson(response)));
 
                 if (clientData.equalsIgnoreCase("exit")) {

@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import io.jsonwebtoken.Jwt;
 import projeto.Validator;
 import projeto.dao.UserDAO;
 import projeto.handlers.JsonHandler;
@@ -59,6 +60,19 @@ public class UsuarioController {
         response.addProperty("status", StatusCode.OK);
         response.addProperty("message", StatusCode.getMessage(StatusCode.OK));
         response.add("usuarios", usersJson);
+
+        return JsonHandler.jsonToString(response);
+    }
+
+    public static String listarMeuUsuario(String request) {
+        JsonObject response = new JsonObject();
+        JsonObject requestJson = JsonHandler.stringToJsonObject(request);
+        String token = requestJson.get("token").getAsString();
+
+        User user = UserDAO.findById(JwtHandle.getClaim(token, "id", String.class));
+        response.addProperty("usuario", user.getUsuario());
+        response.addProperty("status", StatusCode.OK);
+        response.addProperty("message", StatusCode.getMessage(StatusCode.OK));
 
         return JsonHandler.jsonToString(response);
     }

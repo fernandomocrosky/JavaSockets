@@ -96,7 +96,8 @@
 }
 
 /* botão de logout */
-.logout-button {
+.logout-button,
+.meu-usuario-button {
     -fx-background-color: #db0d15;
     -fx-text-fill: #fff;
     -fx-font-weight: bold;
@@ -105,10 +106,19 @@
     -fx-cursor: hand;
 }
 
-.logout-button:hover {
+.logout-button:hover,
+.meu-usuario-button:hover {
     -fx-background-color: #b50f12;
 }
 
+.meu-usuario-button {
+    -fx-background-color: #4a5fc1;
+}
+
+
+.meu-usuario-button:hover {
+    -fx-background-color: #3f51b5;
+}
 
 /* Estilo geral da tabela */
 .table-view {
