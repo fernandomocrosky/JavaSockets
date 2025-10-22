@@ -23,7 +23,7 @@ public class UsuarioController {
 
         if (errors != null && !errors.isEmpty()) {
             response.addProperty("status", StatusCode.BAD_REQUEST);
-            response.addProperty("message", String.join("\n", errors));
+            System.out.println("Errors:" + errors);
             return JsonHandler.jsonToString(response);
         }
         JsonObject userObject = requestJson.get("usuario").getAsJsonObject();
@@ -33,13 +33,12 @@ public class UsuarioController {
 
         if (userDb != null) {
             response.addProperty("status", StatusCode.ALREADY_EXISTS);
-            response.addProperty("message", StatusCode.getMessage(StatusCode.ALREADY_EXISTS));
+            System.out.println("Usuário ja cadastrado");
             return JsonHandler.jsonToString(response);
         }
 
         if (UserDAO.insert(user)) {
             response.addProperty("status", StatusCode.CREATED);
-            response.addProperty("message", StatusCode.getMessage(StatusCode.CREATED));
             return JsonHandler.jsonToString(response);
         }
 
@@ -58,7 +57,6 @@ public class UsuarioController {
             usersJson.add(userJson);
         }
         response.addProperty("status", StatusCode.OK);
-        response.addProperty("message", StatusCode.getMessage(StatusCode.OK));
         response.add("usuarios", usersJson);
 
         return JsonHandler.jsonToString(response);
@@ -72,7 +70,6 @@ public class UsuarioController {
         User user = UserDAO.findById(JwtHandle.getClaim(token, "id", String.class));
         response.addProperty("usuario", user.getUsuario());
         response.addProperty("status", StatusCode.OK);
-        response.addProperty("message", StatusCode.getMessage(StatusCode.OK));
 
         return JsonHandler.jsonToString(response);
     }
@@ -86,7 +83,7 @@ public class UsuarioController {
 
         if (errors != null && !errors.isEmpty()) {
             response.addProperty("status", StatusCode.BAD_REQUEST);
-            response.addProperty("message", String.join("\n", errors));
+            System.out.println("Errors:" + errors);
             return JsonHandler.jsonToString(response);
         }
 
@@ -96,10 +93,9 @@ public class UsuarioController {
 
         if (UserDAO.update(user)) {
             response.addProperty("status", StatusCode.OK);
-            response.addProperty("message", StatusCode.getMessage(StatusCode.OK));
         } else {
             response.addProperty("status", StatusCode.NOT_FOUND);
-            response.addProperty("message", StatusCode.getMessage(StatusCode.NOT_FOUND));
+            System.out.println("Usuário não encontrado no banco de dados para editar");
         }
 
         return JsonHandler.jsonToString(response);
@@ -115,7 +111,7 @@ public class UsuarioController {
 
         if (errors != null && !errors.isEmpty()) {
             response.addProperty("status", StatusCode.BAD_REQUEST);
-            response.addProperty("message", String.join("\n", errors));
+            System.out.println("Errors:" + errors);
             return JsonHandler.jsonToString(response);
         }
 
@@ -125,10 +121,9 @@ public class UsuarioController {
 
         if (UserDAO.update(user)) {
             response.addProperty("status", StatusCode.OK);
-            response.addProperty("message", StatusCode.getMessage(StatusCode.OK));
         } else {
             response.addProperty("status", StatusCode.NOT_FOUND);
-            response.addProperty("message", StatusCode.getMessage(StatusCode.NOT_FOUND));
+            System.out.println("Usuário não encontrado no banco de dados para editar");
         }
 
         return JsonHandler.jsonToString(response);
@@ -142,10 +137,9 @@ public class UsuarioController {
 
         if (UserDAO.delete(id)) {
             response.addProperty("status", StatusCode.OK);
-            response.addProperty("message", StatusCode.getMessage(StatusCode.OK));
         } else {
             response.addProperty("status", StatusCode.NOT_FOUND);
-            response.addProperty("message", StatusCode.getMessage(StatusCode.NOT_FOUND));
+            System.out.println("Usuário não encontrado no banco de dados para deletar");
         }
 
         return JsonHandler.jsonToString(response);
@@ -159,16 +153,14 @@ public class UsuarioController {
 
         if (errors != null && !errors.isEmpty()) {
             response.addProperty("status", StatusCode.BAD_REQUEST);
-            response.addProperty("message", String.join("\n", errors));
             return JsonHandler.jsonToString(response);
         }
 
         if (UserDAO.delete(requestJson.get("id").getAsString())) {
             response.addProperty("status", StatusCode.OK);
-            response.addProperty("message", StatusCode.getMessage(StatusCode.OK));
         } else {
+            System.out.println("Usuário nao encontrado no banco de dados para deletar");
             response.addProperty("status", StatusCode.NOT_FOUND);
-            response.addProperty("message", StatusCode.getMessage(StatusCode.NOT_FOUND));
         }
 
         return JsonHandler.jsonToString(response);

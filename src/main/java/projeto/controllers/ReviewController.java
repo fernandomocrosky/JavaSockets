@@ -26,10 +26,8 @@ public class ReviewController {
 
         if (ReviewDAO.insert(review)) {
             responseObject.addProperty("status", StatusCode.OK);
-            responseObject.addProperty("message", StatusCode.getMessage(StatusCode.OK));
         } else {
             responseObject.addProperty("status", StatusCode.BAD_REQUEST);
-            responseObject.addProperty("message", StatusCode.getMessage(StatusCode.BAD_REQUEST));
         }
 
         return JsonHandler.jsonToString(responseObject);

@@ -50,8 +50,8 @@ public class Multiplex {
         if (request == null || request.isBlank()) {
             JsonObject response = new JsonObject();
             response.addProperty("status", StatusCode.BAD_REQUEST);
-            response.addProperty("message", String.format("Erro : %s possivel causa %s",
-                    StatusCode.getMessage(StatusCode.BAD_REQUEST), "Mensagem vazia"));
+            System.out.println("Requisição vazia");
+
             return response;
         }
 
@@ -62,8 +62,8 @@ public class Multiplex {
                 requestObject.get("operacao").isJsonNull() ||
                 requestObject.get("operacao").getAsString().isBlank()) {
             responseObject.addProperty("status", StatusCode.BAD_REQUEST);
-            responseObject.addProperty("message", String.format("Erro : %s possivel causa %s",
-                    StatusCode.getMessage(StatusCode.BAD_REQUEST), "Falta a chave operacao na mensagem"));
+            
+            System.out.println("Operacao nao encontrada ou vazia no request");
             return responseObject;
         }
 
@@ -77,13 +77,12 @@ public class Multiplex {
                     requestObject.get("operacao").isJsonNull() ||
                     requestObject.get("operacao").getAsString().isBlank()) {
                 responseObject.addProperty("status", StatusCode.BAD_REQUEST);
-                responseObject.addProperty("message", String.format("Erro : %s possivel causa %s",
-                        StatusCode.getMessage(StatusCode.BAD_REQUEST), "Falta a chave operacao na mensagem"));
+                System.out.println("Operacao nao encontrada ou vazia no request");
+
                 return responseObject;
             }
 
             responseObject.addProperty("status", StatusCode.INTERNAL_SERVER_ERROR);
-            responseObject.addProperty("message", "Operacao nao encontrada no servidor.");
             return responseObject;
         }
 
@@ -94,19 +93,19 @@ public class Multiplex {
 
             if (!requestObject.has("token")) {
                 responseObject.addProperty("status", StatusCode.UNAUTHORIZED);
-                responseObject.addProperty("message", StatusCode.getMessage(StatusCode.UNAUTHORIZED));
+                System.out.println("Token nao encontrado no request");
                 return responseObject;
             }
 
             if (role == null || token == null) {
                 responseObject.addProperty("status", StatusCode.UNAUTHORIZED);
-                responseObject.addProperty("message", "Falta token ou funcao no token");
+                System.out.println("Token nao encontrado no request");
                 return responseObject;
             }
 
             if (!permissions.get(role).contains(operation)) {
                 responseObject.addProperty("status", StatusCode.FORBIDDEN);
-                responseObject.addProperty("message", StatusCode.getMessage(StatusCode.FORBIDDEN));
+                System.out.println("Operacao nao permitida por este usuário");
                 return responseObject;
             }
         }
@@ -116,7 +115,6 @@ public class Multiplex {
 
         if (response == null || response.isEmpty()) {
             responseObject.addProperty("status", StatusCode.INTERNAL_SERVER_ERROR);
-            responseObject.addProperty("message", StatusCode.getMessage(StatusCode.INTERNAL_SERVER_ERROR));
         }
 
         return jsonResponse;

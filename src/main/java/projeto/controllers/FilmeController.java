@@ -23,7 +23,6 @@ public class FilmeController {
 
         if (errors != null && !errors.isEmpty()) {
             response.addProperty("status", StatusCode.BAD_REQUEST);
-            response.addProperty("message", String.join("\n", errors));
             return JsonHandler.jsonToString(response);
         }
 
@@ -32,7 +31,6 @@ public class FilmeController {
 
         if (filmeDb.id != null) {
             response.addProperty("status", StatusCode.ALREADY_EXISTS);
-            response.addProperty("message", StatusCode.getMessage(StatusCode.ALREADY_EXISTS));
             return JsonHandler.jsonToString(response);
         } else {
             JsonArray generos = filmeJson.get("genero").getAsJsonArray();
@@ -50,10 +48,8 @@ public class FilmeController {
 
             if (FilmeDAO.insert(filme)) {
                 response.addProperty("status", StatusCode.CREATED);
-                response.addProperty("message", StatusCode.getMessage(StatusCode.CREATED));
             } else {
                 response.addProperty("status", StatusCode.INTERNAL_SERVER_ERROR);
-                response.addProperty("message", StatusCode.getMessage(StatusCode.INTERNAL_SERVER_ERROR));
             }
         }
 
@@ -66,7 +62,6 @@ public class FilmeController {
         List<Filme> filmes = FilmeDAO.findAll();
 
         response.addProperty("status", StatusCode.OK);
-        response.addProperty("message", StatusCode.getMessage(StatusCode.OK));
         response.add("filmes", JsonHandler.modelToJsonArray(filmes));
 
         return JsonHandler.jsonToString(response);
@@ -82,7 +77,6 @@ public class FilmeController {
 
         if (errors != null && !errors.isEmpty()) {
             response.addProperty("status", StatusCode.BAD_REQUEST);
-            response.addProperty("message", String.join("\n", errors));
             return JsonHandler.jsonToString(response);
         }
 
@@ -93,14 +87,11 @@ public class FilmeController {
         if (filmeDb.id != null) {
             if (FilmeDAO.update(updateFilme)) {
                 response.addProperty("status", StatusCode.OK);
-                response.addProperty("message", StatusCode.getMessage(StatusCode.OK));
             } else {
                 response.addProperty("status", StatusCode.INTERNAL_SERVER_ERROR);
-                response.addProperty("message", StatusCode.getMessage(StatusCode.INTERNAL_SERVER_ERROR));
             }
         } else {
             response.addProperty("status", StatusCode.NOT_FOUND);
-            response.addProperty("message", StatusCode.getMessage(StatusCode.NOT_FOUND));
             return JsonHandler.jsonToString(response);
         }
 
@@ -113,10 +104,8 @@ public class FilmeController {
         String id = requestJson.get("id").getAsString();
         if (FilmeDAO.delete(id)) {
             response.addProperty("status", StatusCode.OK);
-            response.addProperty("message", StatusCode.getMessage(StatusCode.OK));
         } else {
             response.addProperty("status", StatusCode.NOT_FOUND);
-            response.addProperty("message", StatusCode.getMessage(StatusCode.NOT_FOUND));
         }
 
         return JsonHandler.jsonToString(response);

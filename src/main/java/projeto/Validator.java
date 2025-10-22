@@ -49,6 +49,8 @@ public class Validator {
                     if (!current.has(part) || current.get(part).isJsonNull()) {
                         exists = false;
                     } else {
+                        if(field.equals("id")) break;
+
                         // Verifica se é array
                         if (current.get(part).isJsonArray()) {
                             JsonArray arr = current.getAsJsonArray(part);

@@ -28,18 +28,15 @@ public class AuthController {
                 }
                 String token = JwtHandle.generateToken(user);
                 response.addProperty("status", StatusCode.OK);
-                response.addProperty("message", StatusCode.getMessage(StatusCode.OK));
                 response.addProperty("token", token);
 
                 return JsonHandler.jsonToString(response);
             } else {
                 response.addProperty("status", StatusCode.UNAUTHORIZED);
-                response.addProperty("message", StatusCode.getMessage(StatusCode.UNAUTHORIZED));
             }
 
         } catch (Exception e) {
             response.addProperty("status", StatusCode.INTERNAL_SERVER_ERROR);
-            response.addProperty("message", StatusCode.getMessage(StatusCode.INTERNAL_SERVER_ERROR));
         }
 
         JsonObject json = JsonHandler.stringToJsonObject(request);
@@ -47,10 +44,8 @@ public class AuthController {
 
         if (user.getUsuario().equals("admin") && user.getSenha().equals("admin")) {
             response.addProperty("status", StatusCode.OK);
-            response.addProperty("message", StatusCode.getMessage(StatusCode.OK));
         } else {
             response.addProperty("status", StatusCode.UNAUTHORIZED);
-            response.addProperty("message", StatusCode.getMessage(StatusCode.UNAUTHORIZED));
         }
 
         return JsonHandler.jsonToString(response);
@@ -66,10 +61,8 @@ public class AuthController {
             Long expMilli = JwtHandle.getExpiration(token).getTime();
             UserDAO.addTokenToBlacklist(token, expMilli);
             json.addProperty("status", StatusCode.OK);
-            json.addProperty("message", "Logout realizado com sucesso.");
         } catch (Exception ex) {
             json.addProperty("status", StatusCode.UNAUTHORIZED);
-            json.addProperty("message", "Token inválido.");
             System.out.println(ex.getMessage());
         }
 
