@@ -71,6 +71,9 @@ public class CadastroController {
 
         status.setText("Login enviado!");
         System.out.println("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(msg));
+        System.out.println("\nServidor -> Cliente: " + JsonHandler.prettyFormatFromString(response));
+        LogUI.log("Cliente -> Servidor: " + JsonHandler.prettyFormatFromString(msg));
+        LogUI.log("Servidor -> Cliente: " + JsonHandler.prettyFormatFromString(response));
         if (response != null && !response.isEmpty()
                 && responseJson.get("status").getAsString().equals(StatusCode.CREATED)) {
             System.out.println("\nServidor -> Cliente: " + JsonHandler.prettyFormatFromString(response));
