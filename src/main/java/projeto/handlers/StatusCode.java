@@ -25,19 +25,19 @@ public final class StatusCode {
     private static final Map<String, String> messages = new HashMap<>();
 
     static {
-        messages.put(OK, "Operacao realizada com sucesso");
-        messages.put(CREATED, "Recurso criado com sucesso");
-        messages.put(BAD_REQUEST, "Requisicao invalida");
-        messages.put(UNAUTHORIZED, "Nao autorizado");
-        messages.put(FORBIDDEN, "Acesso proibido");
-        messages.put(NOT_FOUND, "Recurso nao encontrado");
-        messages.put(ALREADY_EXISTS, "Recurso ja existe");
+        messages.put(OK, "Sucesso: operação realizada com sucesso");
+        messages.put(CREATED, "Sucesso: Recurso cadastrado");
+        messages.put(BAD_REQUEST, "Erro: Operação não encontrada ou inválida");
+        messages.put(UNAUTHORIZED, "Erro: Token inválido");
+        messages.put(FORBIDDEN, "Erro: sem permissão");
+        messages.put(NOT_FOUND, "Erro: Recurso inexistente");
+        messages.put(ALREADY_EXISTS, "Erro: Recurso ja existe");
         messages.put(GONE, "Recurso nao esta mais disponível");
         messages.put(LENGTH_REQUIRED, "Tamanho do conteudo ncessario");
         messages.put(PAYLOAD_TOO_LARGE, "Payload muito grande");
         messages.put(IM_A_TEAPOT, "Eu sou um bule de cha ☕ (Easter Egg)");
-        messages.put(UNPROCESSABLE_ENTITY, "Entidade nao processavel");
-        messages.put(INTERNAL_SERVER_ERROR, "Erro interno no servidor");
+        messages.put(UNPROCESSABLE_ENTITY, "Erro: sem permissão");
+        messages.put(INTERNAL_SERVER_ERROR, "Erro: Falha interna do servidor");
     }
 
     public static String getMessage(String code) {

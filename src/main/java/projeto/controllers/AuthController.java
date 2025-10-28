@@ -28,6 +28,7 @@ public class AuthController {
                 }
                 String token = JwtHandle.generateToken(user);
                 response.addProperty("status", StatusCode.OK);
+                response.addProperty("mensagem", StatusCode.getMessage(StatusCode.OK));
                 response.addProperty("token", token);
 
                 return JsonHandler.jsonToString(response);
@@ -44,8 +45,10 @@ public class AuthController {
 
         if (user.getUsuario().equals("admin") && user.getSenha().equals("admin")) {
             response.addProperty("status", StatusCode.OK);
+            response.addProperty("mensagem", StatusCode.getMessage(StatusCode.OK));
         } else {
             response.addProperty("status", StatusCode.UNAUTHORIZED);
+            response.addProperty("mensagem", StatusCode.getMessage(StatusCode.UNAUTHORIZED));
         }
 
         return JsonHandler.jsonToString(response);
@@ -61,8 +64,10 @@ public class AuthController {
             Long expMilli = JwtHandle.getExpiration(token).getTime();
             UserDAO.addTokenToBlacklist(token, expMilli);
             json.addProperty("status", StatusCode.OK);
+            json.addProperty("mensagem", StatusCode.getMessage(StatusCode.OK));
         } catch (Exception ex) {
             json.addProperty("status", StatusCode.UNAUTHORIZED);
+            json.addProperty("mensagem", StatusCode.getMessage(StatusCode.UNAUTHORIZED));
             System.out.println(ex.getMessage());
         }
 
