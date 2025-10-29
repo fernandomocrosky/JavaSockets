@@ -34,10 +34,11 @@ public class AuthController {
                 return JsonHandler.jsonToString(response);
             } else {
                 response.addProperty("status", StatusCode.UNAUTHORIZED);
+                response.addProperty("mensagem", StatusCode.getMessage(StatusCode.UNAUTHORIZED));
             }
-
         } catch (Exception e) {
             response.addProperty("status", StatusCode.INTERNAL_SERVER_ERROR);
+            response.addProperty("mensagem", StatusCode.getMessage(StatusCode.INTERNAL_SERVER_ERROR));
         }
 
         JsonObject json = JsonHandler.stringToJsonObject(request);
@@ -47,8 +48,8 @@ public class AuthController {
             response.addProperty("status", StatusCode.OK);
             response.addProperty("mensagem", StatusCode.getMessage(StatusCode.OK));
         } else {
-            response.addProperty("status", StatusCode.UNAUTHORIZED);
-            response.addProperty("mensagem", StatusCode.getMessage(StatusCode.UNAUTHORIZED));
+            response.addProperty("status", StatusCode.UNPROCESSABLE_ENTITY);
+            response.addProperty("mensagem", StatusCode.getMessage(StatusCode.UNPROCESSABLE_ENTITY));
         }
 
         return JsonHandler.jsonToString(response);

@@ -90,7 +90,7 @@ public class LoginController {
                 System.out.println("Erro ao trocar de tela: " + e.getMessage());
             }
         } else {
-            status.setText(responseJson.get("message").getAsString());
+            status.setText(responseJson.get("mensagem").getAsString());
         }
     }
 

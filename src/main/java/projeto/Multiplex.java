@@ -50,7 +50,6 @@ public class Multiplex {
         if (request == null || request.isBlank()) {
             JsonObject response = new JsonObject();
             response.addProperty("status", StatusCode.BAD_REQUEST);
-            response.addProperty("mensagem", StatusCode.getMessage(StatusCode.BAD_REQUEST));
             System.out.println("Requisição vazia");
 
             return response;
@@ -63,7 +62,6 @@ public class Multiplex {
                 requestObject.get("operacao").isJsonNull() ||
                 requestObject.get("operacao").getAsString().isBlank()) {
             responseObject.addProperty("status", StatusCode.BAD_REQUEST);
-            responseObject.addProperty("mensagem", StatusCode.getMessage(StatusCode.BAD_REQUEST));
             
             System.out.println("Operacao nao encontrada ou vazia no request");
             return responseObject;
@@ -111,7 +109,6 @@ public class Multiplex {
 
             if (!permissions.get(role).contains(operation)) {
                 responseObject.addProperty("status", StatusCode.FORBIDDEN);
-                responseObject.addProperty("mensagem", StatusCode.getMessage(StatusCode.FORBIDDEN));
                 System.out.println("Operacao nao permitida por este usuário");
                 return responseObject;
             }
@@ -122,7 +119,6 @@ public class Multiplex {
 
         if (response == null || response.isEmpty()) {
             responseObject.addProperty("status", StatusCode.INTERNAL_SERVER_ERROR);
-            responseObject.addProperty("mensagem", StatusCode.getMessage(StatusCode.INTERNAL_SERVER_ERROR));
         }
 
         return jsonResponse;
