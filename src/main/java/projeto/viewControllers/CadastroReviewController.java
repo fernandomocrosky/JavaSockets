@@ -68,16 +68,19 @@ public class CadastroReviewController {
             JsonObject responseJson = JsonHandler.stringToJsonObject(response);
             System.out.println("Servidor -> Cliente: " + JsonHandler.prettyFormatFromString(responseJson.toString()));
             LogUI.log("Servidor -> Cliente: " + JsonHandler.prettyFormatFromString(responseJson.toString()));
-            if (response != null && responseJson.get("status").getAsString().equals(StatusCode.CREATED)) {
-                Session.getInstance().showAlert(AlertType.CONFIRMATION, "Review enviada com sucesso",
-                        "Review enviada com sucesso", () -> {
-                            SceneHandler.changeScene("/projeto/views/Reviews.fxml");
+            
+            String statusCode = responseJson.get("status").getAsString();
+            if (response != null && statusCode.equals(StatusCode.OK)) {
+                Session.getInstance().showAlert(AlertType.CONFIRMATION, "Sucesso",
+                        "Review criada com sucesso!", () -> {
+                            SceneHandler.changeScene("/projeto/views/Filmes.fxml");
                         });
             } else {
-                status.setText(StatusCode.getMessage(responseJson.get("status").getAsString()));
+                status.setText(StatusCode.getMessage(statusCode));
             }
         } catch (Exception ex) {
             System.out.println("Erro ao se comunicar com o servidor\n" + ex.getMessage());
+            status.setText("Erro ao se comunicar com o servidor: " + ex.getMessage());
         }
 
         return;

@@ -1,5 +1,7 @@
 package projeto.dao;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.Locale;
@@ -23,7 +25,11 @@ public class ReviewDAO {
             stmt.setInt(2, Integer.parseInt(review.getIdUsuario()));
             stmt.setString(3, review.getTitulo());
             stmt.setString(4, review.getDescricao());
-            stmt.setFloat(5, Float.parseFloat(review.getNota()));
+            
+            // Garantir que a nota seja salva com exatamente 2 casas decimais
+            BigDecimal notaDecimal = new BigDecimal(review.getNota());
+            notaDecimal = notaDecimal.setScale(2, RoundingMode.HALF_UP);
+            stmt.setBigDecimal(4, notaDecimal);
 
             if (stmt.executeUpdate() > 0) {
                 String sqlFilme = """
@@ -38,10 +44,11 @@ public class ReviewDAO {
                 try (
                     PreparedStatement stmt2 = conn.prepareStatement(sqlFilme);
                 ) {
-                    String nota = String.format(Locale.US, "%.2f", Float.parseFloat(review.getNota()));
+                    // Usar a mesma nota formatada com 2 casas decimais
+                    BigDecimal notaFormatada = notaDecimal;
                     stmt2.setInt(1, Integer.parseInt(review.getFilme()));
                     stmt2.setInt(2, Integer.parseInt(review.getFilme()));
-                    stmt2.setFloat(3, Float.parseFloat(nota));
+                    stmt2.setBigDecimal(3, notaFormatada);
                     stmt2.setInt(4, Integer.parseInt(review.getFilme()));
                     stmt2.setInt(5, Integer.parseInt(review.getFilme()));
                     int rowsAffected = stmt2.executeUpdate();

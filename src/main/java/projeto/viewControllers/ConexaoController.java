@@ -84,7 +84,8 @@ public class ConexaoController {
                     PrintWriter finalPw = pw;
                     BufferedReader finalBr = br;
                     Platform.runLater(() -> {
-                        Session.getInstance().setConnection(finalS, finalPw, finalBr);
+                        // Salva a conexão e também o IP e porta para uso futuro
+                        Session.getInstance().setConnection(finalS, finalPw, finalBr, ip, porta);
                         status.setText("Conectado!");
                         LogUI.log("Conectado!");
                         SceneHandler.changeScene("/projeto/views/Login.fxml");
@@ -142,5 +143,10 @@ public class ConexaoController {
     @FXML
     public void initialize() {
         LogUI.init(logArea);
+        // Pré-preenche os campos com IP e porta da última conexão, se existir
+        if (Session.hasLastConnection()) {
+            ipField.setText(Session.getLastIp());
+            portField.setText(String.valueOf(Session.getLastPort()));
+        }
     }
 }

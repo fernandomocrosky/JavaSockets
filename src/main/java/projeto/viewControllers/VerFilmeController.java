@@ -1,5 +1,8 @@
 package projeto.viewControllers;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 import com.google.gson.JsonArray;
@@ -122,7 +125,7 @@ public class VerFilmeController {
                     reviewText.append(" | ").append(review.getTitulo() != null ? review.getTitulo() : "Sem título");
                     reviewText.append(" | Por: ").append(review.getUsuario() != null ? review.getUsuario() : "Anônimo");
                     if (review.getData() != null) {
-                        reviewText.append(" | ").append(review.getData());
+                        reviewText.append(" | ").append(formatarData(review.getData()));
                     }
                     reviewText.append("\n").append(review.getDescricao() != null ? review.getDescricao() : "");
                     reviewsDisplay.add(reviewText.toString());
@@ -131,6 +134,25 @@ public class VerFilmeController {
                 reviewsDisplay.add("Nenhuma avaliação disponível.");
             }
             reviewsList.setItems(reviewsDisplay);
+        }
+    }
+
+    private String formatarData(String dataString) {
+        if (dataString == null || dataString.isEmpty()) {
+            return "";
+        }
+        
+        try {
+            // Tenta parsear no formato "yyyy-MM-dd HH:mm:ss"
+            DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            LocalDateTime dateTime = LocalDateTime.parse(dataString, inputFormatter);
+            
+            // Formata para "dd/MM/yyyy"
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            return dateTime.format(outputFormatter);
+        } catch (DateTimeParseException e) {
+            // Se não conseguir parsear, retorna a data original
+            return dataString;
         }
     }
 

@@ -31,6 +31,10 @@ public class Session {
     private Stage currentStage;
     public static final double SCENE_WIDTH = 1024;
     public static final double SCENE_HEIGHT = 768;
+    
+    // Variáveis globais para armazenar IP e porta da última conexão
+    private static String lastIp;
+    private static int lastPort;
 
     private Session() {
     }
@@ -60,6 +64,27 @@ public class Session {
         this.socket = socket;
         this.out = out;
         this.in = in;
+    }
+    
+    public void setConnection(Socket socket, PrintWriter out, BufferedReader in, String ip, int port) {
+        this.socket = socket;
+        this.out = out;
+        this.in = in;
+        // Salva IP e porta globalmente para uso futuro
+        lastIp = ip;
+        lastPort = port;
+    }
+    
+    public static String getLastIp() {
+        return lastIp;
+    }
+    
+    public static int getLastPort() {
+        return lastPort;
+    }
+    
+    public static boolean hasLastConnection() {
+        return lastIp != null && lastPort > 0;
     }
 
     public void setToken(String token) {
