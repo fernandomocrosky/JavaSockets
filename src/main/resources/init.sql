@@ -24,7 +24,7 @@ CREATE TABLE
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         genero VARCHAR(255) NOT NULL,
         id_filme INTEGER NOT NULL,
-        CONSTRAINT fk_generos_filme FOREIGN KEY (id_filme) REFERENCES filmes (id) ON DELETE CASCADE
+        CONSTRAINT fk_generos_filme FOREIGN KEY (id_filme) REFERENCES filmes (id) ON DELETE CASCADE ON UPDATE CASCADE
     );
 
 CREATE TABLE
@@ -37,8 +37,8 @@ CREATE TABLE
         descricao TEXT NOT NULL,
         "data" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        CONSTRAINT fk_reviews_filme FOREIGN KEY (id_filme) REFERENCES filmes (id) ON DELETE CASCADE
-        CONSTRAINT fk_reviews_usuarios FOREIGN KEY (id_usuario) REFERENCES usuarios (id) ON DELETE CASCADE
+        CONSTRAINT fk_reviews_filme FOREIGN KEY (id_filme) REFERENCES filmes (id) ON DELETE CASCADE ON UPDATE CASCADE,
+        CONSTRAINT fk_reviews_usuarios FOREIGN KEY (id_usuario) REFERENCES usuarios (id) ON DELETE CASCADE ON UPDATE CASCADE
     );
 
 

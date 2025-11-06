@@ -11,6 +11,7 @@ import projeto.dao.FilmeDAO;
 import projeto.handlers.JsonHandler;
 import projeto.handlers.StatusCode;
 import projeto.models.Filme;
+import projeto.models.Review;
 
 public class FilmeController {
     public static String cadastrar(String request) {
@@ -113,6 +114,35 @@ public class FilmeController {
         if (FilmeDAO.delete(id)) {
             response.addProperty("status", StatusCode.OK);
             response.addProperty("mensagem", StatusCode.getMessage(StatusCode.OK));
+        } else {
+            response.addProperty("status", StatusCode.NOT_FOUND);
+            response.addProperty("mensagem", StatusCode.getMessage(StatusCode.NOT_FOUND));
+        }
+
+        return JsonHandler.jsonToString(response);
+    }
+
+    public static String listarPorId(String request) {
+        JsonObject response = new JsonObject();
+        JsonObject requestJson = JsonHandler.stringToJsonObject(request);
+        
+        if (!requestJson.has("id") || requestJson.get("id").isJsonNull()) {
+            response.addProperty("status", StatusCode.BAD_REQUEST);
+            response.addProperty("mensagem", StatusCode.getMessage(StatusCode.BAD_REQUEST));
+            return JsonHandler.jsonToString(response);
+        }
+
+        String id = requestJson.get("id").getAsString();
+        Filme filme = FilmeDAO.findById(id);
+
+        if (filme != null && filme.id != null) {
+            response.addProperty("status", StatusCode.OK);
+            JsonObject filmeJson = JsonHandler.stringToJsonObject(JsonHandler.modelToString(filme));
+            response.add("filme", filmeJson);
+            
+            // Buscar reviews do filme
+            List<Review> reviews = FilmeDAO.findReviewsByFilmeId(id);
+            response.add("reviews", JsonHandler.modelToJsonArray(reviews));
         } else {
             response.addProperty("status", StatusCode.NOT_FOUND);
             response.addProperty("mensagem", StatusCode.getMessage(StatusCode.NOT_FOUND));

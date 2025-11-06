@@ -1,5 +1,6 @@
 package projeto.dao;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +14,7 @@ import com.google.gson.JsonObject;
 import projeto.Database;
 import projeto.handlers.JsonHandler;
 import projeto.models.Filme;
+import projeto.models.Review;
 
 public class FilmeDAO {
 
@@ -262,6 +264,125 @@ public class FilmeDAO {
         }
 
         return JsonHandler.jsonToModel(filmeDb, Filme.class);
+    }
+
+    public static Filme findById(String id) {
+        Filme filme = new Filme();
+        
+        String sql = """
+                        SELECT
+                        f.id,
+                        f.titulo,
+                        f.diretor,
+                        f.ano,
+                        f.nota,
+                        (
+                            SELECT GROUP_CONCAT(g.genero, '|')
+                            FROM (
+                                SELECT DISTINCT genero
+                                FROM filmes_generos
+                                WHERE id_filme = f.id
+                            ) g
+                        ) AS generos,
+                        f.sinopse,
+                        (
+                            SELECT COUNT(*)
+                            FROM filmes_reviews r
+                            WHERE r.id_filme = f.id
+                        ) AS qtdAvaliacoes
+                    FROM filmes f
+                    WHERE f.id = ?;
+                """;
+
+        try (
+                Connection conn = Database.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql);) {
+            stmt.setInt(1, Integer.parseInt(id));
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    filme.id = rs.getString("id");
+                    filme.titulo = rs.getString("titulo");
+                    filme.diretor = rs.getString("diretor");
+                    filme.ano = rs.getString("ano");
+                    filme.sinopse = rs.getString("sinopse");
+                    filme.nota = rs.getString("nota");
+                    String generos = rs.getString("generos");
+                    if (generos != null && !generos.isEmpty()) {
+                        filme.genero = Arrays.asList(generos.split("\\|"));
+                    } else {
+                        filme.genero = new ArrayList<>();
+                    }
+                    filme.qtd_avaliacoes = rs.getString("qtdAvaliacoes");
+                } else {
+                    return null;
+                }
+            }
+        } catch (Exception ex) {
+            System.err.println("Erro ao buscar filme por ID: " + ex.getMessage());
+            return null;
+        }
+
+        return filme;
+    }
+
+    public static List<Review> findReviewsByFilmeId(String id) {
+        List<Review> reviews = new ArrayList<>();
+
+        System.out.println("Buscando reviews do filme ID: " + id);
+        String sql = """
+                SELECT 
+                    r.id,
+                    r.id_filme,
+                    r.id_usuario,
+                    r.titulo,
+                    r.descricao,
+                    r.nota,
+                    r."data" AS data_review,
+                    u.usuario AS nome_usuario
+                FROM filmes_reviews r
+                INNER JOIN usuarios u ON r.id_usuario = u.id
+                WHERE r.id_filme = ?
+                ORDER BY r."data" DESC
+                """;
+
+        try (
+                Connection conn = Database.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql);) {
+            stmt.setInt(1, Integer.parseInt(id));
+            System.out.println("SQL executado: " + sql.replace("?", id));
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                System.out.println("ResultSet obtido, iterando resultados...");
+                int count = 0;
+                while (rs.next()) {
+                    count++;
+                    System.out.println("Processando review #" + count);
+                    Review review = new Review();
+                    review.id = rs.getString("id");
+                    review.id_filme = rs.getString("id_filme");
+                    review.id_usuario = rs.getString("id_usuario");
+                    review.titulo = rs.getString("titulo");
+                    review.descricao = rs.getString("descricao");
+                    
+                    BigDecimal notaDecimal = rs.getBigDecimal("nota");
+                    review.nota = notaDecimal != null ? notaDecimal.toString() : "0.0";
+                    
+                    review.data = rs.getString("data_review");
+                    review.nome_usuario = rs.getString("nome_usuario");
+                    System.out.println("Review adicionada: " + review.titulo + " por " + review.nome_usuario);
+                    reviews.add(review);
+                }
+                System.out.println("Total de reviews processadas: " + count);
+            }
+        } catch (Exception ex) {
+            System.err.println("Erro ao buscar reviews do filme ID " + id + ": " + ex.getMessage());
+            ex.printStackTrace();
+        }
+
+        System.out.println("Reviews encontradas: " + reviews.size());
+        
+        return reviews;
     }
 
     public static boolean update(Filme filme) {

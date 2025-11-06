@@ -93,15 +93,22 @@ public class FilmesController {
 
     private void addActionAdminButton() {
         colAcoes.setCellFactory(col -> new TableCell<>() {
+            private final Button btnVer = new Button("Ver");
             private final Button btnEditar = new Button("Editar");
             private final Button btnExcluir = new Button("Excluir");
-            private final HBox box = new HBox(10, btnEditar, btnExcluir);
+            private final HBox box = new HBox(10, btnVer, btnEditar, btnExcluir);
 
             {
                 box.setAlignment(javafx.geometry.Pos.CENTER);
 
+                btnVer.getStyleClass().add("button-secondary");
                 btnEditar.getStyleClass().add("button-secondary");
                 btnExcluir.getStyleClass().add("button-danger");
+
+                btnVer.setOnAction(e -> {
+                    Filme filme = getTableView().getItems().get(getIndex());
+                    verFilme(filme);
+                });
 
                 btnEditar.setOnAction(e -> {
                     Filme filme = getTableView().getItems().get(getIndex());
@@ -128,13 +135,20 @@ public class FilmesController {
 
     private void addActionUserButton() {
         colAcoes.setCellFactory(col -> new TableCell<>() {
+            private final Button btnVer = new Button("Ver");
             private final Button btnReview = new Button("Criar Review");
-            private final HBox box = new HBox(10, btnReview);
+            private final HBox box = new HBox(10, btnVer, btnReview);
 
             {
                 box.setAlignment(javafx.geometry.Pos.CENTER);
 
+                btnVer.getStyleClass().add("button-secondary");
                 btnReview.getStyleClass().add("button-secondary");
+
+                btnVer.setOnAction(e -> {
+                    Filme filme = getTableView().getItems().get(getIndex());
+                    verFilme(filme);
+                });
 
                 btnReview.setOnAction(e -> {
                     Filme filme = getTableView().getItems().get(getIndex());
@@ -152,6 +166,11 @@ public class FilmesController {
                 }
             }
         });
+    }
+
+    private void verFilme(Filme filme) {
+        SceneHandler.changeSceneWithData("/projeto/views/VerFilme.fxml",
+                (VerFilmeController controller) -> controller.setFilmeId(filme.getId()));
     }
 
     private void editarFilme(Filme filme) {

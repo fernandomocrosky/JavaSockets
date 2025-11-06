@@ -38,6 +38,27 @@ public class EditarFilmeController {
 
     public void setFilme(Filme filme) {
         this.filme = filme;
+        preencherCampos();
+    }
+
+    private void preencherCampos() {
+        if (filme != null) {
+            tituloField.setText(filme.getTitulo() != null ? filme.getTitulo() : "");
+            diretorField.setText(filme.getDiretor() != null ? filme.getDiretor() : "");
+            anoField.setText(filme.getAno() != null ? filme.getAno() : "");
+            sinopseField.setText(filme.getSinopse() != null ? filme.getSinopse() : "");
+            
+            // Seleciona os gêneros do filme na lista
+            if (filme.getGenero() != null && !filme.getGenero().isEmpty()) {
+                generosList.getSelectionModel().clearSelection();
+                for (String genero : filme.getGenero()) {
+                    int index = generosList.getItems().indexOf(genero);
+                    if (index >= 0) {
+                        generosList.getSelectionModel().select(index);
+                    }
+                }
+            }
+        }
     }
 
     @FXML
@@ -53,6 +74,11 @@ public class EditarFilmeController {
 
         // permite selecionar vários de uma vez
         generosList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        
+        // Se o filme já foi definido (caso raro), preenche os campos
+        if (filme != null) {
+            preencherCampos();
+        }
     }
 
     @FXML

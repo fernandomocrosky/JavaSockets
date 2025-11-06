@@ -136,17 +136,64 @@ public class UserDAO {
     }
 
     public static boolean delete(String id) {
-        String sql = "DELETE FROM usuarios WHERE id = ?";
-
-        try (
-                Connection conn = Database.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, Integer.parseInt(id));
-            int rowsAffected = stmt.executeUpdate();
-            return rowsAffected > 0;
+        try (Connection conn = Database.getConnection()) {
+            conn.setAutoCommit(false);
+            
+            // 1. Obter os IDs dos filmes que têm reviews deste usuário (antes de deletar)
+            String sqlObterFilmes = """
+                SELECT DISTINCT id_filme 
+                FROM filmes_reviews 
+                WHERE id_usuario = ?
+                """;
+            
+            List<Integer> filmesIds = new ArrayList<>();
+            try (PreparedStatement stmt = conn.prepareStatement(sqlObterFilmes)) {
+                stmt.setInt(1, Integer.parseInt(id));
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        filmesIds.add(rs.getInt("id_filme"));
+                    }
+                }
+            }
+            
+            // 2. Deletar o usuário (isso vai deletar as reviews automaticamente por causa do ON DELETE CASCADE)
+            String sqlDelete = "DELETE FROM usuarios WHERE id = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(sqlDelete)) {
+                stmt.setInt(1, Integer.parseInt(id));
+                int rowsAffected = stmt.executeUpdate();
+                if (rowsAffected == 0) {
+                    conn.rollback();
+                    return false;
+                }
+            }
+            
+            // 3. Atualizar a nota média de cada filme afetado
+            String sqlAtualizarNota = """
+                UPDATE filmes
+                SET nota = (
+                    SELECT CASE 
+                        WHEN COUNT(*) > 0 THEN CAST(AVG(CAST(nota AS REAL)) AS TEXT)
+                        ELSE '0.0'
+                    END
+                    FROM filmes_reviews 
+                    WHERE id_filme = ?
+                )
+                WHERE id = ?
+                """;
+            
+            for (Integer filmeId : filmesIds) {
+                try (PreparedStatement stmt = conn.prepareStatement(sqlAtualizarNota)) {
+                    stmt.setInt(1, filmeId);
+                    stmt.setInt(2, filmeId);
+                    stmt.executeUpdate();
+                }
+            }
+            
+            conn.commit();
+            return true;
         } catch (Exception ex) {
             System.err.println("Erro ao excluir usuário: " + ex.getMessage());
+            ex.printStackTrace();
             return false;
         }
     }
