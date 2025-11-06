@@ -56,7 +56,7 @@ public class UsuarioController {
         for (User user : users) {
             JsonObject userJson = new JsonObject();
             userJson.addProperty("id", user.getId());
-            userJson.addProperty("usuario", user.getUsuario());
+            userJson.addProperty("nome", user.getUsuario());
             usersJson.add(userJson);
         }
         response.addProperty("status", StatusCode.OK);

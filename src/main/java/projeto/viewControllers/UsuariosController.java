@@ -49,7 +49,7 @@ public class UsuariosController {
         LogUI.init(logArea);
 
         // Configura coluna
-        colUsuario.setCellValueFactory(new PropertyValueFactory<>("usuario"));
+        colUsuario.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
 
         // Associa lista à tabela
@@ -145,7 +145,7 @@ public class UsuariosController {
                     JsonObject userJson = user.getAsJsonObject();
 
                     String id = userJson.get("id").getAsString();
-                    String userName = userJson.get("usuario").getAsString();
+                    String userName = userJson.get("nome").getAsString();
 
                     User usuario = new User(userName);
                     usuario.setId(id);

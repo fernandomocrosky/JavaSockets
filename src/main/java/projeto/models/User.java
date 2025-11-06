@@ -2,6 +2,7 @@ package projeto.models;
 
 public class User {
     private String id;
+    private String nome;
     private String usuario;
     private String senha;
     private String criadoEm;
@@ -41,6 +42,10 @@ public class User {
 
     public String getRole() {
         return this.role;
+    }
+
+    public String getNome() {
+        return this.usuario;
     }
 
     // Setters
