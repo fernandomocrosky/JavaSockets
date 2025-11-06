@@ -19,10 +19,10 @@ public class ReviewController {
 
         Review review = new Review();
         review.id_usuario = userId;
-        review.id_filme = reviewObject.get("id_filme").getAsString();
-        review.titulo = reviewObject.get("titulo").getAsString();
-        review.descricao = reviewObject.get("descricao").getAsString();
-        review.nota = reviewObject.get("nota").getAsString();
+        review.id_filme = reviewObject.get("id_filme").getAsString().trim();
+        review.titulo = reviewObject.get("titulo").getAsString().trim();
+        review.descricao = reviewObject.get("descricao").getAsString().trim();
+        review.nota = reviewObject.get("nota").getAsString().trim();
 
         if (ReviewDAO.insert(review)) {
             responseObject.addProperty("status", StatusCode.OK);

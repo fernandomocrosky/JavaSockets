@@ -49,8 +49,8 @@ public class CadastroController {
 
         // cria objeto de usuário e request
         JsonObject user = new JsonObject();
-        user.addProperty("nome", userField.getText());
-        user.addProperty("senha", passField.getText());
+        user.addProperty("nome", userField.getText().trim());
+        user.addProperty("senha", passField.getText().trim());
 
         CadastroPayload requestBody = new CadastroPayload(user);
 

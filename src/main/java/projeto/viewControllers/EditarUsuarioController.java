@@ -45,7 +45,7 @@ public class EditarUsuarioController {
         }
 
         User usuario = new User();
-        usuario.setSenha(senhaField.getText());
+        usuario.setSenha(senhaField.getText().trim());
         usuario.setId(this.usuario.getId());
 
         AdminEditUserPayload payload = new AdminEditUserPayload(usuario);

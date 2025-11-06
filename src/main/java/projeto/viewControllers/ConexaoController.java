@@ -52,8 +52,8 @@ public class ConexaoController {
         }
 
         try {
-            ip = ipField.getText();
-            porta = Integer.parseInt(portField.getText());
+            ip = ipField.getText().trim();
+            porta = Integer.parseInt(portField.getText().trim());
         } catch (Exception ex) {
             status.setText("Erro: ip deve ser um endereço IP e porta deve ser um número inteiro.");
             return;

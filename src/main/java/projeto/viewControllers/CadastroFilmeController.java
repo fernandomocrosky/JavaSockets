@@ -76,10 +76,10 @@ public class CadastroFilmeController {
 
         JsonObject filme = new JsonObject();
 
-        filme.addProperty("titulo", tituloField.getText());
-        filme.addProperty("diretor", diretorField.getText());
-        filme.addProperty("ano", anoField.getText());
-        filme.addProperty("sinopse", sinopseField.getText());
+        filme.addProperty("titulo", tituloField.getText().trim());
+        filme.addProperty("diretor", diretorField.getText().trim());
+        filme.addProperty("ano", anoField.getText().trim());
+        filme.addProperty("sinopse", sinopseField.getText().trim());
         JsonHandler.addArray(filme, "genero", generosSelecionados);
 
         CadastroFilmePayload payload = new CadastroFilmePayload(filme);

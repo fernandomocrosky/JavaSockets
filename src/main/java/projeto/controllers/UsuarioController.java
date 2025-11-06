@@ -29,7 +29,7 @@ public class UsuarioController {
         }
         JsonObject userObject = requestJson.get("usuario").getAsJsonObject();
 
-        User user = new User(userObject.get("nome").getAsString(), userObject.get("senha").getAsString());
+        User user = new User(userObject.get("nome").getAsString().trim(), userObject.get("senha").getAsString().trim());
         User userDb = UserDAO.findByUsername(user.getUsuario());
 
         if (userDb != null) {
@@ -94,8 +94,8 @@ public class UsuarioController {
         }
 
         User user = new User();
-        user.setSenha(requestJson.get("usuario").getAsJsonObject().get("senha").getAsString());
-        user.setId(requestJson.get("id").getAsString());
+        user.setSenha(requestJson.get("usuario").getAsJsonObject().get("senha").getAsString().trim());
+        user.setId(requestJson.get("id").getAsString().trim());
 
         if (UserDAO.update(user)) {
             response.addProperty("status", StatusCode.OK);
@@ -125,7 +125,7 @@ public class UsuarioController {
         }
 
         User user = new User();
-        user.setSenha(requestJson.get("usuario").getAsJsonObject().get("senha").getAsString());
+        user.setSenha(requestJson.get("usuario").getAsJsonObject().get("senha").getAsString().trim());
         user.setId(JwtHandle.getClaim(token, "id", String.class));
 
         if (UserDAO.update(user)) {

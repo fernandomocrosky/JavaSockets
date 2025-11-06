@@ -101,10 +101,10 @@ public class EditarFilmeController {
 
         JsonObject filmeToSend = new JsonObject();
         filmeToSend.addProperty("id", filme.getId());
-        filmeToSend.addProperty("titulo", tituloField.getText());
-        filmeToSend.addProperty("diretor", diretorField.getText());
-        filmeToSend.addProperty("ano", anoField.getText());
-        filmeToSend.addProperty("sinopse", sinopseField.getText());
+        filmeToSend.addProperty("titulo", tituloField.getText().trim());
+        filmeToSend.addProperty("diretor", diretorField.getText().trim());
+        filmeToSend.addProperty("ano", anoField.getText().trim());
+        filmeToSend.addProperty("sinopse", sinopseField.getText().trim());
         JsonHandler.addArray(filmeToSend, "genero", generosSelecionados);
 
         EditarFilmePayload payload = new EditarFilmePayload(filmeToSend);

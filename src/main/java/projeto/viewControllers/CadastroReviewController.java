@@ -46,9 +46,9 @@ public class CadastroReviewController {
 
         JsonObject review = new JsonObject();
         review.addProperty("id_filme", filme.getId());
-        review.addProperty("titulo", tituloField.getText());
-        review.addProperty("descricao", descricaoField.getText());
-        review.addProperty("nota", notaField.getText());
+        review.addProperty("titulo", tituloField.getText().trim());
+        review.addProperty("descricao", descricaoField.getText().trim());
+        review.addProperty("nota", notaField.getText().trim());
 
         CadastroReviewPayload payload = new CadastroReviewPayload(review);
 

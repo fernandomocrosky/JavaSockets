@@ -28,8 +28,8 @@ public class FilmeController {
             return JsonHandler.jsonToString(response);
         }
 
-        Filme filmeDb = FilmeDAO.findFilme(filmeJson.get("titulo").getAsString(),
-                filmeJson.get("diretor").getAsString());
+        Filme filmeDb = FilmeDAO.findFilme(filmeJson.get("titulo").getAsString().trim(),
+                filmeJson.get("diretor").getAsString().trim());
 
         if (filmeDb.id != null) {
             response.addProperty("status", StatusCode.ALREADY_EXISTS);
@@ -40,13 +40,13 @@ public class FilmeController {
             List<String> generosList = new ArrayList<>();
 
             for (int i = 0; i < generos.size(); i++) {
-                generosList.add(generos.get(i).getAsString());
+                generosList.add(generos.get(i).getAsString().trim());
             }
 
-            Filme filme = new Filme(filmeJson.get("titulo").getAsString(),
-                    filmeJson.get("diretor").getAsString(),
-                    filmeJson.get("ano").getAsString(),
-                    filmeJson.get("sinopse").getAsString(),
+            Filme filme = new Filme(filmeJson.get("titulo").getAsString().trim(),
+                    filmeJson.get("diretor").getAsString().trim(),
+                    filmeJson.get("ano").getAsString().trim(),
+                    filmeJson.get("sinopse").getAsString().trim(),
                     generosList);
 
             if (FilmeDAO.insert(filme)) {

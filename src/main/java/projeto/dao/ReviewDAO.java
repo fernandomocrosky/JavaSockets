@@ -27,9 +27,15 @@ public class ReviewDAO {
             stmt.setString(4, review.getDescricao());
             
             // Garantir que a nota seja salva com exatamente 2 casas decimais
-            BigDecimal notaDecimal = new BigDecimal(review.getNota());
+            String notaString = review.getNota();
+            if (notaString == null || notaString.trim().isEmpty()) {
+                System.err.println("Erro: nota não pode ser nula ou vazia");
+                return false;
+            }
+            
+            BigDecimal notaDecimal = new BigDecimal(notaString.trim());
             notaDecimal = notaDecimal.setScale(2, RoundingMode.HALF_UP);
-            stmt.setBigDecimal(4, notaDecimal);
+            stmt.setBigDecimal(5, notaDecimal);
 
             if (stmt.executeUpdate() > 0) {
                 String sqlFilme = """

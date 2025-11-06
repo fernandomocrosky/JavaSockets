@@ -46,7 +46,7 @@ public class EditarMeuUsuarioController {
         }
 
         User usuario = new User();
-        usuario.setSenha(senhaField.getText());
+        usuario.setSenha(senhaField.getText().trim());
 
         EditUserPayload payload = new EditUserPayload(usuario);
         String msg = JsonHandler.modelToString(payload);

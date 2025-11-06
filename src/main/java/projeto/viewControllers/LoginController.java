@@ -50,7 +50,7 @@ public class LoginController {
         }
 
         // cria objeto de usuário e request
-        User user = new User(userField.getText(), passField.getText());
+        User user = new User(userField.getText().trim(), passField.getText().trim());
         LoginPayload requestBody = new LoginPayload(user);
 
         // transforma em JSON

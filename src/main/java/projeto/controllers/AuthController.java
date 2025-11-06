@@ -15,8 +15,8 @@ public class AuthController {
 
         try {
             JsonObject json = JsonHandler.stringToJsonObject(request);
-            String usuario = json.get("usuario").getAsString();
-            String senha = json.get("senha").getAsString();
+            String usuario = json.get("usuario").getAsString().trim();
+            String senha = json.get("senha").getAsString().trim();
 
             User user = UserDAO.findByUsernameAndPassword(usuario, senha);
 
@@ -42,7 +42,7 @@ public class AuthController {
         }
 
         JsonObject json = JsonHandler.stringToJsonObject(request);
-        User user = new User(json.get("usuario").getAsString(), json.get("senha").getAsString());
+        User user = new User(json.get("usuario").getAsString().trim(), json.get("senha").getAsString().trim());
 
         if (user.getUsuario().equals("admin") && user.getSenha().equals("admin")) {
             response.addProperty("status", StatusCode.OK);
