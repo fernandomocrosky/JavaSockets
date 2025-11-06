@@ -91,8 +91,17 @@ public class HomeController {
                                 Session.getInstance().showAlert(AlertType.CONFIRMATION, "Excluido com sucesso",
                                         "Usuário excluido com sucesso",
                                         () -> {
-                                            Session.getInstance().desconectar();
-                                            SceneHandler.changeScene("/projeto/views/CONEXAO.fxml");
+                                            try {
+                                                // Tenta fazer logout antes de fechar a conexão
+                                                Session.getInstance().desconectar();
+                                            } catch (Exception e) {
+                                                // Ignora erros de logout se a conexão já estiver fechada
+                                                System.out.println("Erro ao fazer logout: " + e.getMessage());
+                                            } finally {
+                                                // Fecha explicitamente o socket para que o servidor detecte a desconexão
+                                                Session.getInstance().clear();
+                                                SceneHandler.changeScene("/projeto/views/CONEXAO.fxml");
+                                            }
                                         });
                             }
                         } catch (Exception e) {

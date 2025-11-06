@@ -37,7 +37,9 @@ CREATE TABLE
         descricao TEXT NOT NULL,
         "data" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        -- Se um filme for deletado, todas suas reviews também serão deletadas
         CONSTRAINT fk_reviews_filme FOREIGN KEY (id_filme) REFERENCES filmes (id) ON DELETE CASCADE ON UPDATE CASCADE,
+        -- Se um usuário for deletado, todas suas reviews também serão deletadas automaticamente
         CONSTRAINT fk_reviews_usuarios FOREIGN KEY (id_usuario) REFERENCES usuarios (id) ON DELETE CASCADE ON UPDATE CASCADE
     );
 

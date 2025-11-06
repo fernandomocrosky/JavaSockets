@@ -32,7 +32,7 @@ public class Multiplex {
         operations.put("ADMIN_EXCLUIR_USUARIO", UsuarioController::deletarAdmin);
         operations.put("CRIAR_FILME", FilmeController::cadastrar);
         operations.put("LISTAR_FILMES", FilmeController::listar);
-        operations.put("LISTAR_FILME_POR_ID", FilmeController::listarPorId);
+        operations.put("BUSCAR_FILME_ID", FilmeController::listarPorId);
         operations.put("EDITAR_FILME", FilmeController::update);
         operations.put("EXCLUIR_FILME", FilmeController::delete);
         operations.put("CRIAR_REVIEW", ReviewController::cadastrar);
@@ -42,9 +42,9 @@ public class Multiplex {
         permissions.put("admin",
                 List.of("LISTAR_USUARIOS", "LOGOUT", "ADMIN_EDITAR_USUARIO", "LISTAR_PROPRIO_USUARIO", "EDITAR_PROPRIO_USUARIO",
                         "ADMIN_EXCLUIR_USUARIO", "EXCLUIR_PROPRIO_USUARIO", "CRIAR_FILME",
-                        "EDITAR_FILME", "EXCLUIR_FILME", "LISTAR_FILME_POR_ID"));
+                        "EDITAR_FILME", "EXCLUIR_FILME", "BUSCAR_FILME_ID"));
 
-        permissions.put("user", List.of("LOGOUT", "CRIAR_REVIEW", "EDITAR_PROPRIO_USUARIO", "LISTAR_PROPRIO_USUARIO", "EXCLUIR_PROPRIO_USUARIO", "LISTAR_FILME_POR_ID"));
+        permissions.put("user", List.of("LOGOUT", "CRIAR_REVIEW", "EDITAR_PROPRIO_USUARIO", "LISTAR_PROPRIO_USUARIO", "EXCLUIR_PROPRIO_USUARIO", "BUSCAR_FILME_ID"));
     }
 
     public static JsonElement handle(String request) {

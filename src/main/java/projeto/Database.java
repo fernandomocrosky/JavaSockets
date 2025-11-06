@@ -15,6 +15,9 @@ public class Database {
                 Connection conn = DriverManager.getConnection(DB_URL);
                 Statement stmt = conn.createStatement()) {
 
+            // Habilita foreign keys no SQLite
+            stmt.execute("PRAGMA foreign_keys = ON");
+
             String sql;
             try (
                 BufferedReader br = new BufferedReader(new InputStreamReader(Database.class.getResourceAsStream("/init.sql")))
@@ -35,6 +38,11 @@ public class Database {
     }
 
     public static Connection getConnection() throws Exception {
-        return DriverManager.getConnection(DB_URL);
+        Connection conn = DriverManager.getConnection(DB_URL);
+        // Habilita foreign keys para cada conexão
+        try (Statement stmt = conn.createStatement()) {
+            stmt.execute("PRAGMA foreign_keys = ON");
+        }
+        return conn;
     }
 }
