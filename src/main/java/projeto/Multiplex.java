@@ -110,6 +110,7 @@ public class Multiplex {
 
             if (!permissions.get(role).contains(operation)) {
                 responseObject.addProperty("status", StatusCode.FORBIDDEN);
+                responseObject.addProperty("mensagem", StatusCode.getMessage(StatusCode.FORBIDDEN));
                 System.out.println("Operacao nao permitida por este usuário");
                 return responseObject;
             }

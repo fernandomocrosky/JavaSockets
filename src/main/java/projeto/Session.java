@@ -174,11 +174,11 @@ public class Session {
 
         try {
             response = JsonHandler.stringToJsonObject(in.readLine());
-            response.addProperty("message", StatusCode.getMessage(response.get("status").getAsString()));
+            response.addProperty("mensagem", StatusCode.getMessage(response.get("status").getAsString()));
         } catch (Exception ex) {
             System.err.println("Erro na comunicação com o servidor: " + ex.getMessage());
             response.addProperty("status", StatusCode.INTERNAL_SERVER_ERROR);
-            response.addProperty("message", StatusCode.getMessage(StatusCode.INTERNAL_SERVER_ERROR));
+            response.addProperty("mensagem", StatusCode.getMessage(StatusCode.INTERNAL_SERVER_ERROR));
         }
 
         return response;
