@@ -49,7 +49,8 @@ public class Validator {
                     if (!current.has(part) || current.get(part).isJsonNull()) {
                         exists = false;
                     } else {
-                        if(field.equals("id")) break;
+                        if (field.equals("id"))
+                            break;
 
                         // Verifica se é array
                         if (current.get(part).isJsonArray()) {
@@ -74,13 +75,21 @@ public class Validator {
                                 }
                             }
                         } else {
+
                             // Validação simples para string
                             String value = current.get(part).getAsString();
+
                             if (value.length() < 3) {
                                 errors.add("O campo '" + field + "' deve ter pelo menos 3 caracteres.");
                             }
-                            if (!value.matches("[a-zA-Z0-9À-ÿ ]+")) {
-                                errors.add("O campo '" + field + "' deve conter apenas letras, números e espaços.");
+
+                            // Regex diferente se for "sinopse"
+                            String regex = field.equals("sinopse")
+                                    ? "[a-zA-Z0-9À-ÿ.,!?()\\-\"'\\s]+"
+                                    : "[a-zA-Z0-9À-ÿ ]+";
+
+                            if (!value.matches(regex)) {
+                                errors.add("O campo '" + field + "' contém caracteres inválidos.");
                             }
                         }
                     }
