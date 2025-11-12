@@ -121,6 +121,8 @@ public class Multiplex {
 
         if (response == null || response.isEmpty()) {
             responseObject.addProperty("status", StatusCode.INTERNAL_SERVER_ERROR);
+            responseObject.addProperty("mensagem", StatusCode.getMessage(StatusCode.INTERNAL_SERVER_ERROR));
+            return responseObject;
         }
 
         return jsonResponse;
