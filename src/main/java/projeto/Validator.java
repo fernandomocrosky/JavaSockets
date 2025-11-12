@@ -52,6 +52,14 @@ public class Validator {
                         if (field.equals("id"))
                             break;
 
+                        if (field.equals("ano")) {
+                            try {
+                                Integer.parseInt(current.get(part).getAsString());
+                            } catch (NumberFormatException e) {
+                                errors.add("O campo '" + field + "' deve ser um número.");
+                            }
+                        }
+
                         // Verifica se é array
                         if (current.get(part).isJsonArray()) {
                             JsonArray arr = current.getAsJsonArray(part);
