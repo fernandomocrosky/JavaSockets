@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -328,6 +330,7 @@ public class FilmeDAO {
 
     public static List<Review> findReviewsByFilmeId(String id) {
         List<Review> reviews = new ArrayList<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
         System.out.println("Buscando reviews do filme ID: " + id);
         String sql = """
@@ -339,6 +342,7 @@ public class FilmeDAO {
                     r.descricao,
                     r.nota,
                     r."data" AS data_review,
+                    r.editado,
                     u.usuario AS nome_usuario
                 FROM filmes_reviews r
                 INNER JOIN usuarios u ON r.id_usuario = u.id
@@ -368,7 +372,19 @@ public class FilmeDAO {
                     BigDecimal notaDecimal = rs.getBigDecimal("nota");
                     review.nota = notaDecimal != null ? notaDecimal.toString() : "0.0";
                     
-                    review.data = rs.getString("data_review");
+                    // Formatar data como dd/mm/aaaa
+                    Timestamp timestamp = rs.getTimestamp("data_review");
+                    if (timestamp != null) {
+                        review.data = dateFormat.format(timestamp);
+                    } else {
+                        review.data = "";
+                    }
+                    
+                    review.editado = rs.getString("editado");
+                    if (review.editado == null) {
+                        review.editado = "false";
+                    }
+                    
                     review.nome_usuario = rs.getString("nome_usuario");
                     System.out.println("Review adicionada: " + review.titulo + " por " + review.nome_usuario);
                     reviews.add(review);

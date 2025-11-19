@@ -51,7 +51,7 @@ public class MenuController {
 
     @FXML
     private void goReviews() {
-        // SceneHandler.changeScene("/projeto/views/Reviews.fxml");
+        SceneHandler.changeScene("/projeto/views/Reviews.fxml");
     }
 
     @FXML

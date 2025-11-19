@@ -36,21 +36,25 @@ public class Multiplex {
         operations.put("EDITAR_FILME", FilmeController::update);
         operations.put("EXCLUIR_FILME", FilmeController::delete);
         operations.put("CRIAR_REVIEW", ReviewController::cadastrar);
+        operations.put("LISTAR_REVIEWS_USUARIO", ReviewController::listarPorUsuario);
+        operations.put("EDITAR_REVIEW", ReviewController::editar);
+        operations.put("EXCLUIR_REVIEW", ReviewController::excluir);
 
         permissions.put("public", List.of("LOGIN", "CRIAR_USUARIO", "LISTAR_FILMES"));
 
         permissions.put("admin",
                 List.of("LISTAR_USUARIOS", "LOGOUT", "ADMIN_EDITAR_USUARIO", "LISTAR_PROPRIO_USUARIO", "EDITAR_PROPRIO_USUARIO",
                         "ADMIN_EXCLUIR_USUARIO", "EXCLUIR_PROPRIO_USUARIO", "CRIAR_FILME",
-                        "EDITAR_FILME", "EXCLUIR_FILME", "BUSCAR_FILME_ID"));
+                        "EDITAR_FILME", "EXCLUIR_FILME", "BUSCAR_FILME_ID", "LISTAR_REVIEWS_USUARIO", "CRIAR_REVIEW", "EDITAR_REVIEW", "EXCLUIR_REVIEW"));
 
-        permissions.put("user", List.of("LOGOUT", "CRIAR_REVIEW", "EDITAR_PROPRIO_USUARIO", "LISTAR_PROPRIO_USUARIO", "EXCLUIR_PROPRIO_USUARIO", "BUSCAR_FILME_ID"));
+        permissions.put("user", List.of("LOGOUT", "CRIAR_REVIEW", "EDITAR_PROPRIO_USUARIO", "LISTAR_PROPRIO_USUARIO", "EXCLUIR_PROPRIO_USUARIO", "BUSCAR_FILME_ID", "LISTAR_REVIEWS_USUARIO", "EDITAR_REVIEW", "EXCLUIR_REVIEW"));
     }
 
     public static JsonElement handle(String request) {
         if (request == null || request.isBlank()) {
             JsonObject response = new JsonObject();
             response.addProperty("status", StatusCode.BAD_REQUEST);
+            response.addProperty("mensagem", StatusCode.getMessage(StatusCode.BAD_REQUEST));
             System.out.println("Requisição vazia");
 
             return response;
@@ -63,7 +67,7 @@ public class Multiplex {
                 requestObject.get("operacao").isJsonNull() ||
                 requestObject.get("operacao").getAsString().isBlank()) {
             responseObject.addProperty("status", StatusCode.BAD_REQUEST);
-            
+            responseObject.addProperty("mensagem", StatusCode.getMessage(StatusCode.BAD_REQUEST));
             System.out.println("Operacao nao encontrada ou vazia no request");
             return responseObject;
         }

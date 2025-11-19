@@ -48,8 +48,8 @@ public class AuthController {
             response.addProperty("status", StatusCode.OK);
             response.addProperty("mensagem", StatusCode.getMessage(StatusCode.OK));
         } else {
-            response.addProperty("status", StatusCode.UNPROCESSABLE_ENTITY);
-            response.addProperty("mensagem", StatusCode.getMessage(StatusCode.UNPROCESSABLE_ENTITY));
+            response.addProperty("status", StatusCode.UNAUTHORIZED);
+            response.addProperty("mensagem", StatusCode.getMessage(StatusCode.UNAUTHORIZED));
         }
 
         return JsonHandler.jsonToString(response);

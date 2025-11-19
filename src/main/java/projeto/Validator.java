@@ -17,8 +17,8 @@ public class Validator {
     public static JsonObject validate(JsonObject request, List<String> requiredFields) {
         JsonObject response = new JsonObject();
         List<String> errors = new ArrayList<>();
-        response.addProperty("status", StatusCode.BAD_REQUEST);
-        response.addProperty("mensagem", StatusCode.getMessage(StatusCode.BAD_REQUEST));
+        response.addProperty("status", StatusCode.METHOD_NOT_ALLOWED);
+        response.addProperty("mensagem", StatusCode.getMessage(StatusCode.METHOD_NOT_ALLOWED));
 
         for (String field : requiredFields) {
             if (!request.has(field)) {

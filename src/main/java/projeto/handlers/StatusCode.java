@@ -14,6 +14,7 @@ public final class StatusCode {
     public static final String UNAUTHORIZED = "401";
     public static final String FORBIDDEN = "403";
     public static final String NOT_FOUND = "404";
+    public static final String METHOD_NOT_ALLOWED = "405";
     public static final String ALREADY_EXISTS = "409";
     public static final String GONE = "410";
     public static final String LENGTH_REQUIRED = "411";
@@ -31,6 +32,7 @@ public final class StatusCode {
         messages.put(UNAUTHORIZED, "Erro: Token inválido");
         messages.put(FORBIDDEN, "Erro: sem permissão");
         messages.put(NOT_FOUND, "Erro: Recurso inexistente");
+        messages.put(METHOD_NOT_ALLOWED, "Erro: Campos inválidos, verifique o tipo e quantidade de caracteres");
         messages.put(ALREADY_EXISTS, "Erro: Recurso ja existe");
         messages.put(GONE, "Recurso nao esta mais disponível");
         messages.put(LENGTH_REQUIRED, "Tamanho do conteudo ncessario");

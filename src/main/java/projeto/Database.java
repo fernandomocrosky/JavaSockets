@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.stream.Collectors;
 
@@ -30,6 +31,26 @@ public class Database {
                     }
                 }
             }
+            
+            // Adicionar coluna editado se não existir
+            try {
+                boolean colunaExiste = false;
+                try (ResultSet rs = stmt.executeQuery("PRAGMA table_info(filmes_reviews)")) {
+                    while (rs.next()) {
+                        if ("editado".equals(rs.getString("name"))) {
+                            colunaExiste = true;
+                            break;
+                        }
+                    }
+                }
+                if (!colunaExiste) {
+                    stmt.execute("ALTER TABLE filmes_reviews ADD COLUMN editado VARCHAR(255) NOT NULL DEFAULT 'false'");
+                    System.out.println("Coluna 'editado' adicionada à tabela filmes_reviews");
+                }
+            } catch (Exception ex) {
+                System.err.println("Erro ao verificar/adicionar coluna editado: " + ex.getMessage());
+            }
+            
             System.out.println("Banco inicializado em: " + DB_URL);
 
         } catch (Exception ex) {

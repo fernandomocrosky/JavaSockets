@@ -23,8 +23,8 @@ public class FilmeController {
                 List.of("titulo", "diretor", "ano", "sinopse", "genero"));
 
         if (errors != null && !errors.isEmpty()) {
-            response.addProperty("status", StatusCode.BAD_REQUEST);
-            response.addProperty("mensagem", StatusCode.getMessage(StatusCode.BAD_REQUEST));
+            response.addProperty("status", StatusCode.METHOD_NOT_ALLOWED);
+            response.addProperty("mensagem", StatusCode.getMessage(StatusCode.METHOD_NOT_ALLOWED));
             return JsonHandler.jsonToString(response);
         }
 
@@ -67,6 +67,7 @@ public class FilmeController {
         List<Filme> filmes = FilmeDAO.findAll();
 
         response.addProperty("status", StatusCode.OK);
+        response.addProperty("mensagem", StatusCode.getMessage(StatusCode.OK));
         response.add("filmes", JsonHandler.modelToJsonArray(filmes));
 
         return JsonHandler.jsonToString(response);
@@ -81,8 +82,8 @@ public class FilmeController {
                 List.of("titulo", "diretor", "ano", "sinopse", "genero"));
 
         if (errors != null && !errors.isEmpty()) {
-            response.addProperty("status", StatusCode.BAD_REQUEST);
-            response.addProperty("mensagem", StatusCode.getMessage(StatusCode.BAD_REQUEST));
+            response.addProperty("status", StatusCode.METHOD_NOT_ALLOWED);
+            response.addProperty("mensagem", StatusCode.getMessage(StatusCode.METHOD_NOT_ALLOWED));
             return JsonHandler.jsonToString(response);
         }
 
@@ -137,6 +138,7 @@ public class FilmeController {
 
         if (filme != null && filme.id != null) {
             response.addProperty("status", StatusCode.OK);
+            response.addProperty("mensagem", StatusCode.getMessage(StatusCode.OK));
             JsonObject filmeJson = JsonHandler.stringToJsonObject(JsonHandler.modelToString(filme));
             response.add("filme", filmeJson);
             

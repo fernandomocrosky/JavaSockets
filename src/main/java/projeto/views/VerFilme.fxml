@@ -58,8 +58,20 @@
 
                 <Separator style="-fx-background-color: #555;" />
 
-                <Label text="Avaliações:" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
-                <ListView fx:id="reviewsList" prefHeight="300" styleClass="list-view" />
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Avaliações:" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                    <Button fx:id="btnCriarReview" text="Criar Review" onAction="#criarReview" styleClass="button-secondary" />
+                </HBox>
+                <TableView fx:id="reviewsTable" prefHeight="300" styleClass="list-view">
+                    <columns>
+                        <TableColumn fx:id="colNota" text="Nota" />
+                        <TableColumn fx:id="colTitulo" text="Título" prefWidth="200" />
+                        <TableColumn fx:id="colUsuario" text="Usuário" prefWidth="150" />
+                        <TableColumn fx:id="colData" text="Data" />
+                        <TableColumn fx:id="colEditado" text="Editado" />
+                        <TableColumn fx:id="colAcoes" text="Ações" prefWidth="200" />
+                    </columns>
+                </TableView>
 
                 <Label fx:id="statusLabel" text="" />
             </VBox>

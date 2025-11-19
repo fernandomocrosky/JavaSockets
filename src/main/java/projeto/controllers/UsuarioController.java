@@ -22,8 +22,8 @@ public class UsuarioController {
         List<String> errors = Validator.validateRequest(requestJson, List.of("usuario.nome", "usuario.senha"));
 
         if (errors != null && !errors.isEmpty()) {
-            response.addProperty("status", StatusCode.BAD_REQUEST);
-            response.addProperty("mensagem", StatusCode.getMessage(StatusCode.BAD_REQUEST));
+            response.addProperty("status", StatusCode.METHOD_NOT_ALLOWED);
+            response.addProperty("mensagem", StatusCode.getMessage(StatusCode.METHOD_NOT_ALLOWED));
             System.out.println("Errors:" + errors);
             return JsonHandler.jsonToString(response);
         }
@@ -45,7 +45,9 @@ public class UsuarioController {
             return JsonHandler.jsonToString(response);
         }
 
-        return JsonHandler.jsonToString(null);
+        response.addProperty("status", StatusCode.INTERNAL_SERVER_ERROR);
+        response.addProperty("mensagem", StatusCode.getMessage(StatusCode.INTERNAL_SERVER_ERROR));
+        return JsonHandler.jsonToString(response);
     }
 
     public static String listar(String request) {
@@ -87,9 +89,9 @@ public class UsuarioController {
         errors = Validator.validateRequest(requestJson, List.of("id", "usuario.senha"));
 
         if (errors != null && !errors.isEmpty()) {
-            response.addProperty("status", StatusCode.BAD_REQUEST);
+            response.addProperty("status", StatusCode.METHOD_NOT_ALLOWED);
             System.out.println("Errors:" + errors);
-            response.addProperty("mensagem", StatusCode.getMessage(StatusCode.BAD_REQUEST));
+            response.addProperty("mensagem", StatusCode.getMessage(StatusCode.METHOD_NOT_ALLOWED));
             return JsonHandler.jsonToString(response);
         }
 
@@ -118,8 +120,8 @@ public class UsuarioController {
         errors = Validator.validateRequest(requestJson, List.of("usuario.senha"));
 
         if (errors != null && !errors.isEmpty()) {
-            response.addProperty("status", StatusCode.BAD_REQUEST);
-            response.addProperty("mensagem", StatusCode.getMessage(StatusCode.BAD_REQUEST));
+            response.addProperty("status", StatusCode.METHOD_NOT_ALLOWED);
+            response.addProperty("mensagem", StatusCode.getMessage(StatusCode.METHOD_NOT_ALLOWED));
             System.out.println("Errors:" + errors);
             return JsonHandler.jsonToString(response);
         }
@@ -165,8 +167,8 @@ public class UsuarioController {
         List<String> errors = Validator.validateRequest(requestJson, List.of("id"));
 
         if (errors != null && !errors.isEmpty()) {
-            response.addProperty("status", StatusCode.BAD_REQUEST);
-            response.addProperty("mensagem", StatusCode.getMessage(StatusCode.BAD_REQUEST));
+            response.addProperty("status", StatusCode.METHOD_NOT_ALLOWED);
+            response.addProperty("mensagem", StatusCode.getMessage(StatusCode.METHOD_NOT_ALLOWED));
             return JsonHandler.jsonToString(response);
         }
 
