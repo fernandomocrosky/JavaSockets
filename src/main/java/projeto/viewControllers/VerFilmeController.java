@@ -82,8 +82,8 @@ public class VerFilmeController {
         // Obter informações do usuário logado
         String token = Session.getInstance().getToken();
         if (token != null) {
-            userId = JwtHandle.getClaim(token, "id", String.class);
-            role = JwtHandle.getClaim(token, "funcao", String.class);
+            userId = Session.getInstance().getUser().getId();
+            role = Session.getInstance().getUser().getRole();
         }
         
         // Configurar colunas da tabela

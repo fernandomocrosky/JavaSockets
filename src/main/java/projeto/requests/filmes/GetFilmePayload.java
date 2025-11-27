@@ -5,10 +5,10 @@ import projeto.Session;
 public class GetFilmePayload {
     private String operacao = "BUSCAR_FILME_ID".toUpperCase();
     private String token = Session.getInstance().getToken();
-    private String id;
+    private String id_filme;
 
     public GetFilmePayload(String id) {
-        this.id = id;
+        this.id_filme = id;
     }
 }
 

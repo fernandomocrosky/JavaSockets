@@ -127,13 +127,13 @@ public class FilmeController {
         JsonObject response = new JsonObject();
         JsonObject requestJson = JsonHandler.stringToJsonObject(request);
         
-        if (!requestJson.has("id") || requestJson.get("id").isJsonNull()) {
+        if (!requestJson.has("id_filme") || requestJson.get("id_filme").isJsonNull()) {
             response.addProperty("status", StatusCode.BAD_REQUEST);
             response.addProperty("mensagem", StatusCode.getMessage(StatusCode.BAD_REQUEST));
             return JsonHandler.jsonToString(response);
         }
 
-        String id = requestJson.get("id").getAsString();
+        String id = requestJson.get("id_filme").getAsString();
         Filme filme = FilmeDAO.findById(id);
 
         if (filme != null && filme.id != null) {
